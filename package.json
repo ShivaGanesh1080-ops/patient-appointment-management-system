@@ -1,0 +1,28 @@
+{
+  "name": "patient-appointment-management-system",
+  "version": "1.0.0",
+  "description": "Patient Appointment Management System - WTMP Academic & Industry Project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node src/db/seed.js"
+  },
+  "keywords": [
+    "patient-appointment",
+    "healthcare",
+    "express",
+    "nodejs",
+    "sqlite",
+    "rest-api",
+    "wtmp"
+  ],
+  "author": "Shiva Ganesh Akku",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0",
+    "sqlite3": "^5.1.7"
+  }
+}
