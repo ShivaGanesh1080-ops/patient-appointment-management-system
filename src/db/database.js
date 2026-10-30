@@ -27,73 +27,72 @@ db.serialize(() => {
   db.run('PRAGMA journal_mode = WAL;');
 });
 
-// Initialize Schema
-function initSchema() {
+// Helper to execute multi-statement SQL atomically
+function execAsync(sql) {
   return new Promise((resolve, reject) => {
-    db.serialize(() => {
-      // 1. Departments Table
-      db.run(`
-        CREATE TABLE IF NOT EXISTS departments (
-          id TEXT PRIMARY KEY,
-          name TEXT NOT NULL UNIQUE,
-          icon TEXT NOT NULL,
-          description TEXT NOT NULL
-        )
-      `);
-
-      // 2. Doctors Table
-      db.run(`
-        CREATE TABLE IF NOT EXISTS doctors (
-          id TEXT PRIMARY KEY,
-          name TEXT NOT NULL,
-          department_id TEXT NOT NULL,
-          qualification TEXT NOT NULL,
-          experience_years INTEGER NOT NULL,
-          consultation_fee REAL NOT NULL,
-          rating REAL NOT NULL,
-          clinic_address TEXT NOT NULL,
-          avatar_url TEXT NOT NULL,
-          bio TEXT NOT NULL,
-          available_days TEXT NOT NULL,
-          slot_start_time TEXT NOT NULL DEFAULT '09:00',
-          slot_end_time TEXT NOT NULL DEFAULT '17:00',
-          slot_duration_minutes INTEGER NOT NULL DEFAULT 30,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
-        )
-      `);
-
-      // 3. Appointments Table
-      db.run(`
-        CREATE TABLE IF NOT EXISTS appointments (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          booking_reference TEXT NOT NULL UNIQUE,
-          doctor_id TEXT NOT NULL,
-          patient_name TEXT NOT NULL,
-          patient_phone TEXT NOT NULL,
-          patient_email TEXT,
-          patient_age INTEGER NOT NULL,
-          patient_gender TEXT NOT NULL,
-          appointment_date TEXT NOT NULL,
-          appointment_time TEXT NOT NULL,
-          reason TEXT NOT NULL,
-          status TEXT NOT NULL DEFAULT 'CONFIRMED',
-          cancellation_reason TEXT,
-          cancelled_at DATETIME,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE
-        )
-      `);
-
-      // Indexes for rapid queries and conflict lookups
-      db.run(`CREATE INDEX IF NOT EXISTS idx_appointments_doctor_date ON appointments(doctor_id, appointment_date, appointment_time, status)`);
-      db.run(`CREATE INDEX IF NOT EXISTS idx_appointments_phone ON appointments(patient_phone)`);
-      db.run(`CREATE INDEX IF NOT EXISTS idx_appointments_ref ON appointments(booking_reference)`);
-
-      resolve(true);
+    db.exec(sql, (err) => {
+      if (err) reject(err);
+      else resolve();
     });
   });
+}
+
+// Initialize Schema atomically using db.exec
+async function initSchema() {
+  const schemaSql = `
+    CREATE TABLE IF NOT EXISTS departments (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      icon TEXT NOT NULL,
+      description TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS doctors (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      department_id TEXT NOT NULL,
+      qualification TEXT NOT NULL,
+      experience_years INTEGER NOT NULL,
+      consultation_fee REAL NOT NULL,
+      rating REAL NOT NULL,
+      clinic_address TEXT NOT NULL,
+      avatar_url TEXT NOT NULL,
+      bio TEXT NOT NULL,
+      available_days TEXT NOT NULL,
+      slot_start_time TEXT NOT NULL DEFAULT '09:00',
+      slot_end_time TEXT NOT NULL DEFAULT '17:00',
+      slot_duration_minutes INTEGER NOT NULL DEFAULT 30,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS appointments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      booking_reference TEXT NOT NULL UNIQUE,
+      doctor_id TEXT NOT NULL,
+      patient_name TEXT NOT NULL,
+      patient_phone TEXT NOT NULL,
+      patient_email TEXT,
+      patient_age INTEGER NOT NULL,
+      patient_gender TEXT NOT NULL,
+      appointment_date TEXT NOT NULL,
+      appointment_time TEXT NOT NULL,
+      reason TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'CONFIRMED',
+      cancellation_reason TEXT,
+      cancelled_at DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_appointments_doctor_date ON appointments(doctor_id, appointment_date, appointment_time, status);
+    CREATE INDEX IF NOT EXISTS idx_appointments_phone ON appointments(patient_phone);
+    CREATE INDEX IF NOT EXISTS idx_appointments_ref ON appointments(booking_reference);
+  `;
+
+  await execAsync(schemaSql);
+  return true;
 }
 
 // Promise-based query helpers for clean async/await in controllers
@@ -122,6 +121,7 @@ const dbAsync = {
       });
     });
   },
+  exec: execAsync,
   db,
   initSchema
 };

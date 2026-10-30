@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
+const { exec } = require('child_process');
 
 const dbAsync = require('./src/db/database');
 const seedData = require('./src/db/seed');
@@ -29,13 +30,21 @@ let dbReadyPromise = null;
 function getDbReady() {
   if (!dbReadyPromise) {
     dbReadyPromise = (async () => {
+      console.log('🔄 Initializing SQLite database schema...');
       await dbAsync.initSchema();
+      
       const docCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM doctors');
       if (!docCheck || docCheck.count === 0) {
-        console.log('🌱 Seeding initial data...');
+        console.log('🌱 No doctors found. Running database seeder...');
         await seedData();
+      } else {
+        console.log(`✅ Database schema verified (${docCheck.count} doctors loaded).`);
       }
-    })();
+    })().catch((err) => {
+      console.error('❌ Database initialization error:', err.message);
+      dbReadyPromise = null; // Clear cached rejection on failure so subsequent attempts retry
+      throw err;
+    });
   }
   return dbReadyPromise;
 }
@@ -82,15 +91,22 @@ async function startServer() {
   try {
     await getDbReady();
 
+    const docCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM doctors');
+
     app.listen(PORT, () => {
       console.log('================================================================');
-      console.log(`🏥 PATIENT APPOINTMENT MANAGEMENT SYSTEM`);
+      console.log(`🏥 PATIENT APPOINTMENT MANAGEMENT SYSTEM (MediPulse)`);
       console.log(`🌐 Server running at: http://localhost:${PORT}`);
+      console.log(`🩺 Verified Doctors: ${docCheck ? docCheck.count : 0}`);
       console.log(`📋 API Docs & Explorer: http://localhost:${PORT}#api-docs`);
-      console.log(`🩺 Doctor Profiles: http://localhost:${PORT}/api/doctors`);
-      console.log(`🕒 Available Slots: http://localhost:${PORT}/api/slots?doctorId=doc-101&date=${new Date().toISOString().split('T')[0]}`);
-      console.log(`📅 Appointments: http://localhost:${PORT}/api/appointments`);
       console.log('================================================================');
+
+      // Auto-open browser on local startup once server is confirmed ready
+      if (!process.env.VERCEL && !process.env.NO_OPEN) {
+        setTimeout(() => {
+          exec(`start http://localhost:${PORT}`);
+        }, 300);
+      }
     });
   } catch (err) {
     console.error('❌ Failed to start server:', err);
