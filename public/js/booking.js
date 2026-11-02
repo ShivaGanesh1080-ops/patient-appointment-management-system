@@ -345,6 +345,29 @@ function closeSlipModal() {
   document.getElementById('modal-slip').classList.add('hidden');
 }
 
+/**
+ * 1-Click Pre-fill for Faculty Viva Demonstration
+ */
+function autoFillDemoPatient() {
+  const nameEl = document.getElementById('patient-name');
+  const phoneEl = document.getElementById('patient-phone');
+  const emailEl = document.getElementById('patient-email');
+  const ageEl = document.getElementById('patient-age');
+  const genderEl = document.getElementById('patient-gender');
+  const reasonEl = document.getElementById('patient-reason');
+
+  if (nameEl) nameEl.value = 'Aditya Sharma';
+  if (phoneEl) phoneEl.value = '9876543210';
+  if (emailEl) emailEl.value = 'aditya.sharma@example.com';
+  if (ageEl) ageEl.value = '28';
+  if (genderEl) genderEl.value = 'Male';
+  if (reasonEl) reasonEl.value = 'Routine cardiovascular screening and seasonal wellness consultation.';
+
+  if (typeof showToast === 'function') {
+    showToast('⚡ Sample patient details auto-filled for quick demonstration!', 'info');
+  }
+}
+
 // Global expose
 window.populateBookingDoctors = populateBookingDoctors;
 window.onBookingDoctorChanged = onBookingDoctorChanged;
@@ -353,3 +376,4 @@ window.selectSlot = selectSlot;
 window.handleBookingSubmit = handleBookingSubmit;
 window.openSlipModal = openSlipModal;
 window.closeSlipModal = closeSlipModal;
+window.autoFillDemoPatient = autoFillDemoPatient;

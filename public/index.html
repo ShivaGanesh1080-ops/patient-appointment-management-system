@@ -318,11 +318,23 @@
           <!-- Step 4: Patient Details Form & Summary (Right 5 Cols) -->
           <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-5">
             <div>
-              <div class="border-b border-slate-100 pb-3 mb-4">
-                <h3 class="text-base font-bold text-slate-900 flex items-center">
-                  <i class="fa-solid fa-clipboard-user text-blue-600 mr-2"></i> Patient Information
-                </h3>
-                <p class="text-xs text-slate-500">Enter accurate details for prescription and SMS/email token delivery.</p>
+              <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+                <div>
+                  <h3 class="text-base font-bold text-slate-900 flex items-center">
+                    <i class="fa-solid fa-clipboard-user text-blue-600 mr-2"></i> Patient Information
+                  </h3>
+                  <p class="text-xs text-slate-500">Enter patient details for prescription and token pass.</p>
+                </div>
+                <!-- 1-Click Demo Pre-fill for Viva Presentation -->
+                <button 
+                  type="button" 
+                  onclick="autoFillDemoPatient()" 
+                  class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 flex items-center space-x-1.5 transition shadow-sm"
+                  title="Click to automatically pre-fill sample patient details for fast faculty demonstration"
+                >
+                  <i class="fa-solid fa-wand-magic-sparkles text-blue-600"></i>
+                  <span>⚡ Demo Patient</span>
+                </button>
               </div>
 
               <form id="appointment-booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-3.5">
@@ -586,6 +598,69 @@
             </p>
           </div>
 
+        </div>
+
+        <!-- Visual 60-Second Explanation Cheat Sheet for Faculty & Viva -->
+        <div class="bg-gradient-to-br from-indigo-900 via-slate-900 to-blue-950 text-white rounded-2xl p-6 border border-indigo-800/80 shadow-lg space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-indigo-800/60 pb-3">
+            <div class="flex items-center space-x-2.5">
+              <span class="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center text-sm shadow">
+                💡
+              </span>
+              <div>
+                <h3 class="text-base font-extrabold text-white">How to Explain This Project in 60 Seconds</h3>
+                <p class="text-xs text-indigo-200">Point to these 3 pillars when your professor asks you to explain what you built.</p>
+              </div>
+            </div>
+            <span class="text-[11px] font-bold uppercase tracking-wider bg-indigo-950 px-3 py-1 rounded-full text-indigo-300 border border-indigo-700">
+              WTMP Viva Cheat Sheet
+            </span>
+          </div>
+
+          <!-- 3-Pillar Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1 text-xs">
+            
+            <div class="bg-white/5 p-3.5 rounded-xl border border-white/10 space-y-1.5">
+              <div class="font-bold text-amber-300 flex items-center">
+                <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mr-1.5 font-mono text-[10px]">1</span>
+                <span>The 3-Tier Architecture</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed text-[11px]">
+                Built as a decoupled 3-tier system: Semantic <strong>HTML5/CSS3/Tailwind</strong> Single Page Application (UI), an asynchronous <strong>Node.js & Express.js</strong> REST API layer, and an ACID-compliant <strong>SQLite database</strong> using Write-Ahead Logging (WAL) for high-speed concurrent access.
+              </p>
+            </div>
+
+            <div class="bg-white/5 p-3.5 rounded-xl border border-white/10 space-y-1.5">
+              <div class="font-bold text-emerald-300 flex items-center">
+                <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center mr-1.5 font-mono text-[10px]">2</span>
+                <span>Dynamic Slots & Concurrency Lock</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed text-[11px]">
+                The server dynamically computes 30-minute intervals from doctor clinic hours. To prevent <strong>double-booking race conditions</strong>, the database locks slot combinations; if two users book the same slot simultaneously, the 2nd request is cleanly rejected with <strong>HTTP 409 Conflict</strong>.
+              </p>
+            </div>
+
+            <div class="bg-white/5 p-3.5 rounded-xl border border-white/10 space-y-1.5">
+              <div class="font-bold text-sky-300 flex items-center">
+                <span class="w-5 h-5 rounded-full bg-sky-400/20 text-sky-300 flex items-center justify-center mr-1.5 font-mono text-[10px]">3</span>
+                <span>Full Clinical Lifecycle</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed text-[11px]">
+                Covers the complete medical flow: <strong>12 credentialed Indian doctors</strong> across 6 specialties, instant printable token passes with QR verification, patient cancellation with medical audit notes that immediately frees slots, and a doctor consultation desk.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- 5-Step Under the Hood Execution Trace -->
+          <div class="bg-black/30 p-3 rounded-xl border border-white/10 text-[11px] font-mono text-indigo-200">
+            <span class="text-amber-400 font-bold font-sans uppercase tracking-wider text-[10px]">Under the Hood Trace:</span>
+            <span class="text-white"> User Selects Slot</span> ➔ 
+            <span class="text-sky-300"> Native Fetch POST /api/appointments</span> ➔ 
+            <span class="text-purple-300"> Express Middleware (Phone & Date Validation)</span> ➔ 
+            <span class="text-emerald-300"> SQLite Unique Check & Insert</span> ➔ 
+            <span class="text-amber-300"> HTTP 201 Created + Thermal Slip Display</span>
+          </div>
         </div>
 
         <!-- Interactive REST API Live Playground -->

@@ -34,8 +34,8 @@ function getDbReady() {
       await dbAsync.initSchema();
       
       const docCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM doctors');
-      if (!docCheck || docCheck.count === 0) {
-        console.log('🌱 No doctors found. Running database seeder...');
+      if (!docCheck || docCheck.count < 12) {
+        console.log('🌱 Updating database with 12 Indian doctor profiles...');
         await seedData();
       } else {
         console.log(`✅ Database schema verified (${docCheck.count} doctors loaded).`);

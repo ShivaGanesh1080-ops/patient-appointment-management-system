@@ -51,8 +51,9 @@ async function seedData() {
     );
   }
 
-  // 2. Seed Doctors
+  // 2. Seed 12 Credentialed Indian Doctors (2 per department)
   const doctors = [
+    // --- CARDIOLOGY ---
     {
       id: 'doc-101',
       name: 'Dr. Rajeshwar Rao',
@@ -61,7 +62,7 @@ async function seedData() {
       experience_years: 18,
       consultation_fee: 800,
       rating: 4.9,
-      clinic_address: 'Apollo Specialty Clinic, Road No. 36, Jubilee Hills',
+      clinic_address: 'Apollo Specialty Clinic, Road No. 36, Jubilee Hills, Hyderabad',
       avatar_url: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80',
       bio: 'Senior Consultant Interventional Cardiologist specializing in preventive cardiology, coronary angioplasty, and cardiac rhythm management.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
@@ -70,6 +71,24 @@ async function seedData() {
       slot_duration_minutes: 30
     },
     {
+      id: 'doc-107',
+      name: 'Dr. Meenakshi Sundaram',
+      department_id: 'dept-cardio',
+      qualification: 'MBBS, MD, DNB (Cardiology), FSCAI',
+      experience_years: 14,
+      consultation_fee: 750,
+      rating: 4.8,
+      clinic_address: 'St. Ann Heart Care Center, Nakkalagutta, Hanamkonda, Warangal',
+      avatar_url: 'https://images.unsplash.com/photo-1594824813589-20b12cfdf7ec?w=300&auto=format&fit=crop&q=80',
+      bio: 'Consultant Clinical Cardiologist focused on echocardiography, hypertension management, and congenital heart condition screenings.',
+      available_days: JSON.stringify(['Monday', 'Wednesday', 'Friday', 'Saturday']),
+      slot_start_time: '10:00',
+      slot_end_time: '16:00',
+      slot_duration_minutes: 30
+    },
+
+    // --- DERMATOLOGY ---
+    {
       id: 'doc-102',
       name: 'Dr. Sunita Deshmukh',
       department_id: 'dept-derma',
@@ -77,8 +96,8 @@ async function seedData() {
       experience_years: 12,
       consultation_fee: 650,
       rating: 4.8,
-      clinic_address: 'DermaCare Advanced Aesthetics, Madhapur',
-      avatar_url: 'https://images.unsplash.com/photo-1594824813589-20b12cfdf7ec?w=300&auto=format&fit=crop&q=80',
+      clinic_address: 'DermaCare Advanced Aesthetics, Madhapur, Hyderabad',
+      avatar_url: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&auto=format&fit=crop&q=80',
       bio: 'Renowned clinical dermatologist and aesthetic specialist with expertise in acne scar reduction, pigmentation disorders, and laser therapies.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Friday', 'Saturday']),
       slot_start_time: '10:00',
@@ -86,21 +105,57 @@ async function seedData() {
       slot_duration_minutes: 30
     },
     {
+      id: 'doc-108',
+      name: 'Dr. Pradeep Chaitanya',
+      department_id: 'dept-derma',
+      qualification: 'MBBS, DDVL (Dermatology & Cosmetology)',
+      experience_years: 9,
+      consultation_fee: 500,
+      rating: 4.7,
+      clinic_address: 'Skin & Laser Wellness Clinic, Subedari, Hanamkonda, Warangal',
+      avatar_url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=300&auto=format&fit=crop&q=80',
+      bio: 'Specialist in clinical dermatology, pediatric skin allergies, chronic eczema, psoriasis management, and hair loss therapies.',
+      available_days: JSON.stringify(['Tuesday', 'Thursday', 'Friday', 'Saturday']),
+      slot_start_time: '09:30',
+      slot_end_time: '15:30',
+      slot_duration_minutes: 30
+    },
+
+    // --- ORTHOPEDICS ---
+    {
       id: 'doc-103',
       name: 'Dr. Arvind Swaminathan',
       department_id: 'dept-ortho',
       qualification: 'MBBS, MS (Orthopedics), M.Ch (Ortho, UK)',
-      experience_years: 15,
+      experience_years: 16,
       consultation_fee: 750,
       rating: 4.9,
-      clinic_address: 'OrthoSpine Joint Replacement Center, Banjara Hills',
-      avatar_url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=300&auto=format&fit=crop&q=80',
+      clinic_address: 'OrthoSpine Joint Replacement Center, Road No. 12, Banjara Hills, Hyderabad',
+      avatar_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&auto=format&fit=crop&q=80',
       bio: 'Pioneering orthopedic surgeon specializing in robotic knee & hip replacements, arthroscopy, and complex sports injury rehabilitation.',
       available_days: JSON.stringify(['Tuesday', 'Thursday', 'Saturday']),
       slot_start_time: '09:30',
       slot_end_time: '15:30',
       slot_duration_minutes: 30
     },
+    {
+      id: 'doc-109',
+      name: 'Dr. Haritha Reddy',
+      department_id: 'dept-ortho',
+      qualification: 'MBBS, MS (Orthopedics), Fellowship in Spine Care',
+      experience_years: 11,
+      consultation_fee: 600,
+      rating: 4.8,
+      clinic_address: 'Kakatiya Bone & Joint Clinic, Main Road, Kazipet, Warangal',
+      avatar_url: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=300&auto=format&fit=crop&q=80',
+      bio: 'Consultant Orthopedic Surgeon specializing in spinal disc disorders, arthritis pain management, trauma surgery, and fracture rehabilitation.',
+      available_days: JSON.stringify(['Monday', 'Wednesday', 'Thursday', 'Saturday']),
+      slot_start_time: '10:00',
+      slot_end_time: '15:00',
+      slot_duration_minutes: 30
+    },
+
+    // --- PEDIATRICS ---
     {
       id: 'doc-104',
       name: 'Dr. Priya Varma',
@@ -109,7 +164,7 @@ async function seedData() {
       experience_years: 10,
       consultation_fee: 500,
       rating: 4.9,
-      clinic_address: 'Rainbow Children Health Clinic, Kondapur',
+      clinic_address: 'Rainbow Children Health Clinic, Kondapur, Hyderabad',
       avatar_url: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&auto=format&fit=crop&q=80',
       bio: 'Caring pediatrician focused on newborn care, immunization scheduling, adolescent health guidance, and developmental milestones.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
@@ -118,6 +173,24 @@ async function seedData() {
       slot_duration_minutes: 30
     },
     {
+      id: 'doc-110',
+      name: 'Dr. Sandeep Verma',
+      department_id: 'dept-pediatrics',
+      qualification: 'MBBS, MD (Pediatrics), Fellowship in Neonatology',
+      experience_years: 13,
+      consultation_fee: 450,
+      rating: 4.8,
+      clinic_address: 'Balaji Children Hospital, MGM Road, Warangal',
+      avatar_url: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80',
+      bio: 'Senior Child Specialist with focus on seasonal respiratory viral infections, pediatric asthma, childhood nutrition, and neonatal intensive care.',
+      available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']),
+      slot_start_time: '09:30',
+      slot_end_time: '14:30',
+      slot_duration_minutes: 30
+    },
+
+    // --- NEUROLOGY ---
+    {
       id: 'doc-105',
       name: 'Dr. Vikramaditya Kulkarni',
       department_id: 'dept-neuro',
@@ -125,14 +198,32 @@ async function seedData() {
       experience_years: 20,
       consultation_fee: 1000,
       rating: 4.7,
-      clinic_address: 'Brain & Spine Institute, Gachibowli',
-      avatar_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&auto=format&fit=crop&q=80',
+      clinic_address: 'Brain & Spine Institute, Gachibowli, Hyderabad',
+      avatar_url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=300&auto=format&fit=crop&q=80',
       bio: 'Leading neurologist handling epilepsy, stroke prevention, migraine therapy, neurodegenerative disorders, and neuromuscular diagnostics.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Thursday', 'Friday']),
       slot_start_time: '11:00',
       slot_end_time: '17:00',
       slot_duration_minutes: 45
     },
+    {
+      id: 'doc-111',
+      name: 'Dr. Lakshmi Prasanna',
+      department_id: 'dept-neuro',
+      qualification: 'MBBS, MD (Gen Med), DM (Neurology)',
+      experience_years: 12,
+      consultation_fee: 850,
+      rating: 4.9,
+      clinic_address: 'NeuroCare Consultation Clinic, Ramnagar, Hanamkonda, Warangal',
+      avatar_url: 'https://images.unsplash.com/photo-1594824813589-20b12cfdf7ec?w=300&auto=format&fit=crop&q=80',
+      bio: 'Expert neuro-physician handling chronic headache management, Parkinson disease care, peripheral neuropathy, and sleep disorders.',
+      available_days: JSON.stringify(['Monday', 'Wednesday', 'Thursday', 'Saturday']),
+      slot_start_time: '10:00',
+      slot_end_time: '15:00',
+      slot_duration_minutes: 30
+    },
+
+    // --- GENERAL MEDICINE ---
     {
       id: 'doc-106',
       name: 'Dr. Ananya Sen',
@@ -141,12 +232,28 @@ async function seedData() {
       experience_years: 9,
       consultation_fee: 450,
       rating: 4.8,
-      clinic_address: 'Apex Family Wellness Clinic, Hitec City',
+      clinic_address: 'Apex Family Wellness Clinic, Hitec City, Hyderabad',
       avatar_url: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=300&auto=format&fit=crop&q=80',
       bio: 'Dedicated primary care physician treating hypertension, diabetes type 2, respiratory infections, seasonal illnesses, and lifestyle wellness.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '08:30',
       slot_end_time: '14:30',
+      slot_duration_minutes: 30
+    },
+    {
+      id: 'doc-112',
+      name: 'Dr. Ramesh Babu',
+      department_id: 'dept-genmed',
+      qualification: 'MBBS, MD (General Medicine), PGDGM (Geriatrics)',
+      experience_years: 22,
+      consultation_fee: 400,
+      rating: 4.9,
+      clinic_address: 'Lifeline Multi-Specialty Clinic, Chowrastha, Hanamkonda, Warangal',
+      avatar_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&auto=format&fit=crop&q=80',
+      bio: 'Veteran senior physician specializing in comprehensive geriatric wellness, diabetic neuropathy, hypertension control, and preventive fever clinics.',
+      available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
+      slot_start_time: '09:00',
+      slot_end_time: '14:00',
       slot_duration_minutes: 30
     }
   ];
@@ -204,7 +311,7 @@ async function seedData() {
     {
       booking_reference: 'APT-2026-1003',
       doctor_id: 'doc-103',
-      patient_name: 'Karthik V.',
+      patient_name: 'Karthik Varma',
       patient_phone: '9848012345',
       patient_email: 'karthik.v@example.com',
       patient_age: 34,
@@ -228,6 +335,19 @@ async function seedData() {
       status: 'CANCELLED',
       cancellation_reason: 'Patient had an emergency out-of-town travel.',
       cancelled_at: new Date().toISOString()
+    },
+    {
+      booking_reference: 'APT-2026-1005',
+      doctor_id: 'doc-112',
+      patient_name: 'Venkatesh Rao',
+      patient_phone: '9440123456',
+      patient_email: 'venkat.rao@example.com',
+      patient_age: 63,
+      patient_gender: 'Male',
+      appointment_date: formatDate(3),
+      appointment_time: '10:30',
+      reason: 'Follow-up consultation for seasonal joint stiffness and diabetes management.',
+      status: 'CONFIRMED'
     }
   ];
 
@@ -254,7 +374,7 @@ async function seedData() {
     }
   }
 
-  console.log('✅ Seeding completed successfully!');
+  console.log(`✅ Seeding completed successfully! (${doctors.length} Indian doctors loaded)`);
 }
 
 if (require.main === module) {
