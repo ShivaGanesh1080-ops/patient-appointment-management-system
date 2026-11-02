@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Project Report - Patient Appointment Management System - SR University</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    @page {
+      size: A4;
+      margin: 25mm 20mm 20mm 25mm; /* Standard academic binding margins */
+    }
+
+    body {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: 11pt;
+      line-height: 1.65;
+      color: #111;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .report-container {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      background: #fff;
+      padding: 25mm 20mm 20mm 25mm;
+      box-sizing: border-box;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+      .report-container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+      }
+      .page-break {
+        page-break-after: always;
+        break-after: page;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 18pt;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 14pt;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 4px;
+      margin-top: 24pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    h3 {
+      font-size: 12pt;
+      margin-top: 14pt;
+      color: #1e293b;
+    }
+
+    p {
+      text-align: justify;
+      margin-bottom: 10pt;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      min-height: 245mm;
+      padding: 10mm 0;
+    }
+
+    .cover-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 15px;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+
+    .cover-subtitle {
+      font-size: 11pt;
+      font-style: italic;
+      margin-top: 15px;
+      color: #334155;
+    }
+
+    .cover-degree {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-top: 5px;
+    }
+
+    .cover-school {
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+      color: #0f172a;
+    }
+
+    .cover-table {
+      width: 90%;
+      margin: 15px auto;
+      border-collapse: collapse;
+      font-size: 10pt;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .cover-table th, .cover-table td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 10px;
+      text-align: left;
+    }
+
+    .cover-table th {
+      background-color: #f1f5f9;
+      font-weight: 700;
+    }
+
+    .guide-box {
+      margin-top: 10px;
+      font-size: 11pt;
+      line-height: 1.4;
+    }
+
+    .university-logo-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 28pt;
+      font-weight: 900;
+      color: #024e93;
+      letter-spacing: 2px;
+    }
+
+    .university-subtext {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 4px;
+    }
+
+    /* Certificate Signatures */
+    .signature-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+      padding: 0 10px;
+    }
+
+    .signature-block {
+      text-align: center;
+      width: 45%;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 10pt;
+      line-height: 1.35;
+    }
+
+    .signature-line {
+      border-top: 1.5px solid #0f172a;
+      width: 80%;
+      margin: 0 auto 10px auto;
+    }
+
+    /* Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 10pt;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    table.data-table th, table.data-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background-color: #f8fafc;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Code Blocks */
+    pre, code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 9pt;
+      background: #f1f5f9;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    pre {
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      overflow-x: auto;
+      line-height: 1.4;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 8pt;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      background: #e2e8f0;
+    }
+
+    .print-bar {
+      position: sticky;
+      top: 0;
+      background: #0f172a;
+      color: #fff;
+      padding: 12px;
+      text-align: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 10pt;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+    }
+
+    .btn-print {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 10pt;
+      transition: background 0.2s;
+    }
+
+    .btn-print:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print Control (Hidden on PDF export) -->
+  <div class="print-bar no-print">
+    <span><strong>SR University • WTMP Course Project Report</strong> (Patient Appointment Management System)</span>
+    <button class="btn-print" onclick="window.print()">🖨️ Print to PDF / Paper (Ctrl + P)</button>
+  </div>
+
+  <div class="report-container">
+
+    <!-- =====================================================================
+         PAGE 1: COVER PAGE
+         ===================================================================== -->
+    <div class="cover-page">
+      <div>
+        <div class="university-logo-text">SRU</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:16pt; font-weight:800; color:#024e93; letter-spacing:1px; margin-top:2px;">
+          SR UNIVERSITY
+        </div>
+        <div style="font-size:9.5pt; color:#64748b; font-family:'Plus Jakarta Sans',sans-serif;">
+          Ananthasagar, Warangal, Telangana – 506371
+        </div>
+
+        <div style="margin: 25px 0 10px 0;">
+          <div class="cover-title">PATIENT APPOINTMENT MANAGEMENT SYSTEM (MEDIPULSE)</div>
+        </div>
+
+        <div class="cover-subtitle">
+          A Course Project report submitted in partial fulfillment of requirement<br>
+          for the award of the degree of
+        </div>
+
+        <div class="cover-degree">BACHELOR OF TECHNOLOGY</div>
+        <div style="font-size:10pt; font-weight:600; color:#475569; font-family:'Plus Jakarta Sans',sans-serif;">in</div>
+        <div class="cover-school">SCHOOL OF COMPUTER SCIENCE AND ARTIFICIAL INTELLIGENCE</div>
+      </div>
+
+      <!-- Student Credentials Table -->
+      <div>
+        <div style="font-size:10pt; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif; margin-bottom:5px;">Submitted by:</div>
+        <table class="cover-table">
+          <thead>
+            <tr>
+              <th style="width:10%;">S.No</th>
+              <th style="width:45%;">Student Name</th>
+              <th style="width:45%;">Hall Ticket Number (HTNO)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><strong>Shiva Ganesh Akku</strong> (Team Leader)</td>
+              <td><strong>2503A51110</strong></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>[Team Member 2 Name]</td>
+              <td>[HTNO 2]</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>[Team Member 3 Name]</td>
+              <td>[HTNO 3]</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>[Team Member 4 Name]</td>
+              <td>[HTNO 4]</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>[Team Member 5 Name]</td>
+              <td>[HTNO 5]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Guide & Institutional Info -->
+      <div>
+        <div class="guide-box">
+          <div style="font-size:9.5pt; font-style:italic; color:#475569;">Under the guidance of</div>
+          <div style="font-size:12pt; font-weight:800; color:#0f172a; font-family:'Plus Jakarta Sans',sans-serif; margin-top:2px;">
+            Mr. Bura Vijay Kumar
+          </div>
+          <div style="font-size:9.5pt; color:#475569; font-family:'Plus Jakarta Sans',sans-serif;">
+            Assistant Professor, School of Computer Science & Artificial Intelligence (CS&AI)
+          </div>
+        </div>
+
+        <div style="margin-top:25px; border-top:1px solid #cbd5e1; padding-top:10px;">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:10pt; font-weight:700; color:#0f172a;">
+            SCHOOL OF COMPUTER SCIENCE AND ARTIFICIAL INTELLIGENCE
+          </div>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:10pt; font-weight:700; color:#024e93;">
+            SR UNIVERSITY, WARANGAL
+          </div>
+          <div style="font-size:9.5pt; color:#64748b; font-family:'Plus Jakarta Sans',sans-serif;">
+            Academic Year: 2025–2026
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- =====================================================================
+         PAGE 2: CERTIFICATE
+         ===================================================================== -->
+    <div style="text-align:center; margin-bottom: 25px;">
+      <div class="university-logo-text" style="font-size:20pt;">SR UNIVERSITY</div>
+      <div style="font-size:9pt; font-family:'Plus Jakarta Sans',sans-serif; color:#475569;">
+        Ananthasagar, Warangal, Telangana – 506371<br>
+        School of Computer Science and Artificial Intelligence
+      </div>
+    </div>
+
+    <h1>CERTIFICATE</h1>
+
+    <p style="margin-top: 30px;">
+      This is to certify that the project entitled <strong>“PATIENT APPOINTMENT MANAGEMENT SYSTEM (MEDIPULSE)”</strong> is the bona fide work carried out by:
+    </p>
+
+    <div style="margin: 15px 0 20px 20px; font-family:'Plus Jakarta Sans',sans-serif; font-size:10pt; line-height: 1.8;">
+      1. <strong>Shiva Ganesh Akku</strong> (HTNO: <strong>2503A51110</strong>)<br>
+      2. [Student Name 2] (HTNO: [HTNO 2])<br>
+      3. [Student Name 3] (HTNO: [HTNO 3])<br>
+      4. [Student Name 4] (HTNO: [HTNO 4])<br>
+      5. [Student Name 5] (HTNO: [HTNO 5])
+    </div>
+
+    <p>
+      in partial fulfillment of the requirements for the award of the degree of <strong>Bachelor of Technology</strong> in <strong>Computer Science and Engineering</strong>, School of Computer Science & Artificial Intelligence, SR University during the academic year <strong>2025–2026</strong> under my guidance and supervision.
+    </p>
+
+    <p>
+      The results embodied in this report have not been submitted to any other University or Institute for the award of any degree or diploma.
+    </p>
+
+    <br><br><br>
+
+    <div class="signature-row">
+      <div class="signature-block">
+        <div class="signature-line"></div>
+        <strong>Mr. Bura Vijay Kumar</strong><br>
+        Internal Guide & Assistant Professor<br>
+        School of CS&AI, SR University<br>
+        Ananthasagar, Warangal
+      </div>
+
+      <div class="signature-block">
+        <div class="signature-line"></div>
+        <strong>Dr. M. Sheshikala</strong><br>
+        Professor & Head of Department<br>
+        School of CS&AI, SR University<br>
+        Ananthasagar, Warangal
+      </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- =====================================================================
+         PAGE 3: ACKNOWLEDGEMENT & ABSTRACT
+         ===================================================================== -->
+    <h1>ACKNOWLEDGEMENT</h1>
+
+    <p>
+      We express our deep gratitude and sincere thanks to our course project guide <strong>Mr. Bura Vijay Kumar</strong>, Assistant Professor, School of Computer Science & Artificial Intelligence, for his valuable guidance, consistent encouragement, and continuous support throughout the duration of this Web Technologies and Mobile Programming course project.
+    </p>
+
+    <p>
+      We express our sincere thanks to <strong>Dr. M. Sheshikala</strong>, Professor & Head, School of Computer Science & Artificial Intelligence, for providing the necessary academic infrastructure and computational facilities.
+    </p>
+
+    <p>
+      We acknowledge the cooperation extended by all teaching and non-teaching staff of the School of CS&AI. Lastly, we thank our parents and peers for their continuous moral support and encouragement throughout our academic endeavors.
+    </p>
+
+    <div style="margin-top: 30px; text-align: right; font-family:'Plus Jakarta Sans',sans-serif; font-size:10pt;">
+      <strong>Project Team:</strong><br>
+      Shiva Ganesh Akku (2503A51110)<br>
+      [Student Name 2] ([HTNO 2])<br>
+      [Student Name 3] ([HTNO 3])<br>
+      [Student Name 4] ([HTNO 4])<br>
+      [Student Name 5] ([HTNO 5])
+    </div>
+
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #cbd5e1;">
+
+    <h1>ABSTRACT</h1>
+
+    <p>
+      Modern healthcare institutions and outpatient clinics face significant operational hurdles caused by manual, fragmented, or paper-based appointment scheduling. These legacy processes cause prolonged patient wait times, uncoordinated clinic lines, lack of doctor transparency, and severe scheduling conflicts such as double-booking.
+    </p>
+
+    <p>
+      This project develops <strong>MediPulse (Patient Appointment Management System)</strong>, a robust full-stack web and mobile application engineered strictly according to the <strong>Web Technologies and Mobile Programming (WTMP)</strong> syllabus. Built using <strong>HTML5</strong>, <strong>CSS3</strong>, <strong>Tailwind CSS</strong>, <strong>ES6+ JavaScript</strong>, <strong>Node.js</strong>, <strong>Express.js</strong>, and an <strong>ACID-compliant SQLite relational database</strong>, the platform implements:
+    </p>
+
+    <ul style="font-size:10pt; line-height:1.6;">
+      <li><strong>Doctor Profiles & Taxonomy:</strong> Comprehensive physician profiles detailing qualifications, specialties, consultation fees, ratings, and active clinic days.</li>
+      <li><strong>Dynamic Time-Slot Scheduling:</strong> Algorithms evaluating weekly working schedules to generate 30-minute intervals marked as <em>Available</em>, <em>Booked</em>, or <em>Past</em> in real time.</li>
+      <li><strong>Atomic Booking & Race Condition Prevention:</strong> Enforces dual-level concurrency checks to reject simultaneous double-booking with HTTP 409 Conflict.</li>
+      <li><strong>Cancellation Audit Logs:</strong> Mandatory medical reason capture that frees reserved slots immediately back into the pool.</li>
+      <li><strong>Appointment History & Tracking:</strong> Real-time lookup by mobile phone or booking reference token.</li>
+      <li><strong>Doctor Operations Desk:</strong> Live patient queue management for physicians to complete visits and track clinic revenue.</li>
+      <li><strong>Printable Consultation Pass:</strong> Thermal/PDF-ready physical passes with QR token verification.</li>
+    </ul>
+
+    <p>
+      <strong>KEYWORDS:</strong> Patient Appointment Management, Full-Stack Web Development, Node.js, Express.js, REST API, SQLite, Concurrency Control, Race Condition Prevention, Semantic HTML5, CSS3, Tailwind CSS, Mobile-First Design, Web Technologies, HealthTech.
+    </p>
+
+    <div class="page-break"></div>
+
+    <!-- =====================================================================
+         MAIN REPORT CHAPTERS
+         ===================================================================== -->
+    
+    <h2>1. ABOUT THE ORGANIZATION</h2>
+    <p>
+      <strong>SR University</strong>, located in Ananthasagar, Warangal, Telangana, is an institution celebrated for academic innovation, entrepreneurship, and hands-on engineering education. The <strong>School of Computer Science and Artificial Intelligence (School of CS&AI)</strong> offers rigorous undergraduate and graduate curricula in Full-Stack Development, Mobile App Programming, Operating Systems, Machine Learning, and Cloud Systems, emphasizing production-grade engineering without superficial reliance on mock solutions.
+    </p>
+
+    <h2>2. INTRODUCTION</h2>
+    <p>
+      In clinical healthcare management, outpatient consultation scheduling plays a decisive role in patient satisfaction and clinic productivity. Traditional approaches depend on telephonic inquiries, walk-in paper tokens, or disconnected software tools. This project develops <strong>MediPulse</strong>, an integrated clinical appointment management system designed to eliminate queue congestion, ensure transparent doctor profiles, and prevent scheduling collisions through transactional consistency.
+    </p>
+
+    <h2>3. PROBLEM STATEMENT</h2>
+    <p>
+      Conventional hospital scheduling workflows suffer from key pain points:
+    </p>
+    <ul>
+      <li><strong>Queue Congestion:</strong> Patients arrive unannounced, causing crowded waiting rooms and erratic physician schedules.</li>
+      <li><strong>Double-Booking Race Conditions:</strong> Receptionists scheduling simultaneously often assign two patients to the identical consultation slot.</li>
+      <li><strong>Opaque Credentials & Fees:</strong> Patients lack advance access to doctor qualifications, consultation fees, and working hours.</li>
+      <li><strong>Lack of Cancellation Recirculation:</strong> Cancelled visits are rarely logged in time, wasting precious clinical consultation windows.</li>
+    </ul>
+
+    <h2>4. REQUIREMENT ANALYSIS</h2>
+    <h3>4.1 Functional Requirements</h3>
+    <ul>
+      <li><strong>FR1 (Doctor Profiles):</strong> Render doctor directory with credentials, ratings, experience, consultation fees, and working days.</li>
+      <li><strong>FR2 (Dynamic Slots):</strong> Generate dynamic 30-minute intervals categorized by Morning, Afternoon, and Evening sessions.</li>
+      <li><strong>FR3 (Atomic Booking):</strong> Validate 10-digit mobile number, patient age, gender, and clinical symptoms, issuing a unique token (<code>APT-2026-XXXX</code>).</li>
+      <li><strong>FR4 (Concurrency Guard):</strong> Prevent double-booking by returning HTTP 409 Conflict if a slot was already reserved.</li>
+      <li><strong>FR5 (Cancellation Management):</strong> Cancel appointments with mandatory audit reasons, immediately freeing slots.</li>
+      <li><strong>FR6 (Doctor Portal):</strong> Enable physicians to manage their queue and mark consultations as "Completed".</li>
+    </ul>
+
+    <h3>4.2 Non-Functional Requirements</h3>
+    <ul>
+      <li><strong>Performance:</strong> Sub-50ms API response time under concurrent clinical intranet workloads.</li>
+      <li><strong>Data Integrity:</strong> Full ACID transaction compliance via SQLite Write-Ahead Logging (WAL mode).</li>
+      <li><strong>Security:</strong> Parameterized SQL prepared statements to prevent SQL Injection (SQLi).</li>
+      <li><strong>Responsiveness:</strong> Mobile-first UI conforming to WTMP mobile programming standards.</li>
+    </ul>
+
+    <h2>5. SYSTEM ARCHITECTURE & DATA FLOW</h2>
+    <p>
+      The architecture follows a decoupled 3-tier Client-Server pattern:
+    </p>
+
+    <pre>
+[Presentation Tier: HTML5 + CSS3 + Tailwind + Vanilla JS]
+                         │
+                         ▼ (HTTP REST / JSON via Native Fetch API)
+[Application Tier: Node.js + Express.js Router + Middleware]
+                         │
+                         ▼ (Parameterized SQL Prepared Statements)
+[Data Tier: SQLite3 Database in WAL Mode (Foreign Keys Enforced)]
+    </pre>
+
+    <h3>5.1 Data Flow Diagram (Level 1)</h3>
+    <pre>
+[Patient] ──(Selects Doctor & Date)──► [1.0 Slot Calculation Engine]
+                                                │
+                                                ▼ (Reads Active Bookings)
+                                       [(D1) Appointments DB]
+                                                │
+[Patient] ◄──(Renders Available Slots)─────────┘
+    │
+    ├──(Submits Patient Details)─────► [2.0 Validation & Concurrency Guard]
+                                                │
+                                    (Pass)      ▼ (Write Record)
+                                       [(D1) Appointments DB]
+                                                │
+[Patient] ◄──(Issues Token Pass)────────────────┘
+    │
+    └──(Requests Cancellation)───────► [3.0 Cancellation Manager]
+                                                │
+                                                ▼ (Update Status: CANCELLED)
+                                       [(D1) Appointments DB]
+    </pre>
+
+    <div class="page-break"></div>
+
+    <h2>6. DATABASE DESIGN</h2>
+    <p>
+      The system stores structured clinical data across three normalized relational tables:
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Table Name</th>
+          <th>Primary Key</th>
+          <th>Foreign Keys</th>
+          <th>Key Attributes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>departments</strong></td>
+          <td><code>id</code></td>
+          <td>None</td>
+          <td><code>name</code> (UNIQUE), <code>icon</code>, <code>description</code></td>
+        </tr>
+        <tr>
+          <td><strong>doctors</strong></td>
+          <td><code>id</code></td>
+          <td><code>department_id</code></td>
+          <td><code>name</code>, <code>qualification</code>, <code>experience_years</code>, <code>consultation_fee</code>, <code>rating</code>, <code>clinic_address</code>, <code>available_days</code>, <code>slot_start_time</code>, <code>slot_end_time</code></td>
+        </tr>
+        <tr>
+          <td><strong>appointments</strong></td>
+          <td><code>id</code> (AUTO)</td>
+          <td><code>doctor_id</code></td>
+          <td><code>booking_reference</code> (UNIQUE), <code>patient_name</code>, <code>patient_phone</code>, <code>patient_age</code>, <code>patient_gender</code>, <code>appointment_date</code>, <code>appointment_time</code>, <code>reason</code>, <code>status</code>, <code>cancellation_reason</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      <strong>Indexes Configured:</strong>
+      <code>idx_appointments_doctor_date (doctor_id, appointment_date, appointment_time, status)</code> and <code>idx_appointments_phone (patient_phone)</code> for rapid conflict detection.
+    </p>
+
+    <h2>7. RESULTS & AUTOMATED VERIFICATION</h2>
+    <p>
+      The system was verified using an automated 10-phase test script (<code>test_system.js</code>):
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Test Phase</th>
+          <th>Target Endpoint</th>
+          <th>Expected Behavior</th>
+          <th>Observed Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1. Service Health</td>
+          <td><code>GET /api/health</code></td>
+          <td>HTTP 200 with service metadata</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (200 OK)</span></td>
+        </tr>
+        <tr>
+          <td>2. Doctor Directory</td>
+          <td><code>GET /api/doctors</code></td>
+          <td>Returns 6 credentialed doctor profiles</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (6 Doctors)</span></td>
+        </tr>
+        <tr>
+          <td>3. Department Taxonomy</td>
+          <td><code>GET /api/departments</code></td>
+          <td>Returns 6 clinical departments</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (6 Depts)</span></td>
+        </tr>
+        <tr>
+          <td>4. Dynamic Slots</td>
+          <td><code>GET /api/slots</code></td>
+          <td>Computes 30-min intervals for working day</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (10 Slots)</span></td>
+        </tr>
+        <tr>
+          <td>5. Atomic Booking</td>
+          <td><code>POST /api/appointments</code></td>
+          <td>Validates input and generates token</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (201 Created)</span></td>
+        </tr>
+        <tr>
+          <td>6. Concurrency Guard</td>
+          <td><code>POST /api/appointments</code></td>
+          <td>Rejects duplicate booking on same slot</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (409 Conflict)</span></td>
+        </tr>
+        <tr>
+          <td>7. Patient History</td>
+          <td><code>GET /api/appointments?phone=...</code></td>
+          <td>Filters matching appointments by phone</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (Found Records)</span></td>
+        </tr>
+        <tr>
+          <td>8. Cancellation Audit</td>
+          <td><code>PATCH /api/appointments/:id/cancel</code></td>
+          <td>Updates status to CANCELLED with note</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (200 OK)</span></td>
+        </tr>
+        <tr>
+          <td>9. Slot Freeing</td>
+          <td><code>GET /api/slots</code></td>
+          <td>Slot status reverts to AVAILABLE</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (Re-available)</span></td>
+        </tr>
+        <tr>
+          <td>10. Clinic Analytics</td>
+          <td><code>GET /api/stats</code></td>
+          <td>Aggregates patients, visits, revenue</td>
+          <td><span class="badge" style="background:#dcfce7;color:#15803d;">PASSED (Stats Verified)</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>8. CONCLUSION & LEARNING OUTCOMES</h2>
+    <p>
+      The <strong>Patient Appointment Management System (MediPulse)</strong> successfully fulfills all syllabus requirements of the Web Technologies and Mobile Programming course. By adhering to clean 3-tier separation, asynchronous non-blocking I/O, REST principles, and relational ACID transactions, the project proves that robust clinical scheduling applications can be constructed with high performance and zero external runtime bloat.
+    </p>
+
+    <h2>9. REFERENCES</h2>
+    <ol style="font-size:9.5pt; line-height: 1.5;">
+      <li>MDN Web Docs: <em>HTML5 Semantic Structure & Native Fetch API</em>, Mozilla Developer Network, 2024.</li>
+      <li>Node.js Official Documentation: <em>Node.js v24 Event Loop & Non-blocking I/O</em>, OpenJS Foundation, 2024.</li>
+      <li>Express.js Developer Guide: <em>Routing & Middleware Architecture</em>, 2024.</li>
+      <li>SQLite Consortium: <em>Write-Ahead Logging (WAL) and Concurrency Isolation</em>, 2024.</li>
+      <li>Fielding, Roy Thomas: <em>Architectural Styles and the Design of Network-based Software Architectures (REST)</em>, UC Irvine, 2000.</li>
+      <li>Tailwind CSS: <em>Utility-First Responsive Design Principles</em>, 2024.</li>
+    </ol>
+
+  </div>
+
+</body>
+</html>
