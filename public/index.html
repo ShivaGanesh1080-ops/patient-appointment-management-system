@@ -13,12 +13,12 @@
         extend: {
           colors: {
             brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af'
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46'
             }
           }
         }
@@ -40,10 +40,10 @@
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
 
   <!-- Top Announcement / Academic Header -->
-  <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 text-white text-xs sm:text-sm py-2 px-4 shadow-sm">
+  <div class="bg-gradient-to-r from-emerald-950 via-teal-900 to-slate-900 text-white text-xs sm:text-sm py-2 px-4 shadow-sm">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center space-x-2">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-500 bg-opacity-40 border border-blue-300">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500 bg-opacity-30 border border-emerald-400/50 text-emerald-200">
           WTMP Major Project
         </span>
         <span class="font-medium">Patient Appointment Management System</span>
@@ -67,13 +67,13 @@
         
         <!-- Brand Logo -->
         <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('tab-doctors')">
-          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
             <i class="fa-solid fa-heart-pulse text-xl"></i>
           </div>
           <div>
             <div class="flex items-center space-x-1.5">
-              <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">Medi<span class="text-blue-600">Pulse</span></span>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">v2.0</span>
+              <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">Medi<span class="text-emerald-600">Pulse</span></span>
+              <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded border border-emerald-200">v2.0</span>
             </div>
             <p class="text-[11px] text-slate-500 font-medium hidden sm:block">Clinical Appointment & Schedule Engine</p>
           </div>
@@ -105,7 +105,7 @@
 
         <!-- CTA Quick Book Button -->
         <div class="flex items-center space-x-2">
-          <button onclick="startBookingQuick()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center space-x-2">
+          <button onclick="startBookingQuick()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center space-x-2 shadow-emerald-500/20">
             <i class="fa-solid fa-plus text-xs"></i>
             <span class="hidden sm:inline">New Booking</span>
             <span class="sm:hidden">Book</span>
@@ -140,7 +140,7 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
       
       <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg">
+        <div class="w-11 h-11 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-lg">
           <i class="fa-solid fa-user-doctor"></i>
         </div>
         <div>
@@ -207,7 +207,7 @@
               type="text" 
               id="doctor-search-input" 
               placeholder="Search doctor, clinic or specialty..." 
-              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-slate-50/50"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-slate-50/50"
               oninput="handleDoctorSearch(event)"
             />
           </div>
@@ -218,7 +218,7 @@
           
           <!-- Department Pills -->
           <div class="flex items-center space-x-2 overflow-x-auto w-full lg:w-auto pb-1 scrollbar-none" id="department-filters-container">
-            <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-sm" data-dept="all" onclick="filterByDepartment('all')">
+            <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white shadow-sm" data-dept="all" onclick="filterByDepartment('all')">
               All Specialties
             </button>
             <!-- Injected dynamically -->
@@ -227,7 +227,7 @@
           <!-- Sort Select -->
           <div class="flex items-center space-x-2 self-end lg:self-auto text-xs text-slate-500">
             <label for="doctor-sort-select" class="font-medium whitespace-nowrap">Sort by:</label>
-            <select id="doctor-sort-select" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 font-medium text-slate-700 text-xs focus:ring-1 focus:ring-blue-500" onchange="handleSortChange()">
+            <select id="doctor-sort-select" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 font-medium text-slate-700 text-xs focus:ring-1 focus:ring-emerald-500" onchange="handleSortChange()">
               <option value="rating">Top Rated (Highest First)</option>
               <option value="experience">Years of Experience</option>
               <option value="fee_asc">Fee: Low to High</option>
@@ -242,7 +242,7 @@
       <div id="doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Rendered dynamically by JavaScript -->
         <div class="col-span-full py-12 text-center text-slate-400">
-          <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-blue-500"></i>
+          <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-emerald-600"></i>
           <p class="text-sm">Loading verified doctor profiles...</p>
         </div>
       </div>
@@ -256,7 +256,7 @@
       
       <div class="glass-panel p-6 sm:p-8 rounded-3xl">
         <div class="max-w-3xl mb-8">
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 mb-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">
             <i class="fa-solid fa-shield-halved mr-1 text-[10px]"></i> Real-Time Slot Reservation
           </span>
           <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Book a Confirmed Doctor Appointment</h2>
@@ -273,7 +273,7 @@
               <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">
                 1. Select Consulting Doctor <span class="text-red-500">*</span>
               </label>
-              <select id="booking-doctor-select" class="w-full p-3 rounded-xl border border-slate-200 text-sm font-medium bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none" onchange="onBookingDoctorChanged()">
+              <select id="booking-doctor-select" class="w-full p-3 rounded-xl border border-slate-200 text-sm font-medium bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none" onchange="onBookingDoctorChanged()">
                 <option value="">-- Choose a Specialist --</option>
                 <!-- Populated via JS -->
               </select>
@@ -288,7 +288,7 @@
                 <input 
                   type="date" 
                   id="booking-date-input" 
-                  class="w-full p-3 rounded-xl border border-slate-200 text-sm font-medium bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  class="w-full p-3 rounded-xl border border-slate-200 text-sm font-medium bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                   onchange="fetchAvailableSlots()"
                 />
               </div>
@@ -321,7 +321,7 @@
               <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
                 <div>
                   <h3 class="text-base font-bold text-slate-900 flex items-center">
-                    <i class="fa-solid fa-clipboard-user text-blue-600 mr-2"></i> Patient Information
+                    <i class="fa-solid fa-clipboard-user text-emerald-600 mr-2"></i> Patient Information
                   </h3>
                   <p class="text-xs text-slate-500">Enter patient details for prescription and token pass.</p>
                 </div>
@@ -329,10 +329,10 @@
                 <button 
                   type="button" 
                   onclick="autoFillDemoPatient()" 
-                  class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 flex items-center space-x-1.5 transition shadow-sm"
+                  class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 flex items-center space-x-1.5 transition shadow-sm"
                   title="Click to automatically pre-fill sample patient details for fast faculty demonstration"
                 >
-                  <i class="fa-solid fa-wand-magic-sparkles text-blue-600"></i>
+                  <i class="fa-solid fa-wand-magic-sparkles text-emerald-600"></i>
                   <span>⚡ Demo Patient</span>
                 </button>
               </div>
@@ -341,28 +341,28 @@
                 
                 <div>
                   <label class="block text-xs font-medium text-slate-700 mb-1">Full Patient Name <span class="text-red-500">*</span></label>
-                  <input type="text" id="patient-name" required placeholder="e.g. Ramesh Chandra" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                  <input type="text" id="patient-name" required placeholder="e.g. Ramesh Chandra" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1">Phone (10 digits) <span class="text-red-500">*</span></label>
-                    <input type="tel" id="patient-phone" required pattern="[0-9]{10}" placeholder="9876543210" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                    <input type="tel" id="patient-phone" required pattern="[0-9]{10}" placeholder="9876543210" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none">
                   </div>
                   <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1">Email (Optional)</label>
-                    <input type="email" id="patient-email" placeholder="patient@example.com" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                    <input type="email" id="patient-email" placeholder="patient@example.com" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none">
                   </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1">Age (Years) <span class="text-red-500">*</span></label>
-                    <input type="number" id="patient-age" required min="1" max="120" placeholder="32" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                    <input type="number" id="patient-age" required min="1" max="120" placeholder="32" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none">
                   </div>
                   <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1">Gender <span class="text-red-500">*</span></label>
-                    <select id="patient-gender" required class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none bg-white">
+                    <select id="patient-gender" required class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-white">
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
                       <option value="Other">Other</option>
@@ -372,11 +372,11 @@
 
                 <div>
                   <label class="block text-xs font-medium text-slate-700 mb-1">Reason for Visit / Symptoms <span class="text-red-500">*</span></label>
-                  <textarea id="patient-reason" required rows="2" placeholder="Briefly describe the symptom or consultation purpose..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none resize-none"></textarea>
+                  <textarea id="patient-reason" required rows="2" placeholder="Briefly describe the symptom or consultation purpose..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none resize-none"></textarea>
                 </div>
 
                 <!-- Booking Summary Review Box -->
-                <div class="bg-blue-50/70 p-3.5 rounded-xl border border-blue-100 text-xs space-y-1.5" id="booking-summary-box">
+                <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200 text-xs space-y-1.5" id="booking-summary-box">
                   <div class="flex justify-between text-slate-600">
                     <span>Doctor:</span>
                     <span class="font-semibold text-slate-800" id="summary-doctor-name">None Selected</span>
@@ -387,7 +387,7 @@
                   </div>
                   <div class="flex justify-between text-slate-600">
                     <span>Consultation Fee:</span>
-                    <span class="font-bold text-blue-700" id="summary-fee">₹0</span>
+                    <span class="font-bold text-emerald-700 text-sm" id="summary-fee">₹0</span>
                   </div>
                 </div>
 
@@ -395,7 +395,7 @@
                 <button 
                   type="submit" 
                   id="btn-submit-booking" 
-                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg transition-all flex items-center justify-center space-x-2 text-sm"
+                  class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md shadow-emerald-500/20 hover:shadow-lg transition-all flex items-center justify-center space-x-2 text-sm"
                 >
                   <i class="fa-solid fa-calendar-check"></i>
                   <span>Confirm Appointment Booking</span>
@@ -430,7 +430,7 @@
 
           <!-- Quick Actions -->
           <button onclick="refreshAppointmentsHistory()" class="self-start md:self-auto px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center space-x-2">
-            <i class="fa-solid fa-arrows-rotate text-blue-600"></i>
+            <i class="fa-solid fa-arrows-rotate text-emerald-600"></i>
             <span>Refresh Records</span>
           </button>
         </div>
@@ -447,7 +447,7 @@
                 type="text" 
                 id="filter-phone-input" 
                 placeholder="e.g. 9876543210" 
-                class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 oninput="debounceAppointmentSearch()"
               />
             </div>
@@ -462,7 +462,7 @@
                 type="text" 
                 id="filter-ref-input" 
                 placeholder="e.g. APT-2026-1001" 
-                class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 oninput="debounceAppointmentSearch()"
               />
             </div>
@@ -471,7 +471,7 @@
           <!-- Filter by Status -->
           <div>
             <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Status Filter</label>
-            <select id="filter-status-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="fetchAppointmentsHistory()">
+            <select id="filter-status-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500" onchange="fetchAppointmentsHistory()">
               <option value="all">All Statuses</option>
               <option value="CONFIRMED">Upcoming (Confirmed)</option>
               <option value="COMPLETED">Completed</option>
@@ -482,7 +482,7 @@
           <!-- Filter by Doctor -->
           <div>
             <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Filter Doctor</label>
-            <select id="filter-doctor-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="fetchAppointmentsHistory()">
+            <select id="filter-doctor-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500" onchange="fetchAppointmentsHistory()">
               <option value="all">All Doctors</option>
               <!-- Filled via JS -->
             </select>
@@ -568,13 +568,13 @@
         <!-- Syllabus Concept Mapping Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
           
-          <div class="p-4 rounded-2xl bg-blue-50/50 border border-blue-100">
-            <div class="flex items-center space-x-2 text-blue-700 font-bold text-sm mb-1.5">
+          <div class="p-4 rounded-2xl bg-teal-50/50 border border-teal-100">
+            <div class="flex items-center space-x-2 text-teal-800 font-bold text-sm mb-1.5">
               <i class="fa-brands fa-html5 text-lg"></i>
               <span>HTML5 & CSS3</span>
             </div>
             <p class="text-xs text-slate-600">
-              Semantic structure (<code class="bg-blue-100 text-blue-800 px-1 rounded">&lt;header&gt;</code>, <code class="bg-blue-100 text-blue-800 px-1 rounded">&lt;main&gt;</code>, <code class="bg-blue-100 text-blue-800 px-1 rounded">&lt;dialog&gt;</code>), Flexbox & Grid layouts, CSS custom properties, and Tailwind utility classes for responsive mobile-friendly UI.
+              Semantic structure (<code class="bg-teal-100 text-teal-800 px-1 rounded">&lt;header&gt;</code>, <code class="bg-teal-100 text-teal-800 px-1 rounded">&lt;main&gt;</code>, <code class="bg-teal-100 text-teal-800 px-1 rounded">&lt;dialog&gt;</code>), Flexbox & Grid layouts, CSS custom properties, and Tailwind utility classes for responsive mobile-friendly UI.
             </p>
           </div>
 
@@ -601,18 +601,18 @@
         </div>
 
         <!-- Visual 60-Second Explanation Cheat Sheet for Faculty & Viva -->
-        <div class="bg-gradient-to-br from-indigo-900 via-slate-900 to-blue-950 text-white rounded-2xl p-6 border border-indigo-800/80 shadow-lg space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-indigo-800/60 pb-3">
+        <div class="bg-gradient-to-br from-slate-900 via-teal-950 to-emerald-950 text-white rounded-2xl p-6 border border-teal-800/80 shadow-lg space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-teal-800/60 pb-3">
             <div class="flex items-center space-x-2.5">
               <span class="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center text-sm shadow">
                 💡
               </span>
               <div>
                 <h3 class="text-base font-extrabold text-white">How to Explain This Project in 60 Seconds</h3>
-                <p class="text-xs text-indigo-200">Point to these 3 pillars when your professor asks you to explain what you built.</p>
+                <p class="text-xs text-teal-200">Point to these 3 pillars when your professor asks you to explain what you built.</p>
               </div>
             </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider bg-indigo-950 px-3 py-1 rounded-full text-indigo-300 border border-indigo-700">
+            <span class="text-[11px] font-bold uppercase tracking-wider bg-teal-950 px-3 py-1 rounded-full text-teal-300 border border-teal-700">
               WTMP Viva Cheat Sheet
             </span>
           </div>
@@ -686,7 +686,7 @@
             <button onclick="testApiEndpoint('GET', '/api/departments')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-emerald-900/40 text-emerald-300 border border-emerald-700 hover:bg-emerald-800/40 transition">
               GET /api/departments
             </button>
-            <button onclick="testApiEndpoint('GET', '/api/slots?doctorId=doc-101&date=2026-10-31')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-blue-900/40 text-blue-300 border border-blue-700 hover:bg-blue-800/40 transition">
+            <button onclick="testApiEndpoint('GET', '/api/slots?doctorId=doc-101&date=2026-10-31')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-teal-900/40 text-teal-300 border border-teal-700 hover:bg-teal-800/40 transition">
               GET /api/slots
             </button>
             <button onclick="testApiEndpoint('GET', '/api/appointments')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-purple-900/40 text-purple-300 border border-purple-700 hover:bg-purple-800/40 transition">
@@ -732,12 +732,12 @@
         
         <!-- Header -->
         <div class="text-center border-b border-dashed border-slate-300 pb-4">
-          <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center mx-auto mb-2">
+          <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center mx-auto mb-2 shadow-md shadow-emerald-500/20">
             <i class="fa-solid fa-heart-pulse text-2xl"></i>
           </div>
           <h3 class="text-xl font-extrabold text-slate-900">MediPulse Medical Center</h3>
           <p class="text-xs text-slate-500">Official Patient Appointment Confirmation Slip</p>
-          <div class="mt-2 inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full font-mono font-bold text-xs border border-blue-200" id="slip-token">
+          <div class="mt-2 inline-block px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full font-mono font-bold text-xs border border-emerald-200" id="slip-token">
             APT-2026-XXXX
           </div>
         </div>
@@ -757,7 +757,7 @@
 
           <div class="flex justify-between py-1 border-b border-slate-100">
             <span class="text-slate-500">Consulting Doctor:</span>
-            <span class="font-bold text-blue-700" id="slip-doctor-name">--</span>
+            <span class="font-bold text-emerald-700" id="slip-doctor-name">--</span>
           </div>
 
           <div class="flex justify-between py-1 border-b border-slate-100">
@@ -802,7 +802,7 @@
 
       <!-- Action Buttons (Hidden on Print) -->
       <div class="mt-6 flex space-x-3 no-print">
-        <button onclick="window.print()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-sm">
+        <button onclick="window.print()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-sm shadow-emerald-500/20">
           <i class="fa-solid fa-print"></i>
           <span>Print / Save as PDF</span>
         </button>

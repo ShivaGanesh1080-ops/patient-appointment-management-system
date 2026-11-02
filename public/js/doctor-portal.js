@@ -71,8 +71,8 @@ async function renderDoctorSnapshot(doctorId) {
           <p class="text-emerald-300">Completed</p>
           <p class="text-lg font-bold text-emerald-300">${doc.stats.completedAppointments}</p>
         </div>
-        <div class="bg-blue-900/40 border border-blue-700/60 px-4 py-2 rounded-xl text-center">
-          <p class="text-blue-200">Fee / Visit</p>
+        <div class="bg-teal-900/40 border border-teal-700/60 px-4 py-2 rounded-xl text-center">
+          <p class="text-teal-200">Fee / Visit</p>
           <p class="text-lg font-bold text-white">₹${doc.consultation_fee}</p>
         </div>
       </div>

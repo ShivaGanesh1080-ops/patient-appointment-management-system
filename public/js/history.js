@@ -31,7 +31,7 @@ async function fetchAppointmentsHistory() {
 
   container.innerHTML = `
     <div class="py-12 text-center text-slate-400">
-      <i class="fa-solid fa-spinner fa-spin text-2xl text-blue-500 mb-2"></i>
+      <i class="fa-solid fa-spinner fa-spin text-2xl text-emerald-600 mb-2"></i>
       <p class="text-xs">Loading appointment records...</p>
     </div>
   `;
@@ -110,7 +110,7 @@ function renderAppointmentsHistory(appointments) {
 
           <div class="space-y-1">
             <div class="flex flex-wrap items-center gap-2">
-              <span class="font-mono text-xs font-extrabold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+              <span class="font-mono text-xs font-extrabold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                 ${apt.booking_reference}
               </span>
               ${statusBadge}
@@ -125,10 +125,10 @@ function renderAppointmentsHistory(appointments) {
             </p>
 
             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 pt-0.5">
-              <span><i class="fa-regular fa-calendar mr-1 text-blue-500"></i> ${apt.appointment_date}</span>
-              <span><i class="fa-regular fa-clock mr-1 text-blue-500"></i> ${apt.appointment_time}</span>
+              <span><i class="fa-regular fa-calendar mr-1 text-teal-600"></i> ${apt.appointment_date}</span>
+              <span><i class="fa-regular fa-clock mr-1 text-teal-600"></i> ${apt.appointment_time}</span>
               <span><i class="fa-solid fa-phone mr-1 text-slate-400"></i> ${apt.patient_phone}</span>
-              <span><i class="fa-solid fa-indian-rupee-sign mr-1 text-emerald-500"></i> ₹${apt.consultation_fee}</span>
+              <span><i class="fa-solid fa-indian-rupee-sign mr-1 text-emerald-600"></i> ₹${apt.consultation_fee}</span>
             </div>
 
             <p class="text-xs text-slate-500 italic pt-1">
@@ -150,7 +150,7 @@ function renderAppointmentsHistory(appointments) {
             class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center space-x-1.5 transition-colors"
             title="Print or view token pass"
           >
-            <i class="fa-solid fa-print text-blue-600"></i>
+            <i class="fa-solid fa-print text-emerald-600"></i>
             <span>Token Pass</span>
           </button>
 

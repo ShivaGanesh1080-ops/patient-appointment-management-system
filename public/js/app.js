@@ -21,7 +21,7 @@ const DEPT_ICONS = {
   'Pediatrics': 'fa-solid fa-baby text-sky-500',
   'Orthopedics': 'fa-solid fa-bone text-emerald-500',
   'Neurology': 'fa-solid fa-brain text-purple-500',
-  'General Medicine': 'fa-solid fa-stethoscope text-blue-500'
+  'General Medicine': 'fa-solid fa-stethoscope text-teal-600'
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -94,7 +94,7 @@ function renderDepartmentFilters() {
   if (!container) return;
 
   let html = `
-    <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold ${state.activeDepartment === 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}" data-dept="all" onclick="filterByDepartment('all')">
+    <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold ${state.activeDepartment === 'all' ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}" data-dept="all" onclick="filterByDepartment('all')">
       All Specialties
     </button>
   `;
@@ -102,7 +102,7 @@ function renderDepartmentFilters() {
   state.departments.forEach(dept => {
     const isActive = state.activeDepartment === dept.id;
     html += `
-      <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap ${isActive ? 'bg-blue-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}" data-dept="${dept.id}" onclick="filterByDepartment('${dept.id}')">
+      <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap ${isActive ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}" data-dept="${dept.id}" onclick="filterByDepartment('${dept.id}')">
         ${dept.name} (${dept.doctor_count})
       </button>
     `;
@@ -150,7 +150,7 @@ async function loadDoctors() {
 
   grid.innerHTML = `
     <div class="col-span-full py-12 text-center text-slate-400">
-      <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-blue-500"></i>
+      <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-emerald-600"></i>
       <p class="text-sm">Fetching verified medical specialists...</p>
     </div>
   `;
@@ -200,7 +200,7 @@ function renderDoctorsGrid(doctors) {
   }
 
   grid.innerHTML = doctors.map(doc => {
-    const deptIconClass = DEPT_ICONS[doc.department_name] || 'fa-solid fa-user-doctor text-blue-500';
+    const deptIconClass = DEPT_ICONS[doc.department_name] || 'fa-solid fa-user-doctor text-emerald-600';
     const daysBadges = doc.available_days.map(d => 
       `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-medium">${d.slice(0, 3)}</span>`
     ).join(' ');
@@ -219,10 +219,10 @@ function renderDoctorsGrid(doctors) {
                 onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80'"
               />
               <div>
-                <span class="inline-flex items-center text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full mb-1">
+                <span class="inline-flex items-center text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full mb-1 border border-emerald-200">
                   <i class="${deptIconClass} mr-1 text-[10px]"></i> ${doc.department_name}
                 </span>
-                <h3 class="font-extrabold text-base text-slate-900 group-hover:text-blue-600 transition-colors">${doc.name}</h3>
+                <h3 class="font-extrabold text-base text-slate-900 group-hover:text-emerald-600 transition-colors">${doc.name}</h3>
                 <p class="text-xs text-slate-500 font-medium line-clamp-1">${doc.qualification}</p>
               </div>
             </div>
@@ -268,7 +268,7 @@ function renderDoctorsGrid(doctors) {
           </button>
           <button 
             onclick="bookWithDoctor('${doc.id}')" 
-            class="px-3 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow transition-all flex items-center justify-center space-x-1"
+            class="px-3 py-2 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow transition-all flex items-center justify-center space-x-1 shadow-emerald-500/20"
           >
             <i class="fa-regular fa-calendar-check text-[11px]"></i>
             <span>Book Slot</span>
@@ -293,7 +293,7 @@ async function viewDoctorBio(doctorId) {
       <div class="flex items-center space-x-4 border-b border-slate-100 pb-4">
         <img src="${doc.avatar_url}" alt="${doc.name}" class="w-20 h-20 rounded-2xl object-cover border shadow">
         <div>
-          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">${doc.department_name}</span>
+          <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">${doc.department_name}</span>
           <h3 class="text-xl font-bold text-slate-900">${doc.name}</h3>
           <p class="text-xs text-slate-500 font-medium">${doc.qualification}</p>
           <div class="flex items-center space-x-2 mt-1">
@@ -320,7 +320,7 @@ async function viewDoctorBio(doctorId) {
       </div>
 
       <div class="pt-3">
-        <button onclick="closeDoctorBioModal(); bookWithDoctor('${doc.id}')" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs flex items-center justify-center space-x-2 shadow-md">
+        <button onclick="closeDoctorBioModal(); bookWithDoctor('${doc.id}')" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center space-x-2 shadow-md shadow-emerald-500/20">
           <i class="fa-regular fa-calendar-check"></i>
           <span>Proceed to Book Appointment</span>
         </button>
@@ -385,7 +385,7 @@ function showToast(message, type = 'info') {
   const toast = document.createElement('div');
   
   let bgClass = 'bg-slate-900 text-white border border-slate-700';
-  let icon = '<i class="fa-solid fa-circle-info text-blue-400 mr-2"></i>';
+  let icon = '<i class="fa-solid fa-circle-info text-teal-400 mr-2"></i>';
 
   if (type === 'success') {
     bgClass = 'bg-emerald-950 text-white border border-emerald-700';

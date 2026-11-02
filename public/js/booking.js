@@ -115,7 +115,7 @@ async function fetchAvailableSlots() {
 
   container.innerHTML = `
     <div class="py-6 text-center text-slate-400 w-full">
-      <i class="fa-solid fa-spinner fa-spin text-xl text-blue-500 mb-2"></i>
+      <i class="fa-solid fa-spinner fa-spin text-xl text-emerald-600 mb-2"></i>
       <p class="text-xs">Computing live slot availability...</p>
     </div>
   `;
@@ -162,13 +162,13 @@ async function fetchAvailableSlots() {
       return `
         <div>
           <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center">
-            <i class="${icon} mr-1.5 text-blue-600"></i> ${title}
+            <i class="${icon} mr-1.5 text-emerald-600"></i> ${title}
           </div>
           <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
             ${slots.map(s => {
               const isAvailable = s.status === 'AVAILABLE';
               let badgeColor = isAvailable 
-                ? 'bg-white border-slate-300 text-slate-700 hover:border-blue-500 hover:text-blue-600' 
+                ? 'bg-white border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-700' 
                 : 'bg-slate-200/60 border-slate-200 text-slate-400 cursor-not-allowed opacity-60';
 
               let titleHint = isAvailable ? 'Click to select this slot' : (s.status === 'BOOKED' ? 'Already reserved' : 'Time passed');
@@ -336,7 +336,7 @@ function openSlipModal(appointment) {
 
   const statusEl = document.getElementById('slip-status');
   statusEl.textContent = appointment.status;
-  statusEl.className = appointment.status === 'CONFIRMED' ? 'text-emerald-600 font-bold' : (appointment.status === 'COMPLETED' ? 'text-blue-600 font-bold' : 'text-red-600 font-bold');
+  statusEl.className = appointment.status === 'CONFIRMED' ? 'text-emerald-600 font-bold' : (appointment.status === 'COMPLETED' ? 'text-teal-600 font-bold' : 'text-red-600 font-bold');
 
   document.getElementById('modal-slip').classList.remove('hidden');
 }

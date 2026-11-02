@@ -51,7 +51,7 @@ async function seedData() {
     );
   }
 
-  // 2. Seed 12 Credentialed Indian Doctors (2 per department)
+  // 2. Seed 12 Credentialed Indian Doctors (Strictly Unique & Gender-Matched Photos)
   const doctors = [
     // --- CARDIOLOGY ---
     {
@@ -63,7 +63,7 @@ async function seedData() {
       consultation_fee: 800,
       rating: 4.9,
       clinic_address: 'Apollo Specialty Clinic, Road No. 36, Jubilee Hills, Hyderabad',
-      avatar_url: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Senior Consultant Interventional Cardiologist specializing in preventive cardiology, coronary angioplasty, and cardiac rhythm management.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
       slot_start_time: '09:00',
@@ -79,7 +79,7 @@ async function seedData() {
       consultation_fee: 750,
       rating: 4.8,
       clinic_address: 'St. Ann Heart Care Center, Nakkalagutta, Hanamkonda, Warangal',
-      avatar_url: 'https://images.unsplash.com/photo-1594824813589-20b12cfdf7ec?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Consultant Clinical Cardiologist focused on echocardiography, hypertension management, and congenital heart condition screenings.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Friday', 'Saturday']),
       slot_start_time: '10:00',
@@ -97,7 +97,7 @@ async function seedData() {
       consultation_fee: 650,
       rating: 4.8,
       clinic_address: 'DermaCare Advanced Aesthetics, Madhapur, Hyderabad',
-      avatar_url: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Renowned clinical dermatologist and aesthetic specialist with expertise in acne scar reduction, pigmentation disorders, and laser therapies.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Friday', 'Saturday']),
       slot_start_time: '10:00',
@@ -113,7 +113,7 @@ async function seedData() {
       consultation_fee: 500,
       rating: 4.7,
       clinic_address: 'Skin & Laser Wellness Clinic, Subedari, Hanamkonda, Warangal',
-      avatar_url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Specialist in clinical dermatology, pediatric skin allergies, chronic eczema, psoriasis management, and hair loss therapies.',
       available_days: JSON.stringify(['Tuesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '09:30',
@@ -131,7 +131,7 @@ async function seedData() {
       consultation_fee: 750,
       rating: 4.9,
       clinic_address: 'OrthoSpine Joint Replacement Center, Road No. 12, Banjara Hills, Hyderabad',
-      avatar_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Pioneering orthopedic surgeon specializing in robotic knee & hip replacements, arthroscopy, and complex sports injury rehabilitation.',
       available_days: JSON.stringify(['Tuesday', 'Thursday', 'Saturday']),
       slot_start_time: '09:30',
@@ -147,7 +147,7 @@ async function seedData() {
       consultation_fee: 600,
       rating: 4.8,
       clinic_address: 'Kakatiya Bone & Joint Clinic, Main Road, Kazipet, Warangal',
-      avatar_url: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Consultant Orthopedic Surgeon specializing in spinal disc disorders, arthritis pain management, trauma surgery, and fracture rehabilitation.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Thursday', 'Saturday']),
       slot_start_time: '10:00',
@@ -165,7 +165,7 @@ async function seedData() {
       consultation_fee: 500,
       rating: 4.9,
       clinic_address: 'Rainbow Children Health Clinic, Kondapur, Hyderabad',
-      avatar_url: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Caring pediatrician focused on newborn care, immunization scheduling, adolescent health guidance, and developmental milestones.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '09:00',
@@ -181,7 +181,7 @@ async function seedData() {
       consultation_fee: 450,
       rating: 4.8,
       clinic_address: 'Balaji Children Hospital, MGM Road, Warangal',
-      avatar_url: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Senior Child Specialist with focus on seasonal respiratory viral infections, pediatric asthma, childhood nutrition, and neonatal intensive care.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']),
       slot_start_time: '09:30',
@@ -199,7 +199,7 @@ async function seedData() {
       consultation_fee: 1000,
       rating: 4.7,
       clinic_address: 'Brain & Spine Institute, Gachibowli, Hyderabad',
-      avatar_url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Leading neurologist handling epilepsy, stroke prevention, migraine therapy, neurodegenerative disorders, and neuromuscular diagnostics.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Thursday', 'Friday']),
       slot_start_time: '11:00',
@@ -215,7 +215,7 @@ async function seedData() {
       consultation_fee: 850,
       rating: 4.9,
       clinic_address: 'NeuroCare Consultation Clinic, Ramnagar, Hanamkonda, Warangal',
-      avatar_url: 'https://images.unsplash.com/photo-1594824813589-20b12cfdf7ec?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Expert neuro-physician handling chronic headache management, Parkinson disease care, peripheral neuropathy, and sleep disorders.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Thursday', 'Saturday']),
       slot_start_time: '10:00',
@@ -233,7 +233,7 @@ async function seedData() {
       consultation_fee: 450,
       rating: 4.8,
       clinic_address: 'Apex Family Wellness Clinic, Hitec City, Hyderabad',
-      avatar_url: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Dedicated primary care physician treating hypertension, diabetes type 2, respiratory infections, seasonal illnesses, and lifestyle wellness.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '08:30',
@@ -249,7 +249,7 @@ async function seedData() {
       consultation_fee: 400,
       rating: 4.9,
       clinic_address: 'Lifeline Multi-Specialty Clinic, Chowrastha, Hanamkonda, Warangal',
-      avatar_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&auto=format&fit=crop&q=80',
+      avatar_url: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Veteran senior physician specializing in comprehensive geriatric wellness, diabetic neuropathy, hypertension control, and preventive fever clinics.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '09:00',
@@ -374,7 +374,7 @@ async function seedData() {
     }
   }
 
-  console.log(`✅ Seeding completed successfully! (${doctors.length} Indian doctors loaded)`);
+  console.log(`✅ Seeding completed successfully! (12 unique gender-matched Indian doctors loaded)`);
 }
 
 if (require.main === module) {
