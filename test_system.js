@@ -52,21 +52,27 @@ async function runSystemVerification() {
     const depts = await makeRequest('GET', '/api/departments');
     console.log(`   Found ${depts.data.count} departments.`);
 
-    // 4. Time Slots: Find a working day for doc-101
-    const targetDate = new Date();
-    // Advance until we find a working day (Monday - Friday)
-    while (targetDate.getDay() === 0 || targetDate.getDay() === 6) {
-      targetDate.setDate(targetDate.getDate() + 1);
-    }
-    // If today is a weekday, pick next weekday
+    // 4. Time Slots: Find a working day with available slots for doc-101
+    let targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + 1);
     while (targetDate.getDay() === 0 || targetDate.getDay() === 6) {
       targetDate.setDate(targetDate.getDate() + 1);
     }
-    const dateStr = targetDate.toISOString().split('T')[0];
+
+    let dateStr = targetDate.toISOString().split('T')[0];
+    let slots = await makeRequest('GET', `/api/slots?doctorId=doc-101&date=${dateStr}`);
+
+    // If day is fully booked from previous tests, advance to next open weekday
+    while (slots.data.availableCount === 0) {
+      targetDate.setDate(targetDate.getDate() + 1);
+      while (targetDate.getDay() === 0 || targetDate.getDay() === 6) {
+        targetDate.setDate(targetDate.getDate() + 1);
+      }
+      dateStr = targetDate.toISOString().split('T')[0];
+      slots = await makeRequest('GET', `/api/slots?doctorId=doc-101&date=${dateStr}`);
+    }
 
     console.log(`\n4️⃣ Checking /api/slots for Dr. Rajeshwar Rao on ${dateStr}...`);
-    const slots = await makeRequest('GET', `/api/slots?doctorId=doc-101&date=${dateStr}`);
     console.log(`   Day: ${slots.data.dayName} | Working Day: ${slots.data.isWorkingDay} | Slots Generated: ${slots.data.totalSlots} | Available: ${slots.data.availableCount}`);
 
     // 5. Booking an Appointment
