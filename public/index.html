@@ -61,10 +61,16 @@
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span class="hidden sm:inline font-mono">REST API Live</span>
         </div>
-        <a href="/login" onclick="openStaffLoginGateway(event)" class="text-slate-400 hover:text-white transition-colors text-[11px] font-medium flex items-center space-x-1 pl-2 border-l border-slate-700" title="Clinical Staff & Doctor Portal">
-          <i class="fa-solid fa-lock text-[10px]"></i>
-          <span class="hidden sm:inline">Staff Access</span>
-        </a>
+        <div class="flex items-center space-x-2 pl-2 border-l border-slate-700">
+          <a href="/doctor" class="text-slate-300 hover:text-white transition font-medium flex items-center space-x-1.5 px-2.5 py-1 rounded-md hover:bg-white/10" title="Dedicated Doctor Portal">
+            <i class="fa-solid fa-stethoscope text-[#3f72af] text-[11px]"></i>
+            <span class="font-bold text-white text-[11px]">Doctor Portal</span>
+          </a>
+          <a href="/admin" class="text-slate-300 hover:text-white transition font-medium flex items-center space-x-1.5 px-2.5 py-1 rounded-md hover:bg-white/10" title="Dedicated Hospital Admin Console">
+            <i class="fa-solid fa-hospital-user text-emerald-400 text-[11px]"></i>
+            <span class="font-bold text-white text-[11px]">Hospital Admin</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -110,6 +116,18 @@
         <!-- Right Header Area: Patient Chip & Role Portals -->
         <div class="flex items-center space-x-2 sm:space-x-3">
           
+          <!-- Standalone Role Portals (Doctor & Admin) -->
+          <div class="hidden md:flex items-center space-x-1.5">
+            <a href="/doctor" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e] bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] transition shadow-xs" title="Open Doctor Live OPD Cabin">
+              <i class="fa-solid fa-stethoscope text-[#3f72af]"></i>
+              <span>Doctor Portal</span>
+            </a>
+            <a href="/admin" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e] bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] transition shadow-xs" title="Open Hospital Admin Console">
+              <i class="fa-solid fa-hospital-user text-[#112d4e]"></i>
+              <span>Hospital Admin</span>
+            </a>
+          </div>
+
           <!-- Patient Identity Chip / Sign-In Button -->
           <div id="nav-patient-badge-container">
             <button onclick="openPatientAuthModal()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e] bg-[#dbe2ef]/60 hover:bg-[#dbe2ef] border border-[#dbe2ef] transition-all">
@@ -147,55 +165,14 @@
       <button class="nav-tab flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-history')">
         <i class="fa-solid fa-ticket"></i> <span>Passes</span>
       </button>
+      <a href="/doctor" class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-[#3f72af]">
+        <i class="fa-solid fa-stethoscope"></i> <span>Doctor</span>
+      </a>
+      <a href="/admin" class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-[#112d4e]">
+        <i class="fa-solid fa-hospital-user"></i> <span>Admin</span>
+      </a>
     </div>
   </header>
-
-  <!-- Live Telemetry Ribbon -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 w-full">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-      
-      <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-[#dbe2ef] text-[#112d4e] flex items-center justify-center text-lg">
-          <i class="fa-solid fa-user-doctor text-[#3f72af]"></i>
-        </div>
-        <div>
-          <p class="text-xs text-slate-500 font-medium">Verified Specialists</p>
-          <p class="text-xl font-bold text-[#112d4e]" id="stat-doctors-count">--</p>
-        </div>
-      </div>
-
-      <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-calendar-check text-emerald-600"></i>
-        </div>
-        <div>
-          <p class="text-xs text-slate-500 font-medium">Confirmed Visits</p>
-          <p class="text-xl font-bold text-[#112d4e]" id="stat-confirmed-count">--</p>
-        </div>
-      </div>
-
-      <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-[#e4ecf7] text-[#112d4e] flex items-center justify-center text-lg">
-          <i class="fa-solid fa-users text-[#3f72af]"></i>
-        </div>
-        <div>
-          <p class="text-xs text-slate-500 font-medium">Unique Patients</p>
-          <p class="text-xl font-bold text-[#112d4e]" id="stat-patients-count">--</p>
-        </div>
-      </div>
-
-      <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-circle-check text-amber-600"></i>
-        </div>
-        <div>
-          <p class="text-xs text-slate-500 font-medium">Completed Visits</p>
-          <p class="text-xl font-bold text-[#112d4e]" id="stat-completed-count">--</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
 
   <!-- MAIN TAB CONTENT CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediPulse — Hospital Administration & Facility Operations Desk</title>
+  
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&family=Geist:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=6.0">
+</head>
+<body class="bg-[#f9f7f7] text-[#112d4e] min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- Top Academic Credentials Banner -->
+  <div class="bg-[#0b1c31] text-white border-b border-[#1b3b64] py-2 px-4 sm:px-8 text-xs select-none">
+    <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-2">
+      <div class="flex items-center space-x-2">
+        <span class="px-2 py-0.5 rounded-full bg-[#3f72af]/30 text-[#dbe2ef] border border-[#3f72af]/40 font-bold text-[10px] tracking-wider uppercase">SR UNIVERSITY • CSE CORE</span>
+        <span class="text-slate-400 font-medium text-[11px] hidden md:inline">Multi-Tenant Hospital Operations Desk & Specialist Management Console</span>
+      </div>
+      <div class="flex items-center space-x-3 text-xs">
+        <span class="text-slate-400 hidden sm:inline">Leader: <strong class="text-white">Neerudu Gifty Taniksha</strong></span>
+        <div class="flex items-center space-x-1.5 text-emerald-400 font-medium text-[11px]">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-mono">Live Admin Sync</span>
+        </div>
+        <a href="/" class="text-slate-300 hover:text-white transition flex items-center space-x-1 pl-2 border-l border-slate-700">
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>
+          <span>Patient Portal</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="glass-nav sticky top-0 z-40 transition-all border-b border-[#dbe2ef] bg-white/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Brand Logo & Admin Tag -->
+        <a href="/admin" class="flex items-center space-x-3">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#112d4e] flex items-center justify-center text-white shadow-md shadow-[#112d4e]/20 border border-[#3f72af]/30">
+            <i class="fa-solid fa-hospital-user text-xl text-[#3f72af]"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-[#112d4e]">Medi<span class="text-[#3f72af]">Pulse</span></span>
+              <span class="px-2 py-0.5 rounded-md bg-[#112d4e]/10 text-[#112d4e] text-xs font-bold font-mono">HOSPITAL ADMIN</span>
+            </div>
+            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">Facility Governance & Specialist Onboarding Desk</p>
+          </div>
+        </a>
+
+        <!-- Header Right Area (Session Status or Return Link) -->
+        <div class="flex items-center space-x-3" id="admin-header-actions">
+          <a href="/" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e] bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-house-chimney-medical text-[#3f72af]"></i>
+            <span class="hidden sm:inline">Patient Portal</span>
+          </a>
+          <a href="/doctor" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e] bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-stethoscope text-[#3f72af]"></i>
+            <span class="hidden sm:inline">Doctor Portal</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content Container -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- =========================================================================
+         VIEW A: HOSPITAL ADMIN LOGIN SCREEN (When Unauthenticated)
+         ========================================================================= -->
+    <div id="admin-login-view" class="max-w-md mx-auto my-10 space-y-6">
+      
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-[#dbe2ef] shadow-xl bg-white space-y-6">
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 rounded-2xl bg-[#112d4e] text-white flex items-center justify-center text-2xl mx-auto shadow-md border border-[#3f72af]/30">
+            <i class="fa-solid fa-hospital-user text-[#3f72af]"></i>
+          </div>
+          <h2 class="text-2xl font-extrabold text-[#112d4e] tracking-tight">Hospital Admin Sign-In</h2>
+          <p class="text-xs text-slate-500">Sign in with facility administration credentials to manage specialists, OPD shifts, and revenue.</p>
+        </div>
+
+        <form id="admin-login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Hospital Admin Email</label>
+            <input type="email" id="login-admin-email" required placeholder="admin@hospital.com" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-2 focus:ring-[#3f72af] focus:outline-none bg-white font-medium">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+            <input type="password" id="login-admin-password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-2 focus:ring-[#3f72af] focus:outline-none bg-white font-mono">
+          </div>
+
+          <button type="submit" id="admin-submit-btn" class="w-full py-3 btn-navy font-bold rounded-xl text-xs shadow-md flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-lock"></i>
+            <span>Access Hospital Operations Console</span>
+          </button>
+        </form>
+
+        <!-- 1-Click Fast Credentials for Viva Demo -->
+        <div class="pt-4 border-t border-[#dbe2ef] space-y-2.5 text-xs">
+          <p class="font-bold text-[#112d4e] text-[11px] uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-bolt text-amber-500 mr-1.5"></i> 1-Click Hospital Facility Accounts
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="fillAdminCreds('admin@sruhealth.edu.in', 'admin123')" class="w-full text-left p-2.5 rounded-xl bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] flex justify-between items-center transition">
+              <div>
+                <p class="font-bold text-[#112d4e]">SRU Health & Wellness Centre</p>
+                <p class="text-[10px] text-slate-500">admin@sruhealth.edu.in (Warangal)</p>
+              </div>
+              <span class="text-[10px] font-mono text-[#3f72af] font-bold px-2 py-0.5 rounded bg-white border border-[#dbe2ef]">Use</span>
+            </button>
+            <button onclick="fillAdminCreds('admin@apollo.org', 'admin123')" class="w-full text-left p-2.5 rounded-xl bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] flex justify-between items-center transition">
+              <div>
+                <p class="font-bold text-[#112d4e]">Apollo Health City & Outpatient</p>
+                <p class="text-[10px] text-slate-500">admin@apollo.org (Hyderabad)</p>
+              </div>
+              <span class="text-[10px] font-mono text-[#3f72af] font-bold px-2 py-0.5 rounded bg-white border border-[#dbe2ef]">Use</span>
+            </button>
+            <button onclick="fillAdminCreds('admin@kakatiya.edu.in', 'admin123')" class="w-full text-left p-2.5 rounded-xl bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] flex justify-between items-center transition">
+              <div>
+                <p class="font-bold text-[#112d4e]">Kakatiya Medical Institute</p>
+                <p class="text-[10px] text-slate-500">admin@kakatiya.edu.in (Warangal)</p>
+              </div>
+              <span class="text-[10px] font-mono text-[#3f72af] font-bold px-2 py-0.5 rounded bg-white border border-[#dbe2ef]">Use</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =========================================================================
+         VIEW B: AUTHENTICATED HOSPITAL OPERATIONS DASHBOARD
+         ========================================================================= -->
+    <div id="admin-workspace-view" class="hidden space-y-6">
+      
+      <!-- Facility Header Banner -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-[#dbe2ef] bg-white shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          
+          <div class="space-y-1">
+            <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#dbe2ef] text-[#112d4e]">
+                <i class="fa-solid fa-hospital mr-1 text-[#3f72af]"></i> Tenant Facility Active
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                <i class="fa-solid fa-star text-amber-500 mr-1"></i> <span id="admin-facility-rating">4.9</span> Rating
+              </span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#112d4e] tracking-tight" id="admin-facility-name">Hospital Name</h1>
+            <p class="text-xs text-slate-600" id="admin-facility-address">Address • City • Contact Phone</p>
+          </div>
+
+          <div class="flex items-center space-x-2 sm:self-start">
+            <button onclick="openAddDoctorModal()" class="btn-primary font-bold px-4 py-2 rounded-xl text-xs flex items-center space-x-1.5 shadow-sm">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>Onboard Specialist</span>
+            </button>
+            <button onclick="adminLogout()" class="px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-power-off"></i>
+              <span>Log Out</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Live Dynamic Facility Analytics (Queried Live from SQLite) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="glass-panel p-5 rounded-2xl border border-[#dbe2ef] bg-white shadow-sm flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-sky-50 text-[#3f72af] flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-medium">Verified Specialists</p>
+            <h3 class="text-2xl font-extrabold text-[#112d4e]" id="stat-facility-doctors">0</h3>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-[#dbe2ef] bg-white shadow-sm flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-medium">Total Bookings</p>
+            <h3 class="text-2xl font-extrabold text-emerald-600" id="stat-facility-bookings">0</h3>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-[#dbe2ef] bg-white shadow-sm flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fa-solid fa-clipboard-check"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-medium">Completed Visits</p>
+            <h3 class="text-2xl font-extrabold text-teal-700" id="stat-facility-completed">0</h3>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-[#dbe2ef] bg-white shadow-sm flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-medium">Realized Revenue</p>
+            <h3 class="text-2xl font-extrabold text-[#112d4e]" id="stat-facility-revenue">₹0</h3>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Facility Specialists Roster Section -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-[#dbe2ef] bg-white shadow-sm space-y-4">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#dbe2ef]">
+          <div>
+            <h2 class="text-lg font-extrabold text-[#112d4e]">Facility Medical Specialists</h2>
+            <p class="text-xs text-slate-500">Doctors currently practicing at this hospital campus.</p>
+          </div>
+          <button onclick="openAddDoctorModal()" class="px-3.5 py-1.5 rounded-xl bg-[#dbe2ef] hover:bg-[#c7d2e5] text-[#112d4e] font-bold text-xs flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>Add Specialist</span>
+          </button>
+        </div>
+
+        <div id="facility-doctors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="py-10 text-center text-slate-400 col-span-full">
+            <i class="fa-solid fa-spinner fa-spin text-2xl text-[#3f72af] mb-2"></i>
+            <p class="text-xs">Loading facility specialist profiles...</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Facility Master Appointments Ledger Section -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-[#dbe2ef] bg-white shadow-sm space-y-4">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#dbe2ef]">
+          <div>
+            <h2 class="text-lg font-extrabold text-[#112d4e]">Facility Outpatient Ledger</h2>
+            <p class="text-xs text-slate-500">All patient visits scheduled across all specialists in this facility.</p>
+          </div>
+          <button onclick="fetchFacilityData()" class="p-2 rounded-xl bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-700 text-xs border border-[#dbe2ef] transition" title="Refresh Ledger">
+            <i class="fa-solid fa-rotate text-xs"></i>
+          </button>
+        </div>
+
+        <div id="facility-appointments-table" class="space-y-3">
+          <div class="py-10 text-center text-slate-400">
+            <i class="fa-solid fa-spinner fa-spin text-2xl text-[#3f72af] mb-2"></i>
+            <p class="text-xs">Loading appointments ledger...</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- =========================================================================
+       MODAL: ONBOARD NEW SPECIALIST DOCTOR
+       ========================================================================= -->
+  <div id="modal-add-doctor" class="fixed inset-0 modal-backdrop z-50 hidden overflow-y-auto p-4 flex items-center justify-center">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-[#dbe2ef] my-auto space-y-5">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-[#dbe2ef]">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-xl bg-[#112d4e] text-white flex items-center justify-center font-bold">
+            <i class="fa-solid fa-user-plus text-[#3f72af]"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-[#112d4e] text-base">Onboard Medical Specialist</h3>
+            <p class="text-xs text-slate-500">Add a verified physician to this hospital's active roster.</p>
+          </div>
+        </div>
+        <button onclick="closeAddDoctorModal()" class="w-8 h-8 rounded-full bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <form id="onboard-doctor-form" onsubmit="handleOnboardDoctorSubmit(event)" class="space-y-3.5 text-xs">
+        
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Doctor Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="onboard-name" required placeholder="e.g. Dr. Harish Chandra" class="w-full px-3 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Hospital Email <span class="text-red-500">*</span></label>
+            <input type="email" id="onboard-email" required placeholder="dr.harish@hospital.com" class="w-full px-3 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] focus:outline-none font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Login Password <span class="text-red-500">*</span></label>
+            <input type="password" id="onboard-password" required placeholder="••••••••" class="w-full px-3 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] focus:outline-none font-mono">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Department Specialty <span class="text-red-500">*</span></label>
+            <select id="onboard-dept" required class="w-full px-3 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
+              <option value="dept-cardio">Cardiology</option>
+              <option value="dept-derma">Dermatology</option>
+              <option value="dept-ortho">Orthopedics</option>
+              <option value="dept-pediatrics">Pediatrics</option>
+              <option value="dept-neuro">Neurology</option>
+              <option value="dept-genmed">General Medicine</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Consultation Fee (₹) <span class="text-red-500">*</span></label>
+            <input type="number" id="onboard-fee" required min="100" max="5000" placeholder="500" class="w-full px-3 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] focus:outline-none font-mono">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Qualifications <span class="text-red-500">*</span></label>
+            <input type="text" id="onboard-quals" required placeholder="MBBS, MD (Specialty)" class="w-full px-3 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Experience (Years) <span class="text-red-500">*</span></label>
+            <input type="number" id="onboard-exp" required min="1" max="50" placeholder="10" class="w-full px-3 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] focus:outline-none">
+          </div>
+        </div>
+
+        <button type="submit" id="onboard-submit-btn" class="w-full py-2.5 btn-primary font-bold rounded-xl text-xs shadow-md flex items-center justify-center space-x-1.5 mt-2">
+          <i class="fa-solid fa-user-check"></i>
+          <span>Save & Provision Specialist</span>
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- Scripts -->
+  <script src="js/api.js?v=6.0"></script>
+  <script>
+    let currentAdminClinic = null;
+    let adminPollInterval = null;
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bg = type === 'success' ? 'bg-emerald-600 text-white' : (type === 'error' ? 'bg-red-600 text-white' : 'bg-[#112d4e] text-white');
+      toast.className = `${bg} px-4 py-2.5 rounded-xl shadow-xl text-xs font-semibold flex items-center space-x-2 pointer-events-auto animate-in fade-in slide-in-from-bottom-2 duration-200`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    function fillAdminCreds(email, pass) {
+      document.getElementById('login-admin-email').value = email;
+      document.getElementById('login-admin-password').value = pass;
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-admin-email').value.trim();
+      const password = document.getElementById('login-admin-password').value.trim();
+      const btn = document.getElementById('admin-submit-btn');
+
+      if (!email || !password) {
+        showToast('Please provide hospital administration credentials.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Authenticating Desk...`;
+
+      try {
+        const res = await api.hospitalAdminLogin(email, password);
+        currentAdminClinic = res.clinic;
+        sessionStorage.setItem('medipulse_admin_portal', JSON.stringify(res.clinic));
+        showToast(`Authenticated as Operations Desk for ${res.clinic.name}`, 'success');
+        renderAdminWorkspace();
+      } catch (err) {
+        showToast(err.message || 'Authentication failed. Check credentials.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-lock mr-2"></i> Access Hospital Operations Console`;
+      }
+    }
+
+    function adminLogout() {
+      currentAdminClinic = null;
+      sessionStorage.removeItem('medipulse_admin_portal');
+      if (adminPollInterval) clearInterval(adminPollInterval);
+      showToast('Logged out of Hospital Operations Desk.', 'info');
+      document.getElementById('admin-login-view').classList.remove('hidden');
+      document.getElementById('admin-workspace-view').classList.add('hidden');
+    }
+
+    function renderAdminWorkspace() {
+      document.getElementById('admin-login-view').classList.add('hidden');
+      document.getElementById('admin-workspace-view').classList.remove('hidden');
+
+      // Populate facility banner
+      document.getElementById('admin-facility-name').textContent = currentAdminClinic.name;
+      document.getElementById('admin-facility-address').textContent = `${currentAdminClinic.address} • Phone: ${currentAdminClinic.phone}`;
+      document.getElementById('admin-facility-rating').textContent = currentAdminClinic.rating || '4.9';
+
+      fetchFacilityData();
+
+      // Poll every 6 seconds
+      if (adminPollInterval) clearInterval(adminPollInterval);
+      adminPollInterval = setInterval(fetchFacilityData, 6000);
+    }
+
+    async function fetchFacilityData() {
+      if (!currentAdminClinic) return;
+
+      try {
+        // 1. Fetch doctors for this hospital
+        const docRes = await fetch(`/api/doctors?clinicId=${currentAdminClinic.id}`);
+        const docJson = await docRes.json();
+        const doctors = docJson.data || [];
+        document.getElementById('stat-facility-doctors').textContent = doctors.length;
+        renderDoctorsGrid(doctors);
+
+        // 2. Fetch overall stats
+        const statsRes = await fetch('/api/stats');
+        const statsJson = await statsRes.json();
+        const stats = statsJson.data;
+
+        // Find this clinic breakdown if available
+        const clinicStats = (stats.clinicBreakdown || []).find(c => c.id === currentAdminClinic.id);
+        const bookings = clinicStats ? clinicStats.appointment_count : stats.totalAppointments;
+        const completed = clinicStats ? clinicStats.completed_count : stats.completedAppointments;
+        const revenue = clinicStats ? clinicStats.completed_revenue : stats.realizedRevenue;
+
+        document.getElementById('stat-facility-bookings').textContent = bookings;
+        document.getElementById('stat-facility-completed').textContent = completed;
+        document.getElementById('stat-facility-revenue').textContent = `₹${revenue}`;
+
+        // 3. Fetch all appointments across this clinic's doctors
+        renderAppointmentsLedger(doctors);
+      } catch (e) {
+        console.error('Admin poll error', e);
+      }
+    }
+
+    function renderDoctorsGrid(doctors) {
+      const grid = document.getElementById('facility-doctors-grid');
+      if (doctors.length === 0) {
+        grid.innerHTML = `<div class="py-8 text-center text-slate-400 col-span-full">No specialists registered yet for this facility.</div>`;
+        return;
+      }
+
+      grid.innerHTML = doctors.map(doc => `
+        <div class="p-4 rounded-2xl bg-[#f9f7f7] border border-[#dbe2ef] flex items-center space-x-3.5 shadow-sm">
+          <img src="${doc.avatar_url}" alt="${doc.name}" class="w-14 h-14 rounded-xl object-cover border border-[#3f72af]/30 flex-shrink-0">
+          <div class="min-w-0 flex-1">
+            <h4 class="font-extrabold text-sm text-[#112d4e] truncate">${doc.name}</h4>
+            <p class="text-[11px] text-[#3f72af] font-semibold">${doc.department_name}</p>
+            <p class="text-[10px] text-slate-500 font-mono truncate">${doc.email || 'dr.specialist@hospital.com'}</p>
+            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-[#dbe2ef]">
+              <span class="font-bold text-[#112d4e]">₹${doc.consultation_fee}</span>
+              <span class="text-amber-500 font-semibold"><i class="fa-solid fa-star text-[10px]"></i> ${doc.rating}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function renderAppointmentsLedger(doctors) {
+      const container = document.getElementById('facility-appointments-table');
+      const docIds = doctors.map(d => d.id);
+
+      // Query appointments
+      const res = await fetch('/api/appointments');
+      const json = await res.json();
+      const allApts = json.data || [];
+      const facilityApts = allApts.filter(a => docIds.includes(a.doctor_id));
+
+      if (facilityApts.length === 0) {
+        container.innerHTML = `
+          <div class="py-10 text-center text-slate-400 bg-[#f9f7f7] rounded-2xl border border-dashed border-[#dbe2ef]">
+            <p class="font-bold text-sm text-[#112d4e]">No Patient Bookings Recorded</p>
+            <p class="text-xs text-slate-500">Appointments scheduled by patients will appear in this ledger.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = facilityApts.map(apt => `
+        <div class="p-3.5 rounded-xl bg-[#f9f7f7] hover:bg-[#f1f4f9] border border-[#dbe2ef] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
+          <div class="flex items-center space-x-3">
+            <div class="px-2.5 py-1 rounded-lg bg-white border border-[#dbe2ef] font-mono font-bold text-[#112d4e] text-center">
+              ${apt.appointment_time}
+            </div>
+            <div>
+              <p class="font-bold text-[#112d4e]">${apt.patient_name} <span class="text-slate-500 font-normal">(${apt.patient_age} Yrs • ${apt.patient_gender})</span></p>
+              <p class="text-[11px] text-slate-600">Specialist: <strong class="text-[#3f72af]">${apt.doctor_name}</strong> • ${apt.appointment_date}</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 self-end sm:self-center">
+            <span class="font-mono text-[11px] text-slate-500">${apt.booking_reference}</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${apt.status === 'CONFIRMED' ? 'bg-sky-50 text-sky-700 border border-sky-300' : (apt.status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-300' : 'bg-red-50 text-red-600 border border-red-200')}">
+              ${apt.status}
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Modal controls for Onboarding New Doctor
+    function openAddDoctorModal() {
+      document.getElementById('modal-add-doctor').classList.remove('hidden');
+    }
+
+    function closeAddDoctorModal() {
+      document.getElementById('modal-add-doctor').classList.add('hidden');
+      document.getElementById('onboard-doctor-form').reset();
+    }
+
+    async function handleOnboardDoctorSubmit(e) {
+      e.preventDefault();
+      if (!currentAdminClinic) return;
+
+      const payload = {
+        name: document.getElementById('onboard-name').value.trim(),
+        email: document.getElementById('onboard-email').value.trim(),
+        password: document.getElementById('onboard-password').value.trim(),
+        clinic_id: currentAdminClinic.id,
+        department_id: document.getElementById('onboard-dept').value,
+        consultation_fee: parseInt(document.getElementById('onboard-fee').value, 10),
+        qualification: document.getElementById('onboard-quals').value.trim(),
+        experience_years: parseInt(document.getElementById('onboard-exp').value, 10),
+        avatar_url: 'https://images.pexels.com/photos/5888168/pexels-photo-5888168.jpeg?auto=compress&cs=tinysrgb&w=500',
+        available_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        slot_start_time: '09:00',
+        slot_end_time: '15:00',
+        slot_duration_minutes: 30
+      };
+
+      const btn = document.getElementById('onboard-submit-btn');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Provisioning Specialist in SQLite...`;
+
+      try {
+        const res = await fetch('/api/doctors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.message || 'Failed to onboard doctor.');
+
+        showToast(`Specialist ${payload.name} successfully onboarded!`, 'success');
+        closeAddDoctorModal();
+        fetchFacilityData();
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-user-check mr-1.5"></i> Save & Provision Specialist`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = sessionStorage.getItem('medipulse_admin_portal');
+      if (saved) {
+        try {
+          currentAdminClinic = JSON.parse(saved);
+          renderAdminWorkspace();
+        } catch (e) {
+          sessionStorage.removeItem('medipulse_admin_portal');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

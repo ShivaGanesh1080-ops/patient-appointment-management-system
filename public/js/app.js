@@ -167,8 +167,11 @@ document.addEventListener('keydown', (e) => {
  */
 function openStaffLoginGateway(e, mode = 'doctor') {
   if (e && e.preventDefault) e.preventDefault();
-  switchTab('tab-login');
-  switchStaffLoginMode(mode);
+  if (mode === 'admin') {
+    window.location.href = '/admin';
+  } else {
+    window.location.href = '/doctor';
+  }
 }
 
 /**
@@ -243,25 +246,13 @@ function updateStaffNavBadge() {
  * Master Tab Navigation Switcher
  */
 function switchTab(tabId) {
-  // Map legacy tab IDs to unified login
-  if (tabId === 'tab-doctor-login') {
-    openStaffLoginGateway(null, 'doctor');
+  // Direct redirection to dedicated standalone portals
+  if (tabId === 'tab-doctor-login' || tabId === 'tab-portal') {
+    window.location.href = '/doctor';
     return;
   }
-  if (tabId === 'tab-admin-login') {
-    openStaffLoginGateway(null, 'admin');
-    return;
-  }
-
-  // Protect doctor portal view if not authenticated
-  if (tabId === 'tab-portal' && !state.doctorSession) {
-    openStaffLoginGateway(null, 'doctor');
-    return;
-  }
-
-  // Protect hospital admin view if not authenticated
-  if (tabId === 'tab-admin' && !state.hospitalAdminSession) {
-    openStaffLoginGateway(null, 'admin');
+  if (tabId === 'tab-admin-login' || tabId === 'tab-admin') {
+    window.location.href = '/admin';
     return;
   }
 

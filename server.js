@@ -169,7 +169,24 @@ app.use('/api/stats', statsRoutes);
 // Catch 404 for undefined API routes
 app.use('/api/*', notFoundHandler);
 
-// Fallback to index.html for SPA client-side routes
+// Dedicated Role Webpage Routes (3 Discrete Standalone Portals)
+app.get('/doctor', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'doctor.html'));
+});
+
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+app.get('/patient', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'doctor.html'));
+});
+
+// Fallback to index.html for patient portal routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
