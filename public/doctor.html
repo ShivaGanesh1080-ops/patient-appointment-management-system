@@ -604,12 +604,6 @@
         showToast('Failed to update patient state: ' + e.message, 'error');
       }
     }
-        showToast(`Patient status updated: ${newStatus}`, 'success');
-        fetchDoctorAppointments();
-      } catch (e) {
-        showToast('Failed to update patient state: ' + e.message, 'error');
-      }
-    }
 
     // Auto restore session if present
     document.addEventListener('DOMContentLoaded', () => {
