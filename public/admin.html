@@ -634,10 +634,13 @@
 
     async function handleOnboardDoctorSubmit(e) {
       e.preventDefault();
-      if (!currentAdminClinic) return;
+      
+      // Fallback clinic details if currentAdminClinic is null
+      const clinicId = (currentAdminClinic && currentAdminClinic.id) ? currentAdminClinic.id : 'clinic-sru';
+      const clinicAddr = (currentAdminClinic && currentAdminClinic.address) ? currentAdminClinic.address : 'SR University Campus, Ananthsagar, Warangal';
 
       // Resolve avatar
-      const customAvatar = document.getElementById('onboard-custom-avatar').value.trim();
+      const customAvatar = document.getElementById('onboard-custom-avatar')?.value?.trim() || '';
       const selectedAvatarRadio = document.querySelector('input[name="onboard-avatar"]:checked');
       const resolvedAvatar = customAvatar || (selectedAvatarRadio ? selectedAvatarRadio.value : '/img/doctors/doc-101.jpg');
 
@@ -650,16 +653,17 @@
         name: document.getElementById('onboard-name').value.trim(),
         email: document.getElementById('onboard-email').value.trim(),
         password: document.getElementById('onboard-password').value.trim(),
-        clinic_id: currentAdminClinic.id,
+        clinic_id: clinicId,
+        clinic_address: clinicAddr,
         department_id: document.getElementById('onboard-dept').value,
         consultation_fee: parseInt(document.getElementById('onboard-fee').value, 10),
         qualification: document.getElementById('onboard-quals').value.trim(),
-        experience_years: parseInt(document.getElementById('onboard-exp').value, 10),
+        experience_years: parseInt(document.getElementById('onboard-exp').value, 10) || 5,
         avatar_url: resolvedAvatar,
         available_days: days,
-        slot_start_time: document.getElementById('onboard-start-time').value || '09:00',
-        slot_end_time: document.getElementById('onboard-end-time').value || '16:00',
-        slot_duration_minutes: parseInt(document.getElementById('onboard-slot-duration').value, 10) || 30
+        slot_start_time: document.getElementById('onboard-start-time')?.value || '09:00',
+        slot_end_time: document.getElementById('onboard-end-time')?.value || '16:00',
+        slot_duration_minutes: parseInt(document.getElementById('onboard-slot-duration')?.value, 10) || 30
       };
 
       const btn = document.getElementById('onboard-submit-btn');

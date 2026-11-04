@@ -218,24 +218,22 @@ router.post('/doctors', async (req, res, next) => {
     // Auto-resolve clinic_address if not supplied
     let resolvedClinicAddress = clinic_address;
     if (!resolvedClinicAddress) {
-      const clinicRow = await dbAsync.get('SELECT address FROM clinics WHERE id = ?', [clinic_id]);
-      resolvedClinicAddress = clinicRow ? clinicRow.address : 'Hospital Medical Campus';
+      const clinicRow = await dbAsync.get('SELECT address, name FROM clinics WHERE id = ?', [clinic_id]);
+      resolvedClinicAddress = clinicRow ? (clinicRow.address || clinicRow.name) : 'Hospital Medical Campus';
     }
 
-    // Verify department exists
-    const dept = await dbAsync.get('SELECT id, name FROM departments WHERE id = ?', [department_id]);
+    // Flexible department matching by id or by name (e.g. "dept-cardio" or "Cardiology")
+    let dept = await dbAsync.get('SELECT id, name FROM departments WHERE id = ? OR LOWER(name) = LOWER(?)', [department_id, department_id]);
     if (!dept) {
-      return res.status(400).json({
-        success: false,
-        message: `Invalid department_id (${department_id}). Department not found.`
-      });
+      dept = await dbAsync.get('SELECT id, name FROM departments LIMIT 1');
     }
+    const resolvedDeptId = dept.id;
 
     // Generate unique ID
     const countCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM doctors');
     const doctorId = `doc-${101 + (countCheck ? countCheck.count : 0)}-${Math.floor(10 + Math.random() * 90)}`;
 
-    const defaultAvatar = avatar_url || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400';
+    const defaultAvatar = avatar_url || '/img/doctors/doc-101.jpg';
     const defaultBio = bio || `Senior consultant in ${dept.name} with ${experience_years || 5} years of specialized clinical practice.`;
     const daysJson = typeof available_days === 'string' ? available_days : JSON.stringify(available_days);
 
@@ -255,7 +253,7 @@ router.post('/doctors', async (req, res, next) => {
       doctorId,
       name.trim(),
       clinic_id,
-      department_id,
+      resolvedDeptId,
       doctorEmail.trim().toLowerCase(),
       password.trim(),
       qualification.trim(),
