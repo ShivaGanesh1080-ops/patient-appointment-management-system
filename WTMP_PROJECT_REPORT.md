@@ -7,11 +7,11 @@
 ---
 
 ### Submitted By:
-1. **Shiva Ganesh Akku** (HTNO: `2503A51110`) — *Team Leader & Lead Systems Architect*
-2. **Team Member 2** (HTNO: `Member 2 HTNO`) — *Doctor Directory & Specialty Filtering Lead*
-3. **Team Member 3** (HTNO: `Member 3 HTNO`) — *Time Slot Generation & Scheduling Lead*
-4. **Team Member 4** (HTNO: `Member 4 HTNO`) — *Patient Records & Cancellation Engine Lead*
-5. **Team Member 5** (HTNO: `Member 5 HTNO`) — *Doctor Administrative Portal & Analytics Lead*
+1. **NEERUDU GIFTY TANIKSHA** (HTNO: `2503A51107`) — *Team Leader & Quality Assurance Lead*
+2. **CHANDUPATLA NAVEEN REDDY** (HTNO: `2503A51108`) — *Specialists Directory & Search Lead*
+3. **KARRE SHIVA SAKETH** (HTNO: `2503A51109`) — *Dynamic Slot Engine & Scheduling Lead*
+4. **AKKU SHIVA GANESH** (HTNO: `2503A51110`) — *Systems Architect & Backend Lead*
+5. **VELDANDI SAI CHARAN** (HTNO: `2503A51111`) — *Patient Booking & Clinical Pass Lead*
 
 ### Under the Guidance of:
 **Mr. Bura Vijay Kumar**  

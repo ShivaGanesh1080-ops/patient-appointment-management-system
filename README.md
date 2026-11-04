@@ -22,7 +22,7 @@ MediPulse integrates three distinct operational workspaces into a single glassmo
 | **📋 Patient Passes & History** | [`https://medipulse-sru.vercel.app/#tab-history`](https://medipulse-sru.vercel.app/#tab-history) | Self-service lookup by mobile number or booking reference (`APT-2026-XXXX`) with 1-click cancellation and slot recovery. |
 | **👨‍⚕️ Doctor Clinical Workspace** | [`https://medipulse-sru.vercel.app/#tab-portal`](https://medipulse-sru.vercel.app/#tab-portal) | Physician consultation desk: real-time patient queue for today, triage notes, one-click `Mark Completed` / `Cancel`, and fee tracking. |
 | **⚙️ Hospital Admin Console** | [`https://medipulse-sru.vercel.app/#tab-admin`](https://medipulse-sru.vercel.app/#tab-admin) | Operations desk: register new doctors (`POST /api/doctors`), set consultation fees, configure clinic schedules, and offboard specialists. |
-| **🎓 Architecture & Viva Guide** | [`https://medipulse-sru.vercel.app/#tab-viva`](https://medipulse-sru.vercel.app/#tab-viva) | Interactive REST API tester, 60-second viva defense cheat sheet, and visual client-to-database execution trace. |
+| **🏥 Multi-Clinic Platform Overview** | [`https://medipulse-sru.vercel.app/#tab-landing`](https://medipulse-sru.vercel.app/#tab-landing) | Multi-tenant healthcare network showcase, ACID slot reservation metrics, and system overview. |
 
 ---
 
@@ -162,9 +162,17 @@ When demonstrating this project to university examiners:
 
 ---
 
-### Project Attribution
+### Project Engineering Team & Attribution
 - **Institution:** SR University, Warangal, Telangana - 506371
 - **Course:** Web Technologies and Mobile Programming (WTMP)
+- **Department:** Department of Computer Science & Engineering (CSE Core)
 - **Faculty Guide:** Mr. Bura Vijay Kumar (Assistant Professor, School of CS&AI)
 - **Head of Department:** Dr. M. Sheshikala (Professor & Head, School of CS&AI)
-- **Team Leader:** Shiva Ganesh Akku (2503A51110)
+
+| Roll Number | Team Member Name | Designated Role |
+| :--- | :--- | :--- |
+| **2503A51107** | **NEERUDU GIFTY TANIKSHA** | **Team Leader & Project Coordinator** |
+| **2503A51108** | **CHANDUPATLA NAVEEN REDDY** | **Frontend UI/UX & Responsive Specialist** |
+| **2503A51109** | **KARRE SHIVA SAKETH** | **Client State & Quality Assurance Lead** |
+| **2503A51110** | **AKKU SHIVA GANESH** | **Systems Architect & Backend Lead** |
+| **2503A51111** | **VELDANDI SAI CHARAN** | **Database Architect & REST API Integration** |

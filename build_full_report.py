@@ -104,11 +104,11 @@ def build_document_xml():
     body.append(logo_p)
     
     body.append(make_p("Submitted by:", jc="center", bold=True, sz=22, space_before=140, space_after=80))
-    body.append(make_p("1. Shiva Ganesh Akku (2503A51110) — Team Leader", jc="center", bold=True, sz=22, space_after=40))
-    body.append(make_p("2. Team Member 2 (HTNO 2)", jc="center", sz=20, space_after=40))
-    body.append(make_p("3. Team Member 3 (HTNO 3)", jc="center", sz=20, space_after=40))
-    body.append(make_p("4. Team Member 4 (HTNO 4)", jc="center", sz=20, space_after=40))
-    body.append(make_p("5. Team Member 5 (HTNO 5)", jc="center", sz=20, space_after=180))
+    body.append(make_p("1. NEERUDU GIFTY TANIKSHA (2503A51107) — Team Leader", jc="center", bold=True, sz=22, space_after=40))
+    body.append(make_p("2. CHANDUPATLA NAVEEN REDDY (2503A51108)", jc="center", sz=20, space_after=40))
+    body.append(make_p("3. KARRE SHIVA SAKETH (2503A51109)", jc="center", sz=20, space_after=40))
+    body.append(make_p("4. AKKU SHIVA GANESH (2503A51110)", jc="center", sz=20, space_after=40))
+    body.append(make_p("5. VELDANDI SAI CHARAN (2503A51111)", jc="center", sz=20, space_after=180))
     
     body.append(make_p("Under the Guidance of:", jc="center", bold=True, sz=22, space_after=60))
     body.append(make_p("Mr. Bura Vijay Kumar", jc="center", bold=True, sz=24, space_after=40))
@@ -340,11 +340,11 @@ def build_document_xml():
     
     team_headers = ["Member Name & Roll", "Project Role", "Speaking Script for Viva (30 Sec)"]
     team_rows = [
-        ["Shiva Ganesh Akku\n(2503A51110)\nTeam Leader", "Systems Architect & Backend Lead", "I designed the 3-tier architecture, built the Express RESTful API, and engineered the SQLite schema. I implemented atomic transactions and compound constraints to eliminate double-booking race conditions."],
-        ["Team Member 2\n(HTNO 2)", "Doctor Directory & UI Lead", "I developed the doctor directory module. I implemented client-side debounced text search, specialty filtering, and multi-parameter sorting by rating, experience, and consultation fee using vanilla JavaScript."],
-        ["Team Member 3\n(HTNO 3)", "Slot Engine & Scheduling Lead", "I built the dynamic slot calculation engine. When a patient selects a doctor and date, the backend computes 30-minute intervals based on clinic hours and cross-references active reservations in real-time."],
-        ["Team Member 4\n(HTNO 4)", "Patient Booking & Slip Lead", "I implemented the patient booking form with input validation, phone-based history search, cancellation workflow, and the instant printable OPD appointment slip generator."],
-        ["Team Member 5\n(HTNO 5)", "Doctor Administrative Portal Lead", "I engineered the Doctor Administrative Portal. Physicians can select their profile, inspect their daily patient queue, track consultation revenue, and update visit status to Completed or Cancelled."]
+        ["NEERUDU GIFTY TANIKSHA\n(2503A51107)\nTeam Leader", "Team Leader & Quality Assurance Lead", "As Team Leader, I coordinated project milestones, defined the development workflow, conducted end-to-end user testing across multi-tenant hospital branches, and ensured our system satisfies all WTMP curriculum and clinical compliance standards."],
+        ["AKKU SHIVA GANESH\n(2503A51110)", "Systems Architect & Backend Lead", "I engineered the 3-tier architecture, built the Express RESTful API, designed the multi-tenant SQLite schema, and implemented ACID transactions with compound uniqueness guards to eliminate double-booking race conditions."],
+        ["CHANDUPATLA NAVEEN REDDY\n(2503A51108)", "Specialists Directory & Search Lead", "I developed the medical specialists directory module. I implemented client-side debounced text search, hospital branch filtering, and multi-parameter sorting by rating, experience, and consultation fees."],
+        ["KARRE SHIVA SAKETH\n(2503A51109)", "Dynamic Slot Engine & Scheduling Lead", "I built the dynamic slot calculation engine. When a patient selects a doctor and date, the backend computes discrete 30-minute intervals based on clinic hours and cross-references active reservations in real-time."],
+        ["VELDANDI SAI CHARAN\n(2503A51111)", "Patient Booking & Clinical Pass Lead", "I developed the booking workflow with client-side regex input validation, phone-based appointment pass history lookup, cancellation management, and the instant printable OPD appointment pass generator."]
     ]
     body.append(make_table(team_headers, team_rows))
     body.append(make_page_break())

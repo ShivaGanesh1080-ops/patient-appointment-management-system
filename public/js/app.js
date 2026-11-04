@@ -49,70 +49,16 @@ async function initializeApp() {
 }
 
 /**
- * Switch Portal Mode: Patient Portal vs Doctor Workspace vs Hospital Admin
+ * Switch Portal Mode / Shortcut
  */
 function switchPortalMode(mode) {
   state.portalMode = mode;
-
-  const patientBtn = document.getElementById('portal-btn-patient');
-  const doctorBtn = document.getElementById('portal-btn-doctor');
-  const adminBtn = document.getElementById('portal-btn-admin');
-
-  const patientNavGroup = document.getElementById('nav-patient-group');
-  const doctorNavGroup = document.getElementById('nav-doctor-group');
-  const mobilePatientNav = document.getElementById('mobile-nav-patient');
-  const mobileDoctorNav = document.getElementById('mobile-nav-doctor');
-
-  // Reset all buttons
-  [patientBtn, doctorBtn, adminBtn].forEach(b => {
-    if (b) {
-      b.classList.remove('active');
-      b.classList.add('text-slate-500');
-    }
-  });
-
   if (mode === 'doctor') {
-    if (doctorBtn) {
-      doctorBtn.classList.add('active');
-      doctorBtn.classList.remove('text-slate-500');
-    }
-
-    if (patientNavGroup) patientNavGroup.classList.add('hidden');
-    if (doctorNavGroup) doctorNavGroup.classList.remove('hidden');
-    if (mobilePatientNav) mobilePatientNav.classList.add('hidden');
-    if (mobileDoctorNav) mobileDoctorNav.classList.remove('hidden');
-
     switchTab('tab-portal');
-    showToast('👨‍⚕️ Clinical Workspace active. Viewing doctor consultation queue.', 'info');
   } else if (mode === 'admin') {
-    if (adminBtn) {
-      adminBtn.classList.add('active');
-      adminBtn.classList.remove('text-slate-500');
-    }
-
-    if (patientNavGroup) patientNavGroup.classList.add('hidden');
-    if (doctorNavGroup) doctorNavGroup.classList.add('hidden');
-    if (mobilePatientNav) mobilePatientNav.classList.add('hidden');
-    if (mobileDoctorNav) mobileDoctorNav.classList.add('hidden');
-
     switchTab('tab-admin');
-    if (typeof renderAdminRoster === 'function') renderAdminRoster();
-    showToast('⚙️ Hospital Operations & Staff Desk active. Onboard specialists.', 'info');
   } else {
-    if (patientBtn) {
-      patientBtn.classList.add('active');
-      patientBtn.classList.remove('text-slate-500');
-    }
-
-    if (patientNavGroup) patientNavGroup.classList.remove('hidden');
-    if (doctorNavGroup) doctorNavGroup.classList.add('hidden');
-    if (mobilePatientNav) mobilePatientNav.classList.remove('hidden');
-    if (mobileDoctorNav) mobileDoctorNav.classList.add('hidden');
-
-    if (state.currentTab === 'tab-portal' || state.currentTab === 'tab-admin') {
-      switchTab('tab-doctors');
-    }
-    showToast('🩺 Patient Portal view active. Browse verified specialists.', 'info');
+    switchTab('tab-doctors');
   }
 }
 
@@ -121,22 +67,10 @@ function switchPortalMode(mode) {
  */
 function handleHashRouting() {
   const hash = window.location.hash.replace('#', '') || 'tab-doctors';
-  if (hash === 'tab-landing') {
-    switchTab('tab-landing');
-  } else if (hash === 'tab-portal') {
-    switchPortalMode('doctor');
-  } else if (hash === 'tab-admin') {
-    switchPortalMode('admin');
-  } else if (hash === 'tab-viva') {
-    switchTab('tab-viva');
-  } else if (hash === 'tab-booking') {
-    switchPortalMode('patient');
-    switchTab('tab-booking');
-  } else if (hash === 'tab-history') {
-    switchPortalMode('patient');
-    switchTab('tab-history');
+  const validTabs = ['tab-landing', 'tab-doctors', 'tab-booking', 'tab-history', 'tab-portal', 'tab-admin'];
+  if (validTabs.includes(hash)) {
+    switchTab(hash);
   } else {
-    switchPortalMode('patient');
     switchTab('tab-doctors');
   }
 }
@@ -217,7 +151,7 @@ function renderDepartmentFilters() {
   if (!container) return;
 
   let html = `
-    <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold ${state.activeDepartment === 'all' ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}" data-dept="all" onclick="filterByDepartment('all')">
+    <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold ${state.activeDepartment === 'all' ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}" data-dept="all" onclick="filterByDepartment('all')">
       All Specialties
     </button>
   `;
@@ -225,7 +159,7 @@ function renderDepartmentFilters() {
   state.departments.forEach(dept => {
     const isActive = state.activeDepartment === dept.id;
     html += `
-      <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap ${isActive ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}" data-dept="${dept.id}" onclick="filterByDepartment('${dept.id}')">
+      <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap ${isActive ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}" data-dept="${dept.id}" onclick="filterByDepartment('${dept.id}')">
         ${dept.name} (${dept.doctor_count})
       </button>
     `;
@@ -358,13 +292,13 @@ function renderDoctorsGrid(doctors) {
   }
 
   grid.innerHTML = doctors.map(doc => {
-    const deptIconClass = DEPT_ICONS[doc.department_name] || 'fa-solid fa-user-doctor text-emerald-600';
+    const deptIconClass = DEPT_ICONS[doc.department_name] || 'fa-solid fa-user-doctor text-indigo-600';
     const daysBadges = doc.available_days.map(d => 
       `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-medium">${d.slice(0, 3)}</span>`
     ).join(' ');
 
     return `
-      <article class="doctor-card bg-white rounded-3xl border border-slate-200 p-5 flex flex-col justify-between shadow-sm relative overflow-hidden group">
+      <article class="doctor-card bg-white rounded-3xl border border-slate-200/80 p-5 flex flex-col justify-between shadow-sm relative overflow-hidden group hover:border-indigo-300">
         
         <div>
           <!-- Top Row: Avatar & Rating -->
@@ -378,16 +312,16 @@ function renderDoctorsGrid(doctors) {
               />
               <div>
                 <div class="flex items-center space-x-1.5 flex-wrap gap-y-1 mb-1">
-                  <span class="inline-flex items-center text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <span class="inline-flex items-center text-[10px] font-semibold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
                     <i class="${deptIconClass} mr-1 text-[10px]"></i> ${doc.department_name}
                   </span>
                   ${doc.clinic_name ? `
-                    <span class="inline-flex items-center text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                    <span class="inline-flex items-center text-[10px] font-bold text-violet-800 bg-violet-50 px-2 py-0.5 rounded border border-violet-200">
                       <i class="fa-solid fa-hospital text-[9px] mr-1"></i> ${doc.clinic_name}
                     </span>
                   ` : ''}
                 </div>
-                <h3 class="font-extrabold text-base text-slate-900 group-hover:text-emerald-600 transition-colors">${doc.name}</h3>
+                <h3 class="font-extrabold text-base text-slate-900 group-hover:text-indigo-600 transition-colors">${doc.name}</h3>
                 <p class="text-xs text-slate-500 font-medium line-clamp-1">${doc.qualification}</p>
               </div>
             </div>
@@ -406,7 +340,7 @@ function renderDoctorsGrid(doctors) {
           <div class="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3 mb-4">
             <div class="flex items-center justify-between">
               <span class="text-slate-400"><i class="fa-solid fa-hospital mr-1 text-slate-400"></i> Clinic Branch:</span>
-              <span class="font-semibold text-teal-700">${doc.clinic_name || 'SRU Campus'} (${doc.clinic_city || 'Warangal'})</span>
+              <span class="font-semibold text-violet-700">${doc.clinic_name || 'SRU Campus'} (${doc.clinic_city || 'Warangal'})</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-slate-400"><i class="fa-solid fa-briefcase mr-1 text-slate-400"></i> Experience:</span>
@@ -414,7 +348,7 @@ function renderDoctorsGrid(doctors) {
             </div>
             <div class="flex items-center justify-between">
               <span class="text-slate-400"><i class="fa-solid fa-indian-rupee-sign mr-1 text-slate-400"></i> Consultation Fee:</span>
-              <span class="font-bold text-emerald-600 text-sm">₹${doc.consultation_fee}</span>
+              <span class="font-bold text-slate-900 text-sm">₹${doc.consultation_fee}</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-slate-400"><i class="fa-regular fa-clock mr-1 text-slate-400"></i> Clinic Hours:</span>
@@ -437,7 +371,7 @@ function renderDoctorsGrid(doctors) {
           </button>
           <button 
             onclick="bookWithDoctor('${doc.id}')" 
-            class="px-3 py-2 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow transition-all flex items-center justify-center space-x-1 shadow-emerald-500/20"
+            class="px-3 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm hover:shadow transition-all flex items-center justify-center space-x-1 shadow-indigo-500/20"
           >
             <i class="fa-regular fa-calendar-check text-[11px]"></i>
             <span>Book Slot</span>
@@ -489,7 +423,7 @@ async function viewDoctorBio(doctorId) {
       </div>
 
       <div class="pt-3">
-        <button onclick="closeDoctorBioModal(); bookWithDoctor('${doc.id}')" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center space-x-2 shadow-md shadow-emerald-500/20">
+        <button onclick="closeDoctorBioModal(); bookWithDoctor('${doc.id}')" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center justify-center space-x-2 shadow-md shadow-indigo-500/20">
           <i class="fa-regular fa-calendar-check"></i>
           <span>Proceed to Book Appointment</span>
         </button>
@@ -607,6 +541,16 @@ async function testApiEndpoint(method, endpoint) {
   }
 }
 
+function openTeamModal() {
+  const modal = document.getElementById('modal-team');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeTeamModal() {
+  const modal = document.getElementById('modal-team');
+  if (modal) modal.classList.add('hidden');
+}
+
 // Global expose
 window.switchPortalMode = switchPortalMode;
 window.switchTab = switchTab;
@@ -617,6 +561,8 @@ window.handleDoctorSearch = handleDoctorSearch;
 window.handleSortChange = handleSortChange;
 window.viewDoctorBio = viewDoctorBio;
 window.closeDoctorBioModal = closeDoctorBioModal;
+window.openTeamModal = openTeamModal;
+window.closeTeamModal = closeTeamModal;
 window.startBookingQuick = startBookingQuick;
 window.bookWithDoctor = bookWithDoctor;
 window.showToast = showToast;

@@ -162,12 +162,12 @@ async function renderAdminRoster() {
             </div>
           </td>
           <td class="py-3 px-4">
-            <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold bg-violet-50 text-violet-800 border border-violet-200">
               <i class="fa-solid fa-hospital text-[9px] mr-1"></i> ${doc.clinic_name || 'SRU Campus'}
             </span>
           </td>
           <td class="py-3 px-4">
-            <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-800 border border-indigo-200">
               ${doc.department_name}
             </span>
           </td>

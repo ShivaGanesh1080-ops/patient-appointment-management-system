@@ -153,12 +153,12 @@ async function renderDoctorSnapshot(doctorId) {
         <img 
           src="${doc.avatar_url}" 
           alt="${doc.name}" 
-          class="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-400/50 shadow-md bg-slate-800"
+          class="w-16 h-16 rounded-2xl object-cover border-2 border-indigo-400/50 shadow-md bg-slate-800"
         />
         <div>
           <div class="flex items-center space-x-2">
-            <span class="text-xs font-semibold uppercase tracking-wider text-emerald-300">${doc.department_name} Consultation Desk</span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-800 text-teal-200 border border-teal-600">${doc.clinic_name || 'SRU Centre'}</span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">${doc.department_name} Consultation Desk</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-violet-900 text-violet-200 border border-violet-700">${doc.clinic_name || 'SRU Centre'}</span>
           </div>
           <h3 class="text-xl font-bold text-white">${doc.name}</h3>
           <p class="text-xs text-slate-300">${doc.qualification} • ${doc.clinic_address}</p>
@@ -166,13 +166,13 @@ async function renderDoctorSnapshot(doctorId) {
       </div>
 
       <div class="flex items-center space-x-3 text-xs">
-        <div class="bg-emerald-950/70 border border-emerald-700/60 px-3.5 py-2 rounded-xl text-center">
-          <p class="text-emerald-300">Scheduled</p>
+        <div class="bg-indigo-950/70 border border-indigo-700/60 px-3.5 py-2 rounded-xl text-center">
+          <p class="text-indigo-300">Scheduled</p>
           <p class="text-lg font-bold text-white">${doc.stats.activeAppointments}</p>
         </div>
-        <div class="bg-teal-950/70 border border-teal-700/60 px-3.5 py-2 rounded-xl text-center">
-          <p class="text-teal-300">Completed</p>
-          <p class="text-lg font-bold text-teal-300">${doc.stats.completedAppointments}</p>
+        <div class="bg-violet-950/70 border border-violet-700/60 px-3.5 py-2 rounded-xl text-center">
+          <p class="text-violet-300">Completed</p>
+          <p class="text-lg font-bold text-violet-300">${doc.stats.completedAppointments}</p>
         </div>
         <div class="bg-slate-900/80 border border-slate-700/60 px-3.5 py-2 rounded-xl text-center">
           <p class="text-slate-300">Fee / Visit</p>

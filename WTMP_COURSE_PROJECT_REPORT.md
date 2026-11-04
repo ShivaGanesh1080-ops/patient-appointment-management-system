@@ -10,11 +10,11 @@
 
 | S.No. | Student Name | Hall Ticket Number (HTNO) | Role in Project |
 |---|---|---|---|
-| 1. | **Shiva Ganesh Akku** | **2503A51110** | Team Leader & System Architect |
-| 2. | [Student Name 2] | [HTNO 2] | Frontend UI/UX & Responsive Specialist |
-| 3. | [Student Name 3] | [HTNO 3] | Client-Side State & Async Controller |
-| 4. | [Student Name 4] | [HTNO 4] | Backend REST API & Middleware Specialist |
-| 5. | [Student Name 5] | [HTNO 5] | Database Architect & QA/Testing Lead |
+| 1. | **NEERUDU GIFTY TANIKSHA** | **2503A51107** | Team Leader & Project Coordinator |
+| 2. | **CHANDUPATLA NAVEEN REDDY** | **2503A51108** | Frontend UI/UX & Responsive Specialist |
+| 3. | **KARRE SHIVA SAKETH** | **2503A51109** | Client State & Quality Assurance Lead |
+| 4. | **AKKU SHIVA GANESH** | **2503A51110** | Systems Architect & Backend Lead |
+| 5. | **VELDANDI SAI CHARAN** | **2503A51111** | Database Architect & REST API Integration |
 
 ---
 
@@ -61,11 +61,11 @@ We express our heartfelt gratitude to **Dr. M. Sheshikala**, Professor & Head, S
 We extend our sincere thanks to all teaching and non-teaching faculty members of the School of CS&AI for their continuous cooperation. Finally, we thank our parents and peers for their moral support, motivation, and belief in our efforts.
 
 **Project Associates:**  
-1. Shiva Ganesh Akku (2503A51110)  
-2. [Student Name 2] ([HTNO 2])  
-3. [Student Name 3] ([HTNO 3])  
-4. [Student Name 4] ([HTNO 4])  
-5. [Student Name 5] ([HTNO 5])  
+1. NEERUDU GIFTY TANIKSHA (2503A51107) — Team Leader  
+2. CHANDUPATLA NAVEEN REDDY (2503A51108)  
+3. KARRE SHIVA SAKETH (2503A51109)  
+4. AKKU SHIVA GANESH (2503A51110)  
+5. VELDANDI SAI CHARAN (2503A51111)  
 
 ---
 
