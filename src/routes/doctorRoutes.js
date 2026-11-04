@@ -241,33 +241,69 @@ router.post('/doctors', async (req, res, next) => {
     const slugName = name.toLowerCase().replace('dr. ', '').replace(/[^a-z0-9]+/g, '.');
     const doctorEmail = email || `dr.${slugName}@${clinic_id.replace('clinic-', '')}.health`;
 
-    const insertSql = `
-      INSERT INTO doctors (
-        id, name, clinic_id, department_id, email, password, qualification, experience_years,
-        consultation_fee, rating, clinic_address, avatar_url, bio,
-        available_days, slot_start_time, slot_end_time, slot_duration_minutes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    // Idempotency: check if doctor with this ID or email already exists
+    const existing = await dbAsync.get(
+      'SELECT id FROM doctors WHERE (id = ? AND ? IS NOT NULL) OR LOWER(email) = LOWER(?)',
+      [req.body.id || null, req.body.id || null, doctorEmail.trim()]
+    );
 
-    await dbAsync.run(insertSql, [
-      doctorId,
-      name.trim(),
-      clinic_id,
-      resolvedDeptId,
-      doctorEmail.trim().toLowerCase(),
-      password.trim(),
-      qualification.trim(),
-      parseInt(experience_years, 10) || 5,
-      parseFloat(consultation_fee),
-      parseFloat(rating) || 4.9,
-      resolvedClinicAddress.trim(),
-      defaultAvatar,
-      defaultBio,
-      daysJson,
-      slot_start_time,
-      slot_end_time,
-      parseInt(slot_duration_minutes, 10) || 30
-    ]);
+    let activeDoctorId = req.body.id || doctorId;
+
+    if (existing) {
+      activeDoctorId = existing.id;
+      const updateSql = `
+        UPDATE doctors SET
+          name = ?, clinic_id = ?, department_id = ?, qualification = ?, experience_years = ?,
+          consultation_fee = ?, rating = ?, clinic_address = ?, avatar_url = ?, bio = ?,
+          available_days = ?, slot_start_time = ?, slot_end_time = ?, slot_duration_minutes = ?
+        WHERE id = ?
+      `;
+      await dbAsync.run(updateSql, [
+        name.trim(),
+        clinic_id,
+        resolvedDeptId,
+        qualification.trim(),
+        parseInt(experience_years, 10) || 5,
+        parseFloat(consultation_fee),
+        parseFloat(rating) || 4.9,
+        resolvedClinicAddress.trim(),
+        defaultAvatar,
+        defaultBio,
+        daysJson,
+        slot_start_time,
+        slot_end_time,
+        parseInt(slot_duration_minutes, 10) || 30,
+        activeDoctorId
+      ]);
+    } else {
+      const insertSql = `
+        INSERT INTO doctors (
+          id, name, clinic_id, department_id, email, password, qualification, experience_years,
+          consultation_fee, rating, clinic_address, avatar_url, bio,
+          available_days, slot_start_time, slot_end_time, slot_duration_minutes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+      await dbAsync.run(insertSql, [
+        activeDoctorId,
+        name.trim(),
+        clinic_id,
+        resolvedDeptId,
+        doctorEmail.trim().toLowerCase(),
+        password.trim(),
+        qualification.trim(),
+        parseInt(experience_years, 10) || 5,
+        parseFloat(consultation_fee),
+        parseFloat(rating) || 4.9,
+        resolvedClinicAddress.trim(),
+        defaultAvatar,
+        defaultBio,
+        daysJson,
+        slot_start_time,
+        slot_end_time,
+        parseInt(slot_duration_minutes, 10) || 30
+      ]);
+    }
 
     const created = await dbAsync.get(
       `SELECT doc.*, dept.name AS department_name, dept.icon AS department_icon, c.name AS clinic_name
@@ -275,7 +311,7 @@ router.post('/doctors', async (req, res, next) => {
        JOIN departments dept ON doc.department_id = dept.id 
        LEFT JOIN clinics c ON doc.clinic_id = c.id
        WHERE doc.id = ?`,
-      [doctorId]
+      [activeDoctorId]
     );
 
     created.available_days = JSON.parse(created.available_days || '[]');

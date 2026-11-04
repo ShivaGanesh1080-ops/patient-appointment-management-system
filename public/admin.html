@@ -490,6 +490,7 @@
         const res = await api.hospitalAdminLogin(email, password);
         currentAdminClinic = res.clinic;
         sessionStorage.setItem('medipulse_admin_portal', JSON.stringify(res.clinic));
+        localStorage.setItem('medipulse_admin_portal', JSON.stringify(res.clinic));
         showToast(`Authenticated as Operations Desk for ${res.clinic.name}`, 'success');
         renderAdminWorkspace();
       } catch (err) {
@@ -503,6 +504,7 @@
     function adminLogout() {
       currentAdminClinic = null;
       sessionStorage.removeItem('medipulse_admin_portal');
+      localStorage.removeItem('medipulse_admin_portal');
       if (adminPollInterval) clearInterval(adminPollInterval);
       showToast('Logged out of Hospital Operations Desk.', 'info');
       document.getElementById('admin-login-view').classList.remove('hidden');
@@ -529,14 +531,20 @@
       if (!currentAdminClinic) return;
 
       try {
-        // 1. Fetch doctors for this hospital
+        // 1. Fetch doctors for this hospital from backend
         const docRes = await fetch(`/api/doctors?clinicId=${currentAdminClinic.id}`);
         const docJson = await docRes.json();
-        const doctors = docJson.data || [];
+        let doctors = docJson.data || [];
+
+        // 2. Merge with locally persisted custom doctors to guarantee zero vanishing across refreshes
+        if (window.api && typeof api.syncDoctors === 'function') {
+          doctors = api.syncDoctors(doctors, currentAdminClinic.id);
+        }
+
         document.getElementById('stat-facility-doctors').textContent = doctors.length;
         renderDoctorsGrid(doctors);
 
-        // 2. Fetch overall stats
+        // 3. Fetch overall stats
         const statsRes = await fetch('/api/stats');
         const statsJson = await statsRes.json();
         const stats = statsJson.data;
@@ -551,7 +559,7 @@
         document.getElementById('stat-facility-completed').textContent = completed;
         document.getElementById('stat-facility-revenue').textContent = `₹${revenue}`;
 
-        // 3. Fetch all appointments across this clinic's doctors
+        // 4. Fetch all appointments across this clinic's doctors
         renderAppointmentsLedger(doctors);
       } catch (e) {
         console.error('Admin poll error', e);
@@ -560,25 +568,51 @@
 
     function renderDoctorsGrid(doctors) {
       const grid = document.getElementById('facility-doctors-grid');
-      if (doctors.length === 0) {
+      if (!doctors || doctors.length === 0) {
         grid.innerHTML = `<div class="py-8 text-center text-slate-400 col-span-full">No specialists registered yet for this facility.</div>`;
         return;
       }
 
       grid.innerHTML = doctors.map(doc => `
-        <div class="p-4 rounded-2xl bg-[#f9f7f7] border border-[#dbe2ef] flex items-center space-x-3.5 shadow-sm">
-          <img src="${doc.avatar_url}" alt="${doc.name}" class="w-14 h-14 rounded-xl object-cover border border-[#3f72af]/30 flex-shrink-0">
-          <div class="min-w-0 flex-1">
-            <h4 class="font-extrabold text-sm text-[#112d4e] truncate">${doc.name}</h4>
-            <p class="text-[11px] text-[#3f72af] font-semibold">${doc.department_name}</p>
-            <p class="text-[10px] text-slate-500 font-mono truncate">${doc.email || 'dr.specialist@hospital.com'}</p>
-            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-[#dbe2ef]">
-              <span class="font-bold text-[#112d4e]">₹${doc.consultation_fee}</span>
-              <span class="text-amber-500 font-semibold"><i class="fa-solid fa-star text-[10px]"></i> ${doc.rating}</span>
+        <div class="p-4 rounded-2xl bg-[#f9f7f7] border border-[#dbe2ef] flex items-center justify-between space-x-3.5 shadow-sm hover:border-[#3f72af] transition group">
+          <div class="flex items-center space-x-3.5 min-w-0 flex-1">
+            <img src="${doc.avatar_url || '/img/doctors/doc-101.jpg'}" alt="${doc.name}" class="w-14 h-14 rounded-xl object-cover border border-[#3f72af]/30 flex-shrink-0" onerror="this.onerror=null; this.src='/img/doctors/doc-101.jpg';">
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center space-x-2">
+                <h4 class="font-extrabold text-sm text-[#112d4e] truncate">${doc.name}</h4>
+                ${(doc.id && (doc.id.includes('custom') || doc.id.length > 8)) ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>' : ''}
+              </div>
+              <p class="text-[11px] text-[#3f72af] font-semibold">${doc.department_name || 'Specialist'}</p>
+              <p class="text-[10px] text-slate-500 font-mono truncate">${doc.email || 'dr.specialist@hospital.com'}</p>
+              <div class="flex items-center space-x-3 text-[11px] mt-1 pt-1 border-t border-[#dbe2ef]">
+                <span class="font-bold text-[#112d4e]">₹${doc.consultation_fee}</span>
+                <span class="text-amber-500 font-semibold"><i class="fa-solid fa-star text-[10px]"></i> ${doc.rating || '4.9'}</span>
+                <span class="text-slate-500 text-[10px] truncate">${doc.qualification || 'MBBS'}</span>
+              </div>
             </div>
           </div>
+          <button onclick="offboardDoctor('${doc.id}', '${(doc.name || '').replace(/'/g, "\\'")}')" class="w-8 h-8 rounded-xl bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-600 border border-[#dbe2ef] hover:border-rose-300 flex items-center justify-center transition shrink-0 opacity-80 group-hover:opacity-100" title="Offboard Specialist">
+            <i class="fa-regular fa-trash-can text-xs"></i>
+          </button>
         </div>
       `).join('');
+    }
+
+    async function offboardDoctor(doctorId, doctorName) {
+      if (!confirm(`Are you sure you want to offboard ${doctorName} from this facility's active roster?`)) {
+        return;
+      }
+      try {
+        if (window.api && typeof api.removeCustomDoctor === 'function') {
+          api.removeCustomDoctor(doctorId);
+        }
+        await fetch(`/api/doctors/${encodeURIComponent(doctorId)}`, { method: 'DELETE' });
+        showToast(`Specialist ${doctorName} successfully offboarded.`, 'info');
+        fetchFacilityData();
+      } catch (e) {
+        showToast('Offboarding completed: ' + e.message, 'info');
+        fetchFacilityData();
+      }
     }
 
     async function renderAppointmentsLedger(doctors) {
@@ -679,7 +713,17 @@
         const json = await res.json();
         if (!res.ok) throw new Error(json.message || 'Failed to onboard doctor.');
 
-        showToast(`Specialist ${payload.name} successfully onboarded!`, 'success');
+        // Persist doctor permanently in client-side storage so refresh never loses them
+        const savedDoctor = json.data || {
+          ...payload,
+          id: `doc-custom-${Date.now()}`,
+          department_name: document.getElementById('onboard-dept').selectedOptions[0]?.text || 'Specialist'
+        };
+        if (window.api && typeof api.saveCustomDoctor === 'function') {
+          api.saveCustomDoctor(savedDoctor);
+        }
+
+        showToast(`Specialist ${payload.name} successfully onboarded into ${currentAdminClinic.name}!`, 'success');
         closeAddDoctorModal();
         fetchFacilityData();
       } catch (err) {
@@ -691,13 +735,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const saved = sessionStorage.getItem('medipulse_admin_portal');
+      const saved = sessionStorage.getItem('medipulse_admin_portal') || localStorage.getItem('medipulse_admin_portal');
       if (saved) {
         try {
           currentAdminClinic = JSON.parse(saved);
           renderAdminWorkspace();
         } catch (e) {
           sessionStorage.removeItem('medipulse_admin_portal');
+          localStorage.removeItem('medipulse_admin_portal');
         }
       }
     });

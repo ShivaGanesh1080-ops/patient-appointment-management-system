@@ -666,7 +666,11 @@ async function loadDoctors() {
     };
 
     const res = await api.getDoctors(params);
-    state.doctors = res.data;
+    let doctorsList = res.data || [];
+    if (window.api && typeof api.syncDoctors === 'function') {
+      doctorsList = api.syncDoctors(doctorsList, state.activeClinic);
+    }
+    state.doctors = doctorsList;
     renderDoctors(state.doctors);
 
     if (typeof populateBookingDoctors === 'function') {

@@ -66,6 +66,10 @@ async function handleAddDoctorSubmit(e) {
 
     const res = await api.createDoctor(payload);
 
+    if (window.api && typeof api.saveCustomDoctor === 'function' && res.data) {
+      api.saveCustomDoctor(res.data);
+    }
+
     if (typeof showToast === 'function') {
       showToast(`🎉 Specialist ${res.data.name} successfully registered in ${res.data.department_name}!`, 'success');
     }

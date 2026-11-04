@@ -295,9 +295,27 @@
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying Credentials...`;
 
       try {
-        const res = await api.doctorLogin(email, password);
+        let res;
+        try {
+          res = await api.doctorLogin(email, password);
+        } catch (apiErr) {
+          // Self-healing check: if onboarded custom doctor is missing from serverless cold-start
+          const customDocs = api.getCustomDoctors();
+          const match = customDocs.find(d => 
+            d.email && d.email.toLowerCase() === email.toLowerCase() && 
+            (!d.password || d.password === password)
+          );
+          if (match) {
+            await api.healDoctorOnServer(match);
+            res = await api.doctorLogin(email, password);
+          } else {
+            throw apiErr;
+          }
+        }
+
         currentDoctor = res.doctor;
         sessionStorage.setItem('medipulse_doctor_portal', JSON.stringify(res.doctor));
+        localStorage.setItem('medipulse_doctor_portal', JSON.stringify(res.doctor));
         showToast(`Welcome back, ${res.doctor.name}! Live cabin ready.`, 'success');
         renderDoctorWorkspace();
       } catch (err) {
@@ -311,6 +329,7 @@
     function doctorLogout() {
       currentDoctor = null;
       sessionStorage.removeItem('medipulse_doctor_portal');
+      localStorage.removeItem('medipulse_doctor_portal');
       if (pollInterval) clearInterval(pollInterval);
       showToast('Logged out of Doctor Workspace.', 'info');
       document.getElementById('doctor-login-view').classList.remove('hidden');
@@ -458,13 +477,14 @@
 
     // Auto restore session if present
     document.addEventListener('DOMContentLoaded', () => {
-      const saved = sessionStorage.getItem('medipulse_doctor_portal');
+      const saved = sessionStorage.getItem('medipulse_doctor_portal') || localStorage.getItem('medipulse_doctor_portal');
       if (saved) {
         try {
           currentDoctor = JSON.parse(saved);
           renderDoctorWorkspace();
         } catch (e) {
           sessionStorage.removeItem('medipulse_doctor_portal');
+          localStorage.removeItem('medipulse_doctor_portal');
         }
       }
     });

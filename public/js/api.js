@@ -146,6 +146,112 @@ const api = {
       body: JSON.stringify(payload)
     });
     return await handleResponse(res);
+  },
+
+  // ---------------------------------------------------------
+  // Custom Doctor Persistence & Self-Healing Synchronization
+  // ---------------------------------------------------------
+  getCustomDoctors() {
+    try {
+      return JSON.parse(localStorage.getItem('medipulse_custom_doctors') || '[]');
+    } catch (e) {
+      return [];
+    }
+  },
+
+  saveCustomDoctor(doctor) {
+    if (!doctor || !doctor.name) return;
+    try {
+      let list = this.getCustomDoctors();
+      if (!doctor.department_name && doctor.department_id) {
+        const deptNames = {
+          'dept-cardio': 'Cardiology',
+          'dept-derma': 'Dermatology',
+          'dept-pediatrics': 'Pediatrics',
+          'dept-ortho': 'Orthopedics',
+          'dept-neuro': 'Neurology',
+          'dept-genmed': 'General Medicine'
+        };
+        doctor.department_name = deptNames[doctor.department_id] || 'Specialist';
+      }
+      const existingIdx = list.findIndex(d => 
+        (d.id && doctor.id && d.id === doctor.id) || 
+        (d.email && doctor.email && d.email.toLowerCase() === doctor.email.toLowerCase())
+      );
+      if (existingIdx >= 0) {
+        list[existingIdx] = { ...list[existingIdx], ...doctor };
+      } else {
+        list.unshift(doctor);
+      }
+      localStorage.setItem('medipulse_custom_doctors', JSON.stringify(list));
+    } catch (e) {
+      console.warn('Failed to persist custom doctor locally:', e);
+    }
+  },
+
+  removeCustomDoctor(id) {
+    try {
+      let list = this.getCustomDoctors();
+      list = list.filter(d => d.id !== id);
+      localStorage.setItem('medipulse_custom_doctors', JSON.stringify(list));
+    } catch (e) {
+      console.warn('Failed to remove custom doctor from local storage:', e);
+    }
+  },
+
+  syncDoctors(serverDoctors = [], clinicId = null) {
+    let result = Array.isArray(serverDoctors) ? [...serverDoctors] : [];
+    const customDocs = this.getCustomDoctors();
+
+    const matchingCustom = customDocs.filter(doc => {
+      if (!clinicId || clinicId === 'all') return true;
+      return doc.clinic_id === clinicId || !doc.clinic_id;
+    });
+
+    for (const customDoc of matchingCustom) {
+      const existsOnServer = result.some(d => 
+        d.id === customDoc.id || 
+        (d.email && customDoc.email && d.email.toLowerCase() === customDoc.email.toLowerCase())
+      );
+
+      if (!existsOnServer) {
+        result.unshift(customDoc);
+        // Self-heal: ensure server SQLite has row in background
+        this.healDoctorOnServer(customDoc);
+      }
+    }
+
+    return result;
+  },
+
+  async healDoctorOnServer(doc) {
+    try {
+      await fetch(`${API_BASE}/doctors`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: doc.id,
+          name: doc.name,
+          email: doc.email,
+          password: doc.password || 'doctor123',
+          clinic_id: doc.clinic_id || 'clinic-sru',
+          clinic_address: doc.clinic_address || 'Hospital Medical Campus',
+          department_id: doc.department_id,
+          consultation_fee: doc.consultation_fee,
+          qualification: doc.qualification,
+          experience_years: doc.experience_years,
+          rating: doc.rating || 4.9,
+          avatar_url: doc.avatar_url,
+          bio: doc.bio,
+          available_days: doc.available_days || ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+          slot_start_time: doc.slot_start_time || '09:00',
+          slot_end_time: doc.slot_end_time || '16:00',
+          slot_duration_minutes: doc.slot_duration_minutes || 30
+        })
+      });
+    } catch (e) {
+      // Non-blocking self-healing
+    }
   }
 };
 
