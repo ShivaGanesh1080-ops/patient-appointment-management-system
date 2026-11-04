@@ -40,18 +40,18 @@ app.use(helmet({
 // Tiered Rate Limiting Middleware
 const generalApiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // 300 requests per 15 min per IP
+  max: 2000, // Generous limit for real-time OPD and KDS polling
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     success: false,
-    message: 'Too many requests from this IP address. Anti-DoS rate limit active. Please try again in 15 minutes.'
+    message: 'Too many requests from this IP address. Anti-DoS rate limit active. Please try again in a few minutes.'
   }
 });
 
 const bookingActionLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 30, // 30 booking/cancellation actions per 15 min per IP
+  max: 200, // High-throughput booking threshold
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -152,10 +152,12 @@ app.get('/api/health', async (req, res) => {
 // Apply General Rate Limiter to all API endpoints
 app.use('/api', generalApiLimiter);
 
-// Apply strict rate limiting to booking endpoints (exempt SSE real-time stream)
+// Apply booking rate limiting ONLY to POST creation of appointments (never to GET queue polls or PATCH status transitions)
 app.use('/api/appointments', (req, res, next) => {
-  if (req.path === '/stream') return next();
-  return bookingActionLimiter(req, res, next);
+  if (req.method === 'POST' && (req.path === '/' || req.path === '')) {
+    return bookingActionLimiter(req, res, next);
+  }
+  return next();
 });
 
 // API Routes
