@@ -23,6 +23,7 @@ async function handleAddDoctorSubmit(e) {
 
   try {
     const name = document.getElementById('admin-doc-name').value.trim();
+    const clinic_id = document.getElementById('admin-doc-clinic-id')?.value || 'clinic-sru';
     const department_id = document.getElementById('admin-doc-dept').value;
     const qualification = document.getElementById('admin-doc-qual').value.trim();
     const experience_years = parseInt(document.getElementById('admin-doc-exp').value, 10);
@@ -44,6 +45,7 @@ async function handleAddDoctorSubmit(e) {
 
     const payload = {
       name,
+      clinic_id,
       department_id,
       qualification,
       experience_years,
@@ -158,6 +160,11 @@ async function renderAdminRoster() {
                 <p class="text-[11px] text-slate-400">${doc.qualification}</p>
               </div>
             </div>
+          </td>
+          <td class="py-3 px-4">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">
+              <i class="fa-solid fa-hospital text-[9px] mr-1"></i> ${doc.clinic_name || 'SRU Campus'}
+            </span>
           </td>
           <td class="py-3 px-4">
             <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">

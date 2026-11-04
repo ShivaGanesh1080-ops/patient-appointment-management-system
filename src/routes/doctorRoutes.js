@@ -3,6 +3,28 @@ const router = express.Router();
 const dbAsync = require('../db/database');
 
 /**
+ * GET /api/clinics
+ * Fetch all healthcare clinics / hospital branches with doctor counts
+ */
+router.get('/clinics', async (req, res, next) => {
+  try {
+    const query = `
+      SELECT 
+        c.*,
+        COUNT(doc.id) AS doctor_count
+      FROM clinics c
+      LEFT JOIN doctors doc ON doc.clinic_id = c.id
+      GROUP BY c.id
+      ORDER BY c.name ASC
+    `;
+    const clinics = await dbAsync.all(query);
+    res.json({ success: true, count: clinics.length, data: clinics });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
  * GET /api/departments
  * Fetch all medical departments with doctor count
  */
@@ -33,15 +55,19 @@ router.get('/departments', async (req, res, next) => {
  */
 router.get('/doctors', async (req, res, next) => {
   try {
-    const { department, search, sortBy } = req.query;
+    const { department, clinic, clinicId, search, sortBy } = req.query;
 
     let sql = `
       SELECT 
         doc.*,
         dept.name AS department_name,
-        dept.icon AS department_icon
+        dept.icon AS department_icon,
+        c.name AS clinic_name,
+        c.city AS clinic_city,
+        c.address AS clinic_full_address
       FROM doctors doc
       JOIN departments dept ON doc.department_id = dept.id
+      LEFT JOIN clinics c ON doc.clinic_id = c.id
       WHERE 1=1
     `;
     const params = [];
@@ -51,15 +77,23 @@ router.get('/doctors', async (req, res, next) => {
       params.push(department);
     }
 
+    const selectedClinic = clinic || clinicId;
+    if (selectedClinic && selectedClinic !== 'all') {
+      sql += ` AND (doc.clinic_id = ? OR c.slug = ?)`;
+      params.push(selectedClinic, selectedClinic);
+    }
+
     if (search && search.trim()) {
       sql += ` AND (
         doc.name LIKE ? OR 
         doc.qualification LIKE ? OR 
         dept.name LIKE ? OR 
-        doc.clinic_address LIKE ?
+        doc.clinic_address LIKE ? OR
+        c.name LIKE ? OR
+        c.city LIKE ?
       )`;
       const searchTerm = `%${search.trim()}%`;
-      params.push(searchTerm, searchTerm, searchTerm, searchTerm);
+      params.push(searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
     }
 
     // Sorting
@@ -105,9 +139,13 @@ router.get('/doctors/:id', async (req, res, next) => {
         doc.*,
         dept.name AS department_name,
         dept.icon AS department_icon,
-        dept.description AS department_description
+        dept.description AS department_description,
+        c.name AS clinic_name,
+        c.city AS clinic_city,
+        c.address AS clinic_full_address
       FROM doctors doc
       JOIN departments dept ON doc.department_id = dept.id
+      LEFT JOIN clinics c ON doc.clinic_id = c.id
       WHERE doc.id = ?
     `;
     const doctor = await dbAsync.get(sql, [id]);
@@ -153,6 +191,7 @@ router.post('/doctors', async (req, res, next) => {
   try {
     const {
       name,
+      clinic_id = 'clinic-sru',
       department_id,
       qualification,
       experience_years,
@@ -193,15 +232,16 @@ router.post('/doctors', async (req, res, next) => {
 
     const insertSql = `
       INSERT INTO doctors (
-        id, name, department_id, qualification, experience_years,
+        id, name, clinic_id, department_id, qualification, experience_years,
         consultation_fee, rating, clinic_address, avatar_url, bio,
         available_days, slot_start_time, slot_end_time, slot_duration_minutes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     await dbAsync.run(insertSql, [
       doctorId,
       name.trim(),
+      clinic_id,
       department_id,
       qualification.trim(),
       parseInt(experience_years, 10) || 5,
@@ -217,9 +257,10 @@ router.post('/doctors', async (req, res, next) => {
     ]);
 
     const created = await dbAsync.get(
-      `SELECT doc.*, dept.name AS department_name, dept.icon AS department_icon 
+      `SELECT doc.*, dept.name AS department_name, dept.icon AS department_icon, c.name AS clinic_name
        FROM doctors doc 
        JOIN departments dept ON doc.department_id = dept.id 
+       LEFT JOIN clinics c ON doc.clinic_id = c.id
        WHERE doc.id = ?`,
       [doctorId]
     );

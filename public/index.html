@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css?v=3.0">
+  <link rel="stylesheet" href="css/style.css?v=3.5">
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
 
@@ -45,16 +45,16 @@
       <div class="flex items-center justify-between h-16 sm:h-20">
         
         <!-- Brand Logo -->
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPortalMode('patient'); switchTab('tab-doctors')">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('tab-landing')">
           <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
             <i class="fa-solid fa-heart-pulse text-xl"></i>
           </div>
           <div>
             <div class="flex items-center space-x-1.5">
               <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">Medi<span class="text-emerald-600">Pulse</span></span>
-              <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded border border-emerald-200">v2.1</span>
+              <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded border border-emerald-200">SaaS v2.2</span>
             </div>
-            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">Clinical Appointment & Schedule Engine</p>
+            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">Clinical Appointment & Multi-Tenant Engine</p>
           </div>
         </div>
 
@@ -76,6 +76,13 @@
 
         <!-- Navigation Tabs Desktop -->
         <nav class="hidden lg:flex items-center p-1.5 bg-slate-100/70 rounded-2xl border border-slate-200/60" id="desktop-nav-container">
+          <!-- Common SaaS Overview Tab -->
+          <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all" onclick="switchTab('tab-landing')">
+            <i class="fa-solid fa-layer-group text-emerald-600"></i>
+            <span>Platform & SaaS</span>
+          </button>
+          <span class="h-4 w-px bg-slate-300 mx-1"></span>
+
           <!-- Patient Mode Tabs -->
           <div id="nav-patient-group" class="flex items-center space-x-1">
             <button class="nav-tab active flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all" onclick="switchTab('tab-doctors')">
@@ -127,12 +134,19 @@
     <!-- Mobile Navigation Subbar -->
     <div class="lg:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-md overflow-x-auto px-3 py-2 flex items-center justify-between scrollbar-none">
       <div id="mobile-nav-patient" class="flex space-x-1">
+        <button class="nav-tab flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-landing')">
+          <i class="fa-solid fa-layer-group text-emerald-600"></i> <span>SaaS</span>
+        </button>
         <button class="nav-tab active flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-doctors')">
           <i class="fa-solid fa-user-doctor"></i> <span>Doctors</span>
         </button>
         <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-booking')">
           <i class="fa-regular fa-calendar-check"></i> <span>Book</span>
         </button>
+        <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-history')">
+          <i class="fa-solid fa-clock-rotate-left"></i> <span>Passes</span>
+        </button>
+      </div>
         <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-history')">
           <i class="fa-solid fa-clock-rotate-left"></i> <span>Passes</span>
         </button>
@@ -204,6 +218,256 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
 
     <!-- =====================================================================
+         TAB 0: SAAS LANDING PAGE & PLATFORM ARCHITECTURE
+         ===================================================================== -->
+    <section id="tab-landing" class="tab-content space-y-10 hidden">
+      
+      <!-- Hero Section -->
+      <div class="glass-panel p-8 sm:p-12 rounded-3xl relative overflow-hidden bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-900 text-white shadow-xl">
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-3xl space-y-5">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-300 text-xs font-bold tracking-wide uppercase">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>Next-Gen HealthTech SaaS • Multi-Clinic Tenant Platform</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            The Modern Operating System for <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Outpatient Healthcare</span>
+          </h1>
+
+          <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+            Eliminate outpatient waiting room friction with atomic ACID slot reservation, multi-clinic tenant isolation, and sub-50ms real-time queue dispatch — inspired by modern high-throughput QR commerce systems.
+          </p>
+
+          <!-- Proof Badges Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
+              <i class="fa-solid fa-shield-halved text-emerald-400 text-base mb-1"></i>
+              <p class="text-xs font-bold text-white">Zero Double-Booking</p>
+              <p class="text-[10px] text-slate-400">Atomic Concurrency Guard</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
+              <i class="fa-solid fa-hospital text-teal-400 text-base mb-1"></i>
+              <p class="text-xs font-bold text-white">Multi-Tenant</p>
+              <p class="text-[10px] text-slate-400">Isolated Clinic Branches</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
+              <i class="fa-solid fa-bolt text-amber-400 text-base mb-1"></i>
+              <p class="text-xs font-bold text-white">Real-Time Dispatch</p>
+              <p class="text-[10px] text-slate-400">Server-Sent Events (SSE)</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
+              <i class="fa-solid fa-chart-line text-indigo-400 text-base mb-1"></i>
+              <p class="text-xs font-bold text-white">Revenue Telemetry</p>
+              <p class="text-[10px] text-slate-400">Live OPD & Fee Metrics</p>
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="flex flex-wrap items-center gap-3 pt-3">
+            <button onclick="switchPortalMode('patient'); switchTab('tab-doctors')" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-500/30 transition-all flex items-center space-x-2">
+              <i class="fa-solid fa-user-doctor"></i>
+              <span>Launch Patient Booking</span>
+            </button>
+            <button onclick="switchPortalMode('doctor')" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs sm:text-sm backdrop-blur-sm transition-all flex items-center space-x-2">
+              <i class="fa-solid fa-hospital-user text-emerald-400"></i>
+              <span>Doctor Queue Display (KDS)</span>
+            </button>
+            <button onclick="switchPortalMode('admin')" class="px-4 py-3 rounded-xl bg-teal-900/60 hover:bg-teal-800 border border-teal-700/60 text-teal-200 font-bold text-xs transition-all flex items-center space-x-1.5">
+              <i class="fa-solid fa-user-gear"></i>
+              <span>Clinic Admin</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-Tenant Clinic Network Showcase -->
+      <div class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Multi-Tenant Clinic Network</h2>
+            <p class="text-xs text-slate-500">Each healthcare facility operates with isolated doctor schedules, operating hours, and patient consultation queues.</p>
+          </div>
+          <span class="text-xs font-semibold px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full w-fit">
+            <i class="fa-solid fa-network-wired mr-1"></i> 3 Active Hospital Tenants
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- SRU Health Centre -->
+          <div class="glass-card p-6 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-4 hover:border-emerald-300 transition-all">
+            <div class="space-y-2">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <div class="flex items-center space-x-2">
+                <h3 class="font-extrabold text-base text-slate-900">SRU Health & Wellness</h3>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Campus</span>
+              </div>
+              <p class="text-xs text-slate-500">SR University Campus, Ananthsagar, Hasanparthy, Warangal</p>
+              <div class="text-xs space-y-1 text-slate-600 pt-2 border-t border-slate-100">
+                <p><i class="fa-solid fa-user-doctor text-emerald-600 mr-1.5"></i> <strong>4 Specialists:</strong> Pediatrics, GenMed, Derma, Neuro</p>
+                <p><i class="fa-regular fa-clock text-emerald-600 mr-1.5"></i> <strong>Hours:</strong> 08:00 - 20:00 (Daily OPD)</p>
+                <p><i class="fa-solid fa-bed text-emerald-600 mr-1.5"></i> <strong>Capacity:</strong> 35 Beds • Rating 4.9★</p>
+              </div>
+            </div>
+            <button onclick="filterByClinicQuick('clinic-sru')" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-emerald-600 hover:text-white text-slate-700 text-xs font-bold transition-all flex items-center justify-center space-x-1.5">
+              <span>View SRU Specialists</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+
+          <!-- Apollo Health City -->
+          <div class="glass-card p-6 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-4 hover:border-teal-300 transition-all">
+            <div class="space-y-2">
+              <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-hospital"></i>
+              </div>
+              <div class="flex items-center space-x-2">
+                <h3 class="font-extrabold text-base text-slate-900">Apollo Health City</h3>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-teal-100 text-teal-800">Super-Specialty</span>
+              </div>
+              <p class="text-xs text-slate-500">Road No. 36, Jubilee Hills & Film Nagar, Hyderabad</p>
+              <div class="text-xs space-y-1 text-slate-600 pt-2 border-t border-slate-100">
+                <p><i class="fa-solid fa-user-doctor text-teal-600 mr-1.5"></i> <strong>4 Specialists:</strong> Cardiology, Ortho, Derma, Neuro</p>
+                <p><i class="fa-regular fa-clock text-teal-600 mr-1.5"></i> <strong>Hours:</strong> 24x7 Emergency / 08:30 - 20:30 OPD</p>
+                <p><i class="fa-solid fa-bed text-teal-600 mr-1.5"></i> <strong>Capacity:</strong> 350 Beds • Rating 4.9★</p>
+              </div>
+            </div>
+            <button onclick="filterByClinicQuick('clinic-apollo')" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-teal-600 hover:text-white text-slate-700 text-xs font-bold transition-all flex items-center justify-center space-x-1.5">
+              <span>View Apollo Specialists</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+
+          <!-- Kakatiya Medical Institute -->
+          <div class="glass-card p-6 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-4 hover:border-indigo-300 transition-all">
+            <div class="space-y-2">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-stethoscope"></i>
+              </div>
+              <div class="flex items-center space-x-2">
+                <h3 class="font-extrabold text-base text-slate-900">Kakatiya Medical Institute</h3>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">Regional Hub</span>
+              </div>
+              <p class="text-xs text-slate-500">MGM Hospital Circle & Nakkalagutta, Hanamkonda, Warangal</p>
+              <div class="text-xs space-y-1 text-slate-600 pt-2 border-t border-slate-100">
+                <p><i class="fa-solid fa-user-doctor text-indigo-600 mr-1.5"></i> <strong>4 Specialists:</strong> Cardiology, Ortho, Pediatrics, GenMed</p>
+                <p><i class="fa-regular fa-clock text-indigo-600 mr-1.5"></i> <strong>Hours:</strong> 08:00 - 21:00 (Daily OPD)</p>
+                <p><i class="fa-solid fa-bed text-indigo-600 mr-1.5"></i> <strong>Capacity:</strong> 120 Beds • Rating 4.8★</p>
+              </div>
+            </div>
+            <button onclick="filterByClinicQuick('clinic-kakatiya')" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-indigo-600 hover:text-white text-slate-700 text-xs font-bold transition-all flex items-center justify-center space-x-1.5">
+              <span>View Kakatiya Specialists</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commercial SaaS Pricing Matrix (3 Tiers, like Qordrz) -->
+      <div class="space-y-4 pt-4">
+        <div class="text-center max-w-2xl mx-auto space-y-1">
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Commercial SaaS Plans</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Transparent Subscriptions for Modern Clinics</h2>
+          <p class="text-xs sm:text-sm text-slate-500">From single-doctor private practices to multi-city hospital networks, choose the plan tailored to your outpatient patient volume.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-3">
+          <!-- Starter Tier -->
+          <div class="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm">
+            <div class="space-y-4">
+              <div>
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Starter Practice</span>
+                <h3 class="text-xl font-bold text-slate-900 mt-1">Single Clinic</h3>
+                <div class="flex items-baseline space-x-1 mt-2">
+                  <span class="text-3xl font-extrabold text-slate-900">₹0</span>
+                  <span class="text-xs text-slate-500 font-medium">/ 30-day trial</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">Ideal for solo practitioners & small campus health units.</p>
+              </div>
+
+              <ul class="text-xs text-slate-600 space-y-2.5 border-t border-slate-100 pt-4">
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>1 Clinic Branch (Warangal Campus)</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Up to 2 Consulting Specialists</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>150 Appointments / month</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Zero Double-Booking ACID Guard</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Digital QR Passes & PDF Export</span></li>
+              </ul>
+            </div>
+
+            <button onclick="switchPortalMode('patient'); switchTab('tab-doctors')" class="w-full py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">
+              Get Started Free
+            </button>
+          </div>
+
+          <!-- Polyclinic Pro Tier -->
+          <div class="bg-gradient-to-b from-emerald-950 to-teal-950 text-white p-6 sm:p-7 rounded-3xl border-2 border-emerald-500 flex flex-col justify-between space-y-6 shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-emerald-500 text-slate-950 text-[10px] font-extrabold uppercase px-3 py-1 rounded-bl-xl tracking-wider">
+              Most Popular
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Polyclinic Pro</span>
+                <h3 class="text-xl font-bold text-white mt-1">Multi-Specialty Facility</h3>
+                <div class="flex items-baseline space-x-1 mt-2">
+                  <span class="text-3xl font-extrabold text-white">₹2,999</span>
+                  <span class="text-xs text-emerald-200 font-medium">/ month</span>
+                </div>
+                <p class="text-xs text-slate-300 mt-1">For busy polyclinics, diagnostic centres, and specialty OPDs.</p>
+              </div>
+
+              <ul class="text-xs text-slate-200 space-y-2.5 border-t border-emerald-800/80 pt-4">
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-400 text-xs"></i> <span>Up to 5 Clinic Branches & Centers</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-400 text-xs"></i> <span>Up to 25 Credentialed Specialists</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-400 text-xs"></i> <span><strong>Real-Time SSE Live Queue Stream</strong></span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-400 text-xs"></i> <span><strong>1-Click Google Calendar & .ics Sync</strong></span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-400 text-xs"></i> <span>Revenue & Turnaround Telemetry</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-400 text-xs"></i> <span>Priority WhatsApp / SMS Notification</span></li>
+              </ul>
+            </div>
+
+            <button onclick="switchPortalMode('doctor')" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold transition shadow-lg shadow-emerald-500/30">
+              Start 14-Day Pro Trial
+            </button>
+          </div>
+
+          <!-- Enterprise Tier -->
+          <div class="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm">
+            <div class="space-y-4">
+              <div>
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Health City</span>
+                <h3 class="text-xl font-bold text-slate-900 mt-1">Enterprise Hospital</h3>
+                <div class="flex items-baseline space-x-1 mt-2">
+                  <span class="text-3xl font-extrabold text-slate-900">Custom</span>
+                  <span class="text-xs text-slate-500 font-medium">/ SLA contract</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">Multi-city hospital conglomerates & medical institutes.</p>
+              </div>
+
+              <ul class="text-xs text-slate-600 space-y-2.5 border-t border-slate-100 pt-4">
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Unlimited Hospital Branches & Beds</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Unlimited Doctors & Roster Rosters</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Dedicated Multi-Tenant DB Partitioning</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Custom HL7 / FHIR & EMR Integration</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Dockerized On-Prem / Cloud Deploy</span></li>
+                <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>99.99% Uptime SLA & 24/7 Account Desk</span></li>
+              </ul>
+            </div>
+
+            <button onclick="switchPortalMode('admin')" class="w-full py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">
+              Contact Enterprise Desk
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =====================================================================
          TAB 1: DOCTORS DIRECTORY & PROFILES
          ===================================================================== -->
     <section id="tab-doctors" class="tab-content space-y-6">
@@ -213,7 +477,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Doctor Profiles & Specializations</h1>
-            <p class="text-sm text-slate-500">Browse credentialed medical specialists, review credentials, consultation fees, and schedule an appointment.</p>
+            <p class="text-sm text-slate-500">Browse credentialed medical specialists across multi-tenant hospital branches, review credentials, and schedule an appointment.</p>
           </div>
           
           <!-- Search Bar -->
@@ -232,15 +496,29 @@
           </div>
         </div>
 
-        <!-- Filter Row: Departments & Sorting -->
+        <!-- Filter Row: Clinics, Departments & Sorting -->
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 pt-2 border-t border-slate-100">
           
-          <!-- Department Pills -->
-          <div class="flex items-center space-x-2 overflow-x-auto w-full lg:w-auto pb-1 scrollbar-none" id="department-filters-container">
-            <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white shadow-sm" data-dept="all" onclick="filterByDepartment('all')">
-              All Specialties
-            </button>
-            <!-- Injected dynamically -->
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Clinic Branch Selector -->
+            <div class="flex items-center space-x-1.5 bg-slate-100/80 px-2.5 py-1 rounded-xl border border-slate-200/80">
+              <i class="fa-solid fa-hospital text-emerald-600 text-xs"></i>
+              <label for="clinic-filter-select" class="text-xs font-bold text-slate-600">Branch:</label>
+              <select id="clinic-filter-select" class="bg-transparent text-xs font-semibold text-slate-800 focus:outline-none" onchange="handleClinicFilterChange(event)">
+                <option value="all">All Hospitals (3)</option>
+                <option value="clinic-sru">SRU Health & Wellness (Warangal)</option>
+                <option value="clinic-apollo">Apollo Health City (Hyderabad)</option>
+                <option value="clinic-kakatiya">Kakatiya Medical Institute (Warangal)</option>
+              </select>
+            </div>
+
+            <!-- Department Pills -->
+            <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none" id="department-filters-container">
+              <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white shadow-sm" data-dept="all" onclick="filterByDepartment('all')">
+                All Specialties
+              </button>
+              <!-- Injected dynamically -->
+            </div>
           </div>
 
           <!-- Sort Select -->
@@ -525,7 +803,7 @@
     </section>
 
     <!-- =====================================================================
-         TAB 4: CLINIC & DOCTOR PORTAL
+         TAB 4: CLINIC & DOCTOR PORTAL (REAL-TIME OPD KDS)
          ===================================================================== -->
     <section id="tab-portal" class="tab-content hidden space-y-6">
       
@@ -533,32 +811,49 @@
         
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 mb-1">
-              <i class="fa-solid fa-stethoscope mr-1 text-[10px]"></i> Doctor & Reception Desk Management
-            </span>
-            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Clinical Operations & Consultation Desk</h2>
-            <p class="text-sm text-slate-500">View doctor queue, mark consultations as completed, inspect revenue metrics, and manage patient flow.</p>
+            <div class="flex items-center space-x-2 mb-1 flex-wrap gap-y-1">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                <i class="fa-solid fa-stethoscope mr-1 text-[10px]"></i> Doctor Workspace & OPD KDS
+              </span>
+              <div id="portal-sse-badge" class="inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Live Stream Active (SSE)</span>
+              </div>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Clinical Operations & Live Consultation Desk</h2>
+            <p class="text-sm text-slate-500">Real-time patient queue, live cabin dispatch calls, consultation status transitions, and revenue telemetry.</p>
           </div>
 
           <!-- Doctor Selector for Portal -->
           <div class="flex items-center space-x-2">
-            <label for="portal-doctor-select" class="text-xs font-bold text-slate-600 whitespace-nowrap">Active Doctor:</label>
-            <select id="portal-doctor-select" class="px-3 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-800 shadow-sm focus:ring-1 focus:ring-indigo-500" onchange="loadDoctorPortalData()">
+            <label for="portal-doctor-select" class="text-xs font-bold text-slate-600 whitespace-nowrap">Active Specialist:</label>
+            <select id="portal-doctor-select" class="px-3 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-800 shadow-sm focus:ring-1 focus:ring-emerald-500" onchange="loadDoctorPortalData()">
               <!-- Populated via JS -->
             </select>
           </div>
         </div>
 
         <!-- Doctor Header Snapshot -->
-        <div id="portal-doctor-snapshot" class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div id="portal-doctor-snapshot" class="bg-gradient-to-r from-slate-900 via-teal-950 to-emerald-950 text-white p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
           <!-- Populated dynamically -->
+        </div>
+
+        <!-- SaaS Executive Analytics Telemetry Panel -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Live Practice Analytics & Operational Flow</h4>
+            <span class="text-[10px] text-slate-400 font-mono">Updated in real-time</span>
+          </div>
+          <div id="portal-analytics-panel" class="bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-inner">
+            <!-- Injected by renderExecutiveAnalytics() -->
+          </div>
         </div>
 
         <!-- Doctor Queue Schedule -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-bold text-slate-900 flex items-center">
-              <i class="fa-solid fa-list-check text-indigo-600 mr-2"></i> Patient Queue & Scheduled Consultations
+              <i class="fa-solid fa-list-check text-emerald-600 mr-2"></i> Live Patient Queue & Outpatient Dispatch
             </h3>
             <span class="text-xs text-slate-500" id="portal-queue-count">Showing 0 appointments</span>
           </div>
@@ -615,6 +910,15 @@
             </div>
 
             <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Assigned Clinic / Hospital <span class="text-red-500">*</span></label>
+              <select id="admin-doc-clinic-id" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-white">
+                <option value="clinic-sru">SRU Health & Wellness Centre (Warangal)</option>
+                <option value="clinic-apollo">Apollo Health City (Hyderabad)</option>
+                <option value="clinic-kakatiya">Kakatiya Super-Specialty Medical Institute (Warangal)</option>
+              </select>
+            </div>
+
+            <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Specialty Department <span class="text-red-500">*</span></label>
               <select id="admin-doc-dept" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-white">
                 <option value="dept-cardio">Cardiology</option>
@@ -625,14 +929,14 @@
                 <option value="dept-pediatrics">Pediatrics</option>
               </select>
             </div>
+          </div>
 
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Qualifications <span class="text-red-500">*</span></label>
               <input type="text" id="admin-doc-qual" required placeholder="e.g. MBBS, MD, DM (AIIMS)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
             </div>
-          </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Experience (Years) <span class="text-red-500">*</span></label>
               <input type="number" id="admin-doc-exp" required min="1" max="50" placeholder="10" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
@@ -725,9 +1029,10 @@
             <thead>
               <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50/70">
                 <th class="py-2.5 px-4">Physician</th>
+                <th class="py-2.5 px-4">Hospital Branch</th>
                 <th class="py-2.5 px-4">Department</th>
                 <th class="py-2.5 px-4">Fee</th>
-                <th class="py-2.5 px-4">Clinic Location</th>
+                <th class="py-2.5 px-4">Address</th>
                 <th class="py-2.5 px-4">Rating</th>
                 <th class="py-2.5 px-4 text-right">Actions</th>
               </tr>
@@ -1088,11 +1393,11 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/api.js?v=3.1"></script>
-  <script src="js/app.js?v=3.1"></script>
-  <script src="js/booking.js?v=3.1"></script>
-  <script src="js/history.js?v=3.1"></script>
-  <script src="js/doctor-portal.js?v=3.1"></script>
-  <script src="js/admin.js?v=3.1"></script>
+  <script src="js/api.js?v=3.5"></script>
+  <script src="js/app.js?v=3.5"></script>
+  <script src="js/booking.js?v=3.5"></script>
+  <script src="js/history.js?v=3.5"></script>
+  <script src="js/doctor-portal.js?v=3.5"></script>
+  <script src="js/admin.js?v=3.5"></script>
 </body>
 </html>

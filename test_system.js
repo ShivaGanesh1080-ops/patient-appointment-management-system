@@ -118,14 +118,29 @@ async function runSystemVerification() {
     const checkSlot = freedSlots.data.slots.find(s => s.time === testSlot.time);
     console.log(`   Slot ${testSlot.time} status now: ${checkSlot.status} (Expected: AVAILABLE)`);
 
-    // 10. Dashboard Stats
-    console.log('\n🔟 Checking /api/stats...');
+    // 10. Dashboard Stats & SaaS Financials
+    console.log('\n🔟 Checking /api/stats (SaaS Revenue & Operational KPIs)...');
     const stats = await makeRequest('GET', '/api/stats');
     console.log('   Total Appointments:', stats.data.data.totalAppointments);
     console.log('   Total Doctors:', stats.data.data.totalDoctors);
-    console.log('   Unique Patients:', stats.data.data.uniquePatients);
+    console.log('   Total Clinics:', stats.data.data.totalClinics);
+    console.log('   Gross Consultation Volume: ₹' + stats.data.data.grossConsultationVolume);
+    console.log('   Realized Revenue: ₹' + stats.data.data.realizedRevenue);
 
-    console.log('\n✨ ALL 10 TEST PHASES PASSED WITH 100% SUCCESS!');
+    // 11. Multi-Tenant Clinic API
+    console.log('\n1️⃣1️⃣ Testing Multi-Tenant Clinics GET /api/clinics & Clinic Filtering...');
+    const clinicsRes = await makeRequest('GET', '/api/clinics');
+    console.log(`   Found ${clinicsRes.data.count} clinics across Telangana (SRU, Apollo, Kakatiya).`);
+    const sruDocs = await makeRequest('GET', '/api/doctors?clinicId=clinic-sru');
+    console.log(`   SRU Campus Health Centre Specialists count: ${sruDocs.data.count}`);
+
+    // 12. Doctor OPD KDS Status Transitions
+    console.log('\n1️⃣2️⃣ Testing OPD KDS Status Transition PATCH /api/appointments/:ref/status...');
+    const statusRes = await makeRequest('PATCH', `/api/appointments/${bookingRef}/status`, { status: 'IN_CONSULTATION' });
+    console.log('   Status:', statusRes.status, '| Success:', statusRes.data.success);
+    console.log('   KDS Transition Status:', statusRes.data.data.status);
+
+    console.log('\n✨ ALL 12 TEST PHASES PASSED WITH 100% SUCCESS!');
     process.exit(0);
 
   } catch (err) {

@@ -6,6 +6,12 @@
 const API_BASE = '/api';
 
 const api = {
+  // Clinic endpoints
+  async getClinics() {
+    const res = await fetch(`${API_BASE}/clinics`);
+    return await handleResponse(res);
+  },
+
   // Department endpoints
   async getDepartments() {
     const res = await fetch(`${API_BASE}/departments`);

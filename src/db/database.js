@@ -40,6 +40,19 @@ function execAsync(sql) {
 // Initialize Schema atomically using db.exec
 async function initSchema() {
   const schemaSql = `
+    CREATE TABLE IF NOT EXISTS clinics (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      slug TEXT NOT NULL UNIQUE,
+      city TEXT NOT NULL,
+      address TEXT NOT NULL,
+      phone TEXT,
+      operating_hours TEXT NOT NULL DEFAULT '08:00 - 20:00',
+      total_beds INTEGER DEFAULT 50,
+      rating REAL DEFAULT 4.8,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
     CREATE TABLE IF NOT EXISTS departments (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL UNIQUE,
@@ -50,6 +63,7 @@ async function initSchema() {
     CREATE TABLE IF NOT EXISTS doctors (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
+      clinic_id TEXT DEFAULT 'clinic-sru',
       department_id TEXT NOT NULL,
       qualification TEXT NOT NULL,
       experience_years INTEGER NOT NULL,
@@ -63,6 +77,7 @@ async function initSchema() {
       slot_end_time TEXT NOT NULL DEFAULT '17:00',
       slot_duration_minutes INTEGER NOT NULL DEFAULT 30,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (clinic_id) REFERENCES clinics(id) ON DELETE SET NULL,
       FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
     );
 
@@ -70,6 +85,7 @@ async function initSchema() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       booking_reference TEXT NOT NULL UNIQUE,
       doctor_id TEXT NOT NULL,
+      clinic_id TEXT DEFAULT 'clinic-sru',
       patient_name TEXT NOT NULL,
       patient_phone TEXT NOT NULL,
       patient_email TEXT,
@@ -83,7 +99,8 @@ async function initSchema() {
       cancelled_at DATETIME,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE
+      FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE,
+      FOREIGN KEY (clinic_id) REFERENCES clinics(id) ON DELETE SET NULL
     );
 
     CREATE INDEX IF NOT EXISTS idx_appointments_doctor_date ON appointments(doctor_id, appointment_date, appointment_time, status);
@@ -92,6 +109,31 @@ async function initSchema() {
   `;
 
   await execAsync(schemaSql);
+
+  // Dynamic migration for existing databases: ensure clinic_id column exists
+  try {
+    const doctorColumns = await new Promise((res, rej) => {
+      db.all("PRAGMA table_info(doctors)", (err, rows) => err ? rej(err) : res(rows));
+    });
+    const hasDoctorClinic = doctorColumns.some(col => col.name === 'clinic_id');
+    if (!hasDoctorClinic) {
+      await execAsync("ALTER TABLE doctors ADD COLUMN clinic_id TEXT DEFAULT 'clinic-sru';");
+    }
+
+    const aptColumns = await new Promise((res, rej) => {
+      db.all("PRAGMA table_info(appointments)", (err, rows) => err ? rej(err) : res(rows));
+    });
+    const hasAptClinic = aptColumns.some(col => col.name === 'clinic_id');
+    if (!hasAptClinic) {
+      await execAsync("ALTER TABLE appointments ADD COLUMN clinic_id TEXT DEFAULT 'clinic-sru';");
+    }
+
+    // Now safe to create index on clinic_id
+    await execAsync("CREATE INDEX IF NOT EXISTS idx_doctors_clinic ON doctors(clinic_id);");
+  } catch (migErr) {
+    console.warn('Notice on schema migration:', migErr.message);
+  }
+
   return true;
 }
 

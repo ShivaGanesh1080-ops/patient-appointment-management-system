@@ -9,7 +9,9 @@ const state = {
   portalMode: 'patient', // 'patient' or 'doctor'
   doctors: [],
   departments: [],
+  clinics: [],
   activeDepartment: 'all',
+  activeClinic: 'all',
   searchQuery: '',
   sortBy: 'rating',
   globalStats: null
@@ -119,7 +121,9 @@ function switchPortalMode(mode) {
  */
 function handleHashRouting() {
   const hash = window.location.hash.replace('#', '') || 'tab-doctors';
-  if (hash === 'tab-portal') {
+  if (hash === 'tab-landing') {
+    switchTab('tab-landing');
+  } else if (hash === 'tab-portal') {
     switchPortalMode('doctor');
   } else if (hash === 'tab-admin') {
     switchPortalMode('admin');
@@ -261,6 +265,26 @@ async function handleSortChange() {
 }
 
 /**
+ * Handle Clinic / Hospital Branch Filter Change
+ */
+async function handleClinicFilterChange(event) {
+  state.activeClinic = event.target.value;
+  await loadDoctors();
+}
+
+/**
+ * 1-Click Quick Filter from SaaS Landing Showcase
+ */
+function filterByClinicQuick(clinicId) {
+  state.activeClinic = clinicId;
+  const select = document.getElementById('clinic-filter-select');
+  if (select) select.value = clinicId;
+  switchPortalMode('patient');
+  switchTab('tab-doctors');
+  loadDoctors();
+}
+
+/**
  * Load Doctors from REST API
  */
 async function loadDoctors() {
@@ -291,6 +315,7 @@ async function loadDoctors() {
   try {
     const params = {
       department: state.activeDepartment,
+      clinicId: state.activeClinic,
       search: state.searchQuery,
       sortBy: state.sortBy
     };
@@ -326,7 +351,7 @@ function renderDoctorsGrid(doctors) {
       <div class="col-span-full py-16 text-center text-slate-400 glass-panel rounded-3xl">
         <i class="fa-solid fa-user-doctor text-4xl mb-3 text-slate-300"></i>
         <h4 class="text-base font-bold text-slate-700">No doctors found</h4>
-        <p class="text-xs text-slate-500 mt-1">Try adjusting your specialty filter or search term.</p>
+        <p class="text-xs text-slate-500 mt-1">Try adjusting your clinic or specialty filter or search term.</p>
       </div>
     `;
     return;
@@ -352,9 +377,16 @@ function renderDoctorsGrid(doctors) {
                 onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80'"
               />
               <div>
-                <span class="inline-flex items-center text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full mb-1 border border-emerald-200">
-                  <i class="${deptIconClass} mr-1 text-[10px]"></i> ${doc.department_name}
-                </span>
+                <div class="flex items-center space-x-1.5 flex-wrap gap-y-1 mb-1">
+                  <span class="inline-flex items-center text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    <i class="${deptIconClass} mr-1 text-[10px]"></i> ${doc.department_name}
+                  </span>
+                  ${doc.clinic_name ? `
+                    <span class="inline-flex items-center text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                      <i class="fa-solid fa-hospital text-[9px] mr-1"></i> ${doc.clinic_name}
+                    </span>
+                  ` : ''}
+                </div>
                 <h3 class="font-extrabold text-base text-slate-900 group-hover:text-emerald-600 transition-colors">${doc.name}</h3>
                 <p class="text-xs text-slate-500 font-medium line-clamp-1">${doc.qualification}</p>
               </div>
@@ -372,6 +404,10 @@ function renderDoctorsGrid(doctors) {
 
           <!-- Clinic & Meta Stats -->
           <div class="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3 mb-4">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-400"><i class="fa-solid fa-hospital mr-1 text-slate-400"></i> Clinic Branch:</span>
+              <span class="font-semibold text-teal-700">${doc.clinic_name || 'SRU Campus'} (${doc.clinic_city || 'Warangal'})</span>
+            </div>
             <div class="flex items-center justify-between">
               <span class="text-slate-400"><i class="fa-solid fa-briefcase mr-1 text-slate-400"></i> Experience:</span>
               <span class="font-semibold text-slate-800">${doc.experience_years}+ Years</span>
@@ -575,6 +611,8 @@ async function testApiEndpoint(method, endpoint) {
 window.switchPortalMode = switchPortalMode;
 window.switchTab = switchTab;
 window.filterByDepartment = filterByDepartment;
+window.handleClinicFilterChange = handleClinicFilterChange;
+window.filterByClinicQuick = filterByClinicQuick;
 window.handleDoctorSearch = handleDoctorSearch;
 window.handleSortChange = handleSortChange;
 window.viewDoctorBio = viewDoctorBio;

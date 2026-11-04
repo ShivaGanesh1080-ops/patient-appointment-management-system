@@ -75,12 +75,13 @@ function getDbReady() {
       console.log('🔄 Initializing SQLite database schema...');
       await dbAsync.initSchema();
       
+      const clinicCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM clinics');
       const docCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM doctors');
-      if (!docCheck || docCheck.count < 12) {
-        console.log('🌱 Updating database with 12 Indian doctor profiles...');
+      if (!docCheck || docCheck.count < 12 || !clinicCheck || clinicCheck.count < 3) {
+        console.log('🌱 Updating database with clinics and 12 Indian doctor profiles...');
         await seedData();
       } else {
-        console.log(`✅ Database schema verified (${docCheck.count} doctors loaded).`);
+        console.log(`✅ Database schema verified (${docCheck.count} doctors, ${clinicCheck.count} clinics loaded).`);
       }
     })().catch((err) => {
       console.error('❌ Database initialization error:', err.message);
@@ -148,8 +149,11 @@ app.get('/api/health', async (req, res) => {
 // Apply General Rate Limiter to all API endpoints
 app.use('/api', generalApiLimiter);
 
-// Apply strict rate limiting to booking endpoints
-app.use('/api/appointments', bookingActionLimiter);
+// Apply strict rate limiting to booking endpoints (exempt SSE real-time stream)
+app.use('/api/appointments', (req, res, next) => {
+  if (req.path === '/stream') return next();
+  return bookingActionLimiter(req, res, next);
+});
 
 // API Routes
 app.use('/api', doctorRoutes); // contains /api/departments and /api/doctors

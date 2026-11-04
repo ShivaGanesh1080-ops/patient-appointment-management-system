@@ -53,7 +53,7 @@ function populateBookingDoctors(doctors) {
   doctors.forEach(doc => {
     const opt = document.createElement('option');
     opt.value = doc.id;
-    opt.textContent = `${doc.name} (${doc.department_name} • ₹${doc.consultation_fee})`;
+    opt.textContent = `${doc.name} (${doc.department_name} • ${doc.clinic_name || 'SRU Clinic'} • ₹${doc.consultation_fee})`;
     select.appendChild(opt);
   });
 
@@ -235,7 +235,7 @@ function updateBookingSummary() {
   const feeEl = document.getElementById('summary-fee');
 
   if (doc) {
-    docNameEl.textContent = `${doc.name} (${doc.department_name})`;
+    docNameEl.textContent = `${doc.name} (${doc.department_name} • ${doc.clinic_name || 'SRU Clinic'})`;
     feeEl.textContent = `₹${doc.consultation_fee}`;
   } else {
     docNameEl.textContent = 'None Selected';

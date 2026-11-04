@@ -4,7 +4,52 @@ async function seedData() {
   await dbAsync.initSchema();
   console.log('🔄 Initializing database schema and seeding data...');
 
-  // 1. Seed Departments
+  // 1. Seed Clinics (Multi-Tenant Healthcare Facilities)
+  const clinics = [
+    {
+      id: 'clinic-sru',
+      name: 'SRU Health & Wellness Centre',
+      slug: 'sru-health-centre',
+      city: 'Warangal',
+      address: 'SR University Campus, Ananthsagar, Hasanparthy, Warangal, Telangana 506371',
+      phone: '+91 870 2818300',
+      operating_hours: '08:00 - 20:00',
+      total_beds: 35,
+      rating: 4.9
+    },
+    {
+      id: 'clinic-apollo',
+      name: 'Apollo Health City & Outpatient Institute',
+      slug: 'apollo-health-city',
+      city: 'Hyderabad',
+      address: 'Road No. 36, Jubilee Hills & Film Nagar, Hyderabad, Telangana 500033',
+      phone: '+91 40 23607777',
+      operating_hours: '24x7 Emergency / OPD 08:30 - 20:30',
+      total_beds: 350,
+      rating: 4.9
+    },
+    {
+      id: 'clinic-kakatiya',
+      name: 'Kakatiya Super-Specialty Medical Institute',
+      slug: 'kakatiya-medical-institute',
+      city: 'Warangal',
+      address: 'MGM Hospital Circle & Nakkalagutta, Hanamkonda, Warangal, Telangana 506001',
+      phone: '+91 870 2459990',
+      operating_hours: '08:00 - 21:00',
+      total_beds: 120,
+      rating: 4.8
+    }
+  ];
+
+  for (const clinic of clinics) {
+    await dbAsync.run(
+      `INSERT OR REPLACE INTO clinics (id, name, slug, city, address, phone, operating_hours, total_beds, rating)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [clinic.id, clinic.name, clinic.slug, clinic.city, clinic.address, clinic.phone, clinic.operating_hours, clinic.total_beds, clinic.rating]
+    );
+  }
+
+  // 2. Seed Departments
   const departments = [
     {
       id: 'dept-cardio',
@@ -57,12 +102,13 @@ async function seedData() {
     {
       id: 'doc-101',
       name: 'Dr. Rajeshwar Rao',
+      clinic_id: 'clinic-apollo',
       department_id: 'dept-cardio',
       qualification: 'MBBS, MD (Gen Med), DM (Cardiology), FACC',
       experience_years: 18,
       consultation_fee: 800,
       rating: 4.9,
-      clinic_address: 'Apollo Specialty Clinic, Road No. 36, Jubilee Hills, Hyderabad',
+      clinic_address: 'Apollo Health City, Road No. 36, Jubilee Hills, Hyderabad',
       avatar_url: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Senior Consultant Interventional Cardiologist specializing in preventive cardiology, coronary angioplasty, and cardiac rhythm management.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
@@ -73,12 +119,13 @@ async function seedData() {
     {
       id: 'doc-107',
       name: 'Dr. Meenakshi Sundaram',
+      clinic_id: 'clinic-kakatiya',
       department_id: 'dept-cardio',
       qualification: 'MBBS, MD, DNB (Cardiology), FSCAI',
       experience_years: 14,
       consultation_fee: 750,
       rating: 4.8,
-      clinic_address: 'St. Ann Heart Care Center, Nakkalagutta, Hanamkonda, Warangal',
+      clinic_address: 'Kakatiya Super-Specialty Medical Institute, Nakkalagutta, Hanamkonda, Warangal',
       avatar_url: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Consultant Clinical Cardiologist focused on echocardiography, hypertension management, and congenital heart condition screenings.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Friday', 'Saturday']),
@@ -91,12 +138,13 @@ async function seedData() {
     {
       id: 'doc-102',
       name: 'Dr. Sunita Deshmukh',
+      clinic_id: 'clinic-apollo',
       department_id: 'dept-derma',
       qualification: 'MBBS, MD (Dermatology, Venereology & Leprosy)',
       experience_years: 12,
       consultation_fee: 650,
       rating: 4.8,
-      clinic_address: 'DermaCare Advanced Aesthetics, Madhapur, Hyderabad',
+      clinic_address: 'Apollo Health City Aesthetics Wing, Madhapur, Hyderabad',
       avatar_url: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Renowned clinical dermatologist and aesthetic specialist with expertise in acne scar reduction, pigmentation disorders, and laser therapies.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Friday', 'Saturday']),
@@ -107,12 +155,13 @@ async function seedData() {
     {
       id: 'doc-108',
       name: 'Dr. Pradeep Chaitanya',
+      clinic_id: 'clinic-sru',
       department_id: 'dept-derma',
       qualification: 'MBBS, DDVL (Dermatology & Cosmetology)',
       experience_years: 9,
       consultation_fee: 500,
       rating: 4.7,
-      clinic_address: 'Skin & Laser Wellness Clinic, Subedari, Hanamkonda, Warangal',
+      clinic_address: 'SRU Health & Wellness Centre, Hasanparthy, Warangal',
       avatar_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Specialist in clinical dermatology, pediatric skin allergies, chronic eczema, psoriasis management, and hair loss therapies.',
       available_days: JSON.stringify(['Tuesday', 'Thursday', 'Friday', 'Saturday']),
@@ -125,12 +174,13 @@ async function seedData() {
     {
       id: 'doc-103',
       name: 'Dr. Arvind Swaminathan',
+      clinic_id: 'clinic-apollo',
       department_id: 'dept-ortho',
       qualification: 'MBBS, MS (Orthopedics), M.Ch (Ortho, UK)',
       experience_years: 16,
       consultation_fee: 750,
       rating: 4.9,
-      clinic_address: 'OrthoSpine Joint Replacement Center, Road No. 12, Banjara Hills, Hyderabad',
+      clinic_address: 'Apollo Health City Ortho Institute, Jubilee Hills, Hyderabad',
       avatar_url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Pioneering orthopedic surgeon specializing in robotic knee & hip replacements, arthroscopy, and complex sports injury rehabilitation.',
       available_days: JSON.stringify(['Tuesday', 'Thursday', 'Saturday']),
@@ -141,12 +191,13 @@ async function seedData() {
     {
       id: 'doc-109',
       name: 'Dr. Haritha Reddy',
+      clinic_id: 'clinic-kakatiya',
       department_id: 'dept-ortho',
       qualification: 'MBBS, MS (Orthopedics), Fellowship in Spine Care',
       experience_years: 11,
       consultation_fee: 600,
       rating: 4.8,
-      clinic_address: 'Kakatiya Bone & Joint Clinic, Main Road, Kazipet, Warangal',
+      clinic_address: 'Kakatiya Super-Specialty Medical Institute, Kazipet Road, Warangal',
       avatar_url: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Consultant Orthopedic Surgeon specializing in spinal disc disorders, arthritis pain management, trauma surgery, and fracture rehabilitation.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Thursday', 'Saturday']),
@@ -159,12 +210,13 @@ async function seedData() {
     {
       id: 'doc-104',
       name: 'Dr. Priya Varma',
+      clinic_id: 'clinic-sru',
       department_id: 'dept-pediatrics',
       qualification: 'MBBS, DCH, DNB (Pediatrics)',
       experience_years: 10,
       consultation_fee: 500,
       rating: 4.9,
-      clinic_address: 'Rainbow Children Health Clinic, Kondapur, Hyderabad',
+      clinic_address: 'SRU Health & Wellness Centre, Hasanparthy, Warangal',
       avatar_url: 'https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Caring pediatrician focused on newborn care, immunization scheduling, adolescent health guidance, and developmental milestones.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
@@ -175,12 +227,13 @@ async function seedData() {
     {
       id: 'doc-110',
       name: 'Dr. Sandeep Verma',
+      clinic_id: 'clinic-kakatiya',
       department_id: 'dept-pediatrics',
       qualification: 'MBBS, MD (Pediatrics), Fellowship in Neonatology',
       experience_years: 13,
       consultation_fee: 450,
       rating: 4.8,
-      clinic_address: 'Balaji Children Hospital, MGM Road, Warangal',
+      clinic_address: 'Kakatiya Super-Specialty Medical Institute, MGM Circle, Warangal',
       avatar_url: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Senior Child Specialist with focus on seasonal respiratory viral infections, pediatric asthma, childhood nutrition, and neonatal intensive care.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']),
@@ -193,12 +246,13 @@ async function seedData() {
     {
       id: 'doc-105',
       name: 'Dr. Vikramaditya Kulkarni',
+      clinic_id: 'clinic-apollo',
       department_id: 'dept-neuro',
       qualification: 'MBBS, MD, DM (Neurology), FINR',
       experience_years: 20,
       consultation_fee: 1000,
       rating: 4.7,
-      clinic_address: 'Brain & Spine Institute, Gachibowli, Hyderabad',
+      clinic_address: 'Apollo Health City Neuro Sciences Wing, Jubilee Hills, Hyderabad',
       avatar_url: 'https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Leading neurologist handling epilepsy, stroke prevention, migraine therapy, neurodegenerative disorders, and neuromuscular diagnostics.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Thursday', 'Friday']),
@@ -209,12 +263,13 @@ async function seedData() {
     {
       id: 'doc-111',
       name: 'Dr. Lakshmi Prasanna',
+      clinic_id: 'clinic-sru',
       department_id: 'dept-neuro',
       qualification: 'MBBS, MD (Gen Med), DM (Neurology)',
       experience_years: 12,
       consultation_fee: 850,
       rating: 4.9,
-      clinic_address: 'NeuroCare Consultation Clinic, Ramnagar, Hanamkonda, Warangal',
+      clinic_address: 'SRU Health & Wellness Centre, Ananthsagar, Warangal',
       avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Expert neuro-physician handling chronic headache management, Parkinson disease care, peripheral neuropathy, and sleep disorders.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Thursday', 'Saturday']),
@@ -227,12 +282,13 @@ async function seedData() {
     {
       id: 'doc-106',
       name: 'Dr. Ananya Sen',
+      clinic_id: 'clinic-sru',
       department_id: 'dept-genmed',
       qualification: 'MBBS, MD (Internal Medicine)',
       experience_years: 9,
       consultation_fee: 450,
       rating: 4.8,
-      clinic_address: 'Apex Family Wellness Clinic, Hitec City, Hyderabad',
+      clinic_address: 'SRU Health & Wellness Centre, Ananthsagar, Warangal',
       avatar_url: 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=400&auto=format&fit=crop&q=80', // Female
       bio: 'Dedicated primary care physician treating hypertension, diabetes type 2, respiratory infections, seasonal illnesses, and lifestyle wellness.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
@@ -243,12 +299,13 @@ async function seedData() {
     {
       id: 'doc-112',
       name: 'Dr. Ramesh Babu',
+      clinic_id: 'clinic-kakatiya',
       department_id: 'dept-genmed',
       qualification: 'MBBS, MD (General Medicine), PGDGM (Geriatrics)',
       experience_years: 22,
       consultation_fee: 400,
       rating: 4.9,
-      clinic_address: 'Lifeline Multi-Specialty Clinic, Chowrastha, Hanamkonda, Warangal',
+      clinic_address: 'Kakatiya Super-Specialty Medical Institute, Hanamkonda, Warangal',
       avatar_url: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&auto=format&fit=crop&q=80', // Male
       bio: 'Veteran senior physician specializing in comprehensive geriatric wellness, diabetic neuropathy, hypertension control, and preventive fever clinics.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
@@ -261,12 +318,12 @@ async function seedData() {
   for (const doc of doctors) {
     await dbAsync.run(
       `INSERT OR REPLACE INTO doctors (
-        id, name, department_id, qualification, experience_years,
+        id, name, clinic_id, department_id, qualification, experience_years,
         consultation_fee, rating, clinic_address, avatar_url, bio,
         available_days, slot_start_time, slot_end_time, slot_duration_minutes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        doc.id, doc.name, doc.department_id, doc.qualification, doc.experience_years,
+        doc.id, doc.name, doc.clinic_id || 'clinic-sru', doc.department_id, doc.qualification, doc.experience_years,
         doc.consultation_fee, doc.rating, doc.clinic_address, doc.avatar_url, doc.bio,
         doc.available_days, doc.slot_start_time, doc.slot_end_time, doc.slot_duration_minutes
       ]
