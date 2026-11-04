@@ -122,6 +122,14 @@ const dbAsync = {
     });
   },
   exec: execAsync,
+  close: () => {
+    return new Promise((resolve, reject) => {
+      db.close((err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+  },
   db,
   initSchema
 };

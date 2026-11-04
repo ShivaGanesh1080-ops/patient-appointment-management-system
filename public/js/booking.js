@@ -321,10 +321,15 @@ async function handleBookingSubmit(event) {
   }
 }
 
+let currentSlipData = null;
+
 /**
  * Open Printable Slip Modal
  */
 function openSlipModal(appointment) {
+  currentSlipData = appointment;
+  window.currentAppointmentSlip = appointment;
+
   document.getElementById('slip-token').textContent = appointment.booking_reference;
   document.getElementById('slip-patient-name').textContent = appointment.patient_name;
   document.getElementById('slip-patient-meta').textContent = `${appointment.patient_phone} • ${appointment.patient_age} Yrs • ${appointment.patient_gender}`;
@@ -343,6 +348,128 @@ function openSlipModal(appointment) {
 
 function closeSlipModal() {
   document.getElementById('modal-slip').classList.add('hidden');
+}
+
+/**
+ * Copy Booking Token to Clipboard
+ */
+function copyBookingRef() {
+  if (!currentSlipData || !currentSlipData.booking_reference) return;
+  navigator.clipboard.writeText(currentSlipData.booking_reference).then(() => {
+    if (typeof showToast === 'function') {
+      showToast(`📋 Copied Token: ${currentSlipData.booking_reference}`, 'success');
+    }
+  }).catch(() => {
+    if (typeof showToast === 'function') {
+      showToast(`Token: ${currentSlipData.booking_reference}`, 'info');
+    }
+  });
+}
+
+/**
+ * 1-Click Sync to Google Calendar
+ */
+function addToGoogleCalendar() {
+  if (!currentSlipData) return;
+  const { doctor_name, department_name, appointment_date, appointment_time, clinic_address, booking_reference } = currentSlipData;
+  
+  const startIso = `${appointment_date.replace(/-/g, '')}T${appointment_time.replace(/:/g, '')}00`;
+  const [hh, mm] = appointment_time.split(':').map(Number);
+  let endHour = hh;
+  let endMin = mm + 30;
+  if (endMin >= 60) {
+    endHour += 1;
+    endMin -= 60;
+  }
+  const endIso = `${appointment_date.replace(/-/g, '')}T${String(endHour).padStart(2, '0')}${String(endMin).padStart(2, '0')}00`;
+
+  const title = encodeURIComponent(`Doctor Appointment: ${doctor_name} (${department_name})`);
+  const details = encodeURIComponent(`Consultation with ${doctor_name}.\nBooking Reference: ${booking_reference}\nClinic: ${clinic_address}\nPlease arrive 10 minutes prior to your time slot.`);
+  const location = encodeURIComponent(clinic_address || 'MediPulse Clinic');
+  
+  const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startIso}/${endIso}&details=${details}&location=${location}`;
+  window.open(googleCalUrl, '_blank');
+}
+
+/**
+ * 1-Click Download Standard .ics File for Outlook & Apple Calendar
+ */
+function downloadIcsFile() {
+  if (!currentSlipData) return;
+  const { doctor_name, department_name, appointment_date, appointment_time, clinic_address, booking_reference } = currentSlipData;
+  
+  const startIso = `${appointment_date.replace(/-/g, '')}T${appointment_time.replace(/:/g, '')}00`;
+  const [hh, mm] = appointment_time.split(':').map(Number);
+  let endHour = hh;
+  let endMin = mm + 30;
+  if (endMin >= 60) {
+    endHour += 1;
+    endMin -= 60;
+  }
+  const endIso = `${appointment_date.replace(/-/g, '')}T${String(endHour).padStart(2, '0')}${String(endMin).padStart(2, '0')}00`;
+
+  const icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//MediPulse//Patient Appointment Management System//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${booking_reference}@medipulse.local`,
+    `DTSTAMP:${startIso}Z`,
+    `DTSTART:${startIso}`,
+    `DTEND:${endIso}`,
+    `SUMMARY:Medical Consultation with ${doctor_name}`,
+    `DESCRIPTION:Consultation with ${doctor_name} (${department_name}). Token: ${booking_reference}. Clinic: ${clinic_address}.`,
+    `LOCATION:${clinic_address}`,
+    'STATUS:CONFIRMED',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute('download', `MediPulse_${booking_reference}.ics`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  if (typeof showToast === 'function') {
+    showToast('📥 Downloaded .ics Calendar event!', 'success');
+  }
+}
+
+/**
+ * Real-time Phone Validation Feedback
+ */
+function handlePhoneInput(input) {
+  const clean = input.value.replace(/\D/g, '');
+  const indicator = document.getElementById('phone-valid-indicator');
+  const icon = document.getElementById('phone-check-icon');
+  
+  if (clean.length === 10) {
+    input.classList.remove('border-red-300', 'border-slate-200');
+    input.classList.add('border-emerald-400', 'bg-emerald-50/20');
+    if (indicator) {
+      indicator.textContent = 'Valid 10-digit mobile';
+      indicator.className = 'text-[10px] font-semibold text-emerald-600';
+    }
+    if (icon) icon.classList.remove('hidden');
+  } else if (clean.length > 0) {
+    input.classList.remove('border-emerald-400', 'bg-emerald-50/20');
+    input.classList.add('border-slate-200');
+    if (indicator) {
+      indicator.textContent = `${10 - clean.length} more digits needed`;
+      indicator.className = 'text-[10px] font-medium text-amber-600';
+    }
+    if (icon) icon.classList.add('hidden');
+  } else {
+    input.classList.remove('border-emerald-400', 'border-red-300', 'bg-emerald-50/20');
+    input.classList.add('border-slate-200');
+    if (indicator) indicator.textContent = '';
+    if (icon) icon.classList.add('hidden');
+  }
 }
 
 /**
@@ -377,3 +504,7 @@ window.handleBookingSubmit = handleBookingSubmit;
 window.openSlipModal = openSlipModal;
 window.closeSlipModal = closeSlipModal;
 window.autoFillDemoPatient = autoFillDemoPatient;
+window.copyBookingRef = copyBookingRef;
+window.addToGoogleCalendar = addToGoogleCalendar;
+window.downloadIcsFile = downloadIcsFile;
+window.handlePhoneInput = handlePhoneInput;

@@ -6,6 +6,7 @@
 // Application State
 const state = {
   currentTab: 'tab-doctors',
+  portalMode: 'patient', // 'patient' or 'doctor'
   doctors: [],
   departments: [],
   activeDepartment: 'all',
@@ -40,6 +41,58 @@ async function initializeApp() {
     ]);
   } catch (err) {
     showToast('Failed to initialize application data: ' + err.message, 'error');
+  }
+}
+
+/**
+ * Switch Portal Mode: Patient Portal vs Doctor Workspace
+ */
+function switchPortalMode(mode) {
+  state.portalMode = mode;
+
+  const patientBtn = document.getElementById('portal-btn-patient');
+  const doctorBtn = document.getElementById('portal-btn-doctor');
+  const patientNavGroup = document.getElementById('nav-patient-group');
+  const doctorNavGroup = document.getElementById('nav-doctor-group');
+  const mobilePatientNav = document.getElementById('mobile-nav-patient');
+  const mobileDoctorNav = document.getElementById('mobile-nav-doctor');
+
+  if (mode === 'doctor') {
+    if (patientBtn) {
+      patientBtn.classList.remove('active');
+      patientBtn.classList.add('text-slate-500');
+    }
+    if (doctorBtn) {
+      doctorBtn.classList.add('active');
+      doctorBtn.classList.remove('text-slate-500');
+    }
+
+    if (patientNavGroup) patientNavGroup.classList.add('hidden');
+    if (doctorNavGroup) doctorNavGroup.classList.remove('hidden');
+    if (mobilePatientNav) mobilePatientNav.classList.add('hidden');
+    if (mobileDoctorNav) mobileDoctorNav.classList.remove('hidden');
+
+    switchTab('tab-portal');
+    showToast('👨‍⚕️ Clinical Workspace activated. Loading consultation queue.', 'info');
+  } else {
+    if (patientBtn) {
+      patientBtn.classList.add('active');
+      patientBtn.classList.remove('text-slate-500');
+    }
+    if (doctorBtn) {
+      doctorBtn.classList.remove('active');
+      doctorBtn.classList.add('text-slate-500');
+    }
+
+    if (patientNavGroup) patientNavGroup.classList.remove('hidden');
+    if (doctorNavGroup) doctorNavGroup.classList.add('hidden');
+    if (mobilePatientNav) mobilePatientNav.classList.remove('hidden');
+    if (mobileDoctorNav) mobileDoctorNav.classList.add('hidden');
+
+    if (state.currentTab === 'tab-portal') {
+      switchTab('tab-doctors');
+    }
+    showToast('🩺 Patient Portal view active. Browse verified specialists.', 'info');
   }
 }
 
@@ -149,9 +202,23 @@ async function loadDoctors() {
   if (!grid) return;
 
   grid.innerHTML = `
-    <div class="col-span-full py-12 text-center text-slate-400">
-      <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-emerald-600"></i>
-      <p class="text-sm">Fetching verified medical specialists...</p>
+    <div class="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      ${Array(6).fill(0).map(() => `
+        <div class="glass-card p-5 rounded-3xl border border-slate-200/60 animate-pulse space-y-4">
+          <div class="flex items-center space-x-3.5">
+            <div class="w-14 h-14 rounded-2xl bg-slate-200 skeleton shrink-0"></div>
+            <div class="flex-1 space-y-2">
+              <div class="h-4 bg-slate-200 rounded-md w-3/4 skeleton"></div>
+              <div class="h-3 bg-slate-200 rounded-md w-1/2 skeleton"></div>
+            </div>
+          </div>
+          <div class="h-10 bg-slate-100 rounded-xl skeleton"></div>
+          <div class="flex justify-between items-center pt-2">
+            <div class="h-4 bg-slate-200 rounded w-1/3 skeleton"></div>
+            <div class="h-8 bg-slate-200 rounded-xl w-24 skeleton"></div>
+          </div>
+        </div>
+      `).join('')}
     </div>
   `;
 
@@ -439,6 +506,7 @@ async function testApiEndpoint(method, endpoint) {
 }
 
 // Global expose
+window.switchPortalMode = switchPortalMode;
 window.switchTab = switchTab;
 window.filterByDepartment = filterByDepartment;
 window.handleDoctorSearch = handleDoctorSearch;
