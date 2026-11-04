@@ -78,6 +78,9 @@ function initStoredSessions() {
     console.warn('Error restoring admin session', e);
   }
 
+  // Render staff session chip if logged in
+  updateStaffNavBadge();
+
   // Platform SuperAdmin session
   try {
     const savedSuper = sessionStorage.getItem('medipulse_superadmin');
@@ -107,18 +110,32 @@ async function initializeApp() {
 }
 
 /**
- * Handle Direct URL Hash Routing
+ * Handle Direct URL Hash & Path Routing
  */
 function handleHashRouting() {
-  const hash = window.location.hash.replace('#', '') || 'tab-landing';
+  const path = window.location.pathname.toLowerCase();
+  const hash = window.location.hash.replace('#', '').toLowerCase();
+
+  if (path === '/login' || hash === 'login' || hash === '/login' || hash === 'tab-login') {
+    openStaffLoginGateway(null, 'doctor');
+    return;
+  }
+  if (hash === 'doctor-login' || hash === 'tab-doctor-login') {
+    openStaffLoginGateway(null, 'doctor');
+    return;
+  }
+  if (hash === 'admin-login' || hash === 'tab-admin-login') {
+    openStaffLoginGateway(null, 'admin');
+    return;
+  }
+
   const validTabs = [
     'tab-landing',
     'tab-doctors',
     'tab-booking',
     'tab-history',
-    'tab-doctor-login',
+    'tab-login',
     'tab-portal',
-    'tab-admin-login',
     'tab-admin',
     'tab-platform-admin'
   ];
@@ -146,22 +163,109 @@ document.addEventListener('keydown', (e) => {
 });
 
 /**
+ * Open Unified Staff Login Gateway (/login)
+ */
+function openStaffLoginGateway(e, mode = 'doctor') {
+  if (e && e.preventDefault) e.preventDefault();
+  switchTab('tab-login');
+  switchStaffLoginMode(mode);
+}
+
+/**
+ * Switch between Doctor Portal and Hospital Admin choices in /login
+ */
+function switchStaffLoginMode(mode) {
+  const docBtn = document.getElementById('login-choice-doctor-btn');
+  const adminBtn = document.getElementById('login-choice-admin-btn');
+  const docPanel = document.getElementById('staff-login-doctor-panel');
+  const adminPanel = document.getElementById('staff-login-admin-panel');
+
+  if (mode === 'doctor') {
+    if (docBtn) {
+      docBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 bg-[#3f72af] text-white shadow-sm';
+    }
+    if (adminBtn) {
+      adminBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 text-[#112d4e] hover:bg-[#dbe2ef]/50';
+    }
+    if (docPanel) docPanel.classList.remove('hidden');
+    if (adminPanel) adminPanel.classList.add('hidden');
+  } else if (mode === 'admin') {
+    if (adminBtn) {
+      adminBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 bg-[#112d4e] text-white shadow-sm';
+    }
+    if (docBtn) {
+      docBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 text-[#112d4e] hover:bg-[#dbe2ef]/50';
+    }
+    if (adminPanel) adminPanel.classList.remove('hidden');
+    if (docPanel) docPanel.classList.add('hidden');
+  }
+}
+
+/**
+ * Render Active Staff Session in Header (Only when logged in)
+ */
+function updateStaffNavBadge() {
+  const container = document.getElementById('nav-staff-active-container');
+  if (!container) return;
+
+  if (state.doctorSession) {
+    const lastName = state.doctorSession.name.replace('Dr. ', '');
+    container.innerHTML = `
+      <div class="flex items-center space-x-1.5 bg-[#dbe2ef]/90 border border-[#3f72af]/40 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e]">
+        <button onclick="switchTab('tab-portal')" class="flex items-center space-x-1 hover:text-[#3f72af] transition">
+          <i class="fa-solid fa-stethoscope text-[#3f72af]"></i>
+          <span class="max-w-[120px] truncate">Dr. ${lastName}</span>
+        </button>
+        <button onclick="doctorLogout()" class="text-[11px] text-red-600 hover:text-red-800 font-bold ml-1 px-1 rounded hover:bg-white/60 transition" title="Log Out Doctor Workspace">
+          Logout
+        </button>
+      </div>
+    `;
+  } else if (state.hospitalAdminSession) {
+    const shortName = state.hospitalAdminSession.name.split(' ')[0] || 'Hospital';
+    container.innerHTML = `
+      <div class="flex items-center space-x-1.5 bg-[#dbe2ef]/90 border border-[#112d4e]/40 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e]">
+        <button onclick="switchTab('tab-admin')" class="flex items-center space-x-1 hover:text-[#3f72af] transition">
+          <i class="fa-solid fa-hospital-user text-[#112d4e]"></i>
+          <span class="max-w-[120px] truncate">${shortName} Admin</span>
+        </button>
+        <button onclick="hospitalAdminLogout()" class="text-[11px] text-red-600 hover:text-red-800 font-bold ml-1 px-1 rounded hover:bg-white/60 transition" title="Log Out Hospital Admin">
+          Logout
+        </button>
+      </div>
+    `;
+  } else {
+    container.innerHTML = '';
+  }
+}
+
+/**
  * Master Tab Navigation Switcher
  */
 function switchTab(tabId) {
-  state.currentTab = tabId;
+  // Map legacy tab IDs to unified login
+  if (tabId === 'tab-doctor-login') {
+    openStaffLoginGateway(null, 'doctor');
+    return;
+  }
+  if (tabId === 'tab-admin-login') {
+    openStaffLoginGateway(null, 'admin');
+    return;
+  }
 
   // Protect doctor portal view if not authenticated
   if (tabId === 'tab-portal' && !state.doctorSession) {
-    tabId = 'tab-doctor-login';
-    state.currentTab = 'tab-doctor-login';
+    openStaffLoginGateway(null, 'doctor');
+    return;
   }
 
   // Protect hospital admin view if not authenticated
   if (tabId === 'tab-admin' && !state.hospitalAdminSession) {
-    tabId = 'tab-admin-login';
-    state.currentTab = 'tab-admin-login';
+    openStaffLoginGateway(null, 'admin');
+    return;
   }
+
+  state.currentTab = tabId;
 
   // Sync URL hash without page jumping
   if (window.location.hash !== '#' + tabId) {
@@ -717,6 +821,7 @@ async function handleDoctorLoginSubmit(e) {
     const res = await api.doctorLogin(email, password);
     state.doctorSession = res.doctor;
     sessionStorage.setItem('medipulse_doctor', JSON.stringify(res.doctor));
+    updateStaffNavBadge();
     showToast(`Welcome back, ${res.doctor.name}! Live OPD desk active.`, 'success');
     switchTab('tab-portal');
   } catch (err) {
@@ -727,8 +832,9 @@ async function handleDoctorLoginSubmit(e) {
 function doctorLogout() {
   state.doctorSession = null;
   sessionStorage.removeItem('medipulse_doctor');
+  updateStaffNavBadge();
   showToast('Logged out of Doctor Workspace.', 'info');
-  switchTab('tab-doctor-login');
+  switchTab('tab-landing');
 }
 
 /* ==========================================================================
@@ -754,6 +860,7 @@ async function handleHospitalAdminLoginSubmit(e) {
     const res = await api.hospitalAdminLogin(email, password);
     state.hospitalAdminSession = res.clinic;
     sessionStorage.setItem('medipulse_hospital_admin', JSON.stringify(res.clinic));
+    updateStaffNavBadge();
     showToast(`Authenticated as Operations Desk for ${res.clinic.name}`, 'success');
     switchTab('tab-admin');
   } catch (err) {
@@ -764,8 +871,9 @@ async function handleHospitalAdminLoginSubmit(e) {
 function hospitalAdminLogout() {
   state.hospitalAdminSession = null;
   sessionStorage.removeItem('medipulse_hospital_admin');
+  updateStaffNavBadge();
   showToast('Logged out of Hospital Operations Desk.', 'info');
-  switchTab('tab-admin-login');
+  switchTab('tab-landing');
 }
 
 /* ==========================================================================
