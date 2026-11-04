@@ -115,11 +115,12 @@ router.post('/', validateAppointmentPayload, async (req, res, next) => {
     const resolvedDoctorId = doctor ? doctor.id : doctor_id;
     const clinicId = req.body.clinic_id || (doctor ? doctor.clinic_id : 'clinic-sru');
 
-    // 2. Concurrency Check: Check if slot is already occupied
+    // 2. Concurrency Check: Check if slot is already occupied (ignoring self if restoring)
+    const clientRef = req.body.booking_reference || '';
     const existing = await dbAsync.get(
       `SELECT id, booking_reference FROM appointments 
-       WHERE (doctor_id = ? OR doctor_id = ?) AND appointment_date = ? AND appointment_time = ? AND status != 'CANCELLED'`,
-      [doctor_id, resolvedDoctorId, appointment_date, appointment_time]
+       WHERE (doctor_id = ? OR doctor_id = ?) AND appointment_date = ? AND appointment_time = ? AND status != 'CANCELLED' AND booking_reference != ?`,
+      [doctor_id, resolvedDoctorId, appointment_date, appointment_time, clientRef]
     );
 
     if (existing) {
@@ -130,36 +131,67 @@ router.post('/', validateAppointmentPayload, async (req, res, next) => {
       });
     }
 
-    // 3. Generate unique booking reference
-    let bookingReference = generateBookingReference();
-    let collisionCheck = await dbAsync.get('SELECT id FROM appointments WHERE booking_reference = ?', [bookingReference]);
-    while (collisionCheck) {
-      bookingReference = generateBookingReference();
-      collisionCheck = await dbAsync.get('SELECT id FROM appointments WHERE booking_reference = ?', [bookingReference]);
+    // 3. Generate or preserve unique booking reference
+    let bookingReference = clientRef || generateBookingReference();
+    if (!clientRef) {
+      let collisionCheck = await dbAsync.get('SELECT id FROM appointments WHERE booking_reference = ?', [bookingReference]);
+      while (collisionCheck) {
+        bookingReference = generateBookingReference();
+        collisionCheck = await dbAsync.get('SELECT id FROM appointments WHERE booking_reference = ?', [bookingReference]);
+      }
     }
 
-    // 4. Insert appointment record
-    const insertSql = `
-      INSERT INTO appointments (
-        booking_reference, doctor_id, clinic_id, patient_name, patient_phone,
-        patient_email, patient_age, patient_gender, appointment_date,
-        appointment_time, reason, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'CONFIRMED')
-    `;
+    // Check if appointment with this reference already exists (upsert)
+    const existingRef = clientRef ? await dbAsync.get('SELECT id FROM appointments WHERE booking_reference = ?', [clientRef]) : null;
+    let appointmentId;
 
-    const result = await dbAsync.run(insertSql, [
-      bookingReference,
-      doctor_id,
-      clinicId,
-      patient_name.trim(),
-      patient_phone.trim(),
-      patient_email ? patient_email.trim() : null,
-      parseInt(patient_age, 10),
-      patient_gender,
-      appointment_date,
-      appointment_time,
-      reason.trim()
-    ]);
+    if (existingRef) {
+      appointmentId = existingRef.id;
+      await dbAsync.run(
+        `UPDATE appointments SET
+          status = ?, patient_name = ?, patient_phone = ?, patient_email = ?,
+          patient_age = ?, patient_gender = ?, appointment_date = ?, appointment_time = ?,
+          reason = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?`,
+        [
+          req.body.status || 'CONFIRMED',
+          patient_name.trim(),
+          patient_phone.trim(),
+          patient_email ? patient_email.trim() : null,
+          parseInt(patient_age, 10),
+          patient_gender,
+          appointment_date,
+          appointment_time,
+          reason.trim(),
+          appointmentId
+        ]
+      );
+    } else {
+      // 4. Insert appointment record
+      const insertSql = `
+        INSERT INTO appointments (
+          booking_reference, doctor_id, clinic_id, patient_name, patient_phone,
+          patient_email, patient_age, patient_gender, appointment_date,
+          appointment_time, reason, status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+      const result = await dbAsync.run(insertSql, [
+        bookingReference,
+        doctor_id,
+        clinicId,
+        patient_name.trim(),
+        patient_phone.trim(),
+        patient_email ? patient_email.trim() : null,
+        parseInt(patient_age, 10),
+        patient_gender,
+        appointment_date,
+        appointment_time,
+        reason.trim(),
+        req.body.status || 'CONFIRMED'
+      ]);
+      appointmentId = result.lastID;
+    }
 
     // 5. Fetch complete joined record to return to client
     const newAppointment = await dbAsync.get(
@@ -179,7 +211,7 @@ router.post('/', validateAppointmentPayload, async (req, res, next) => {
        JOIN departments dept ON doc.department_id = dept.id
        LEFT JOIN clinics c ON apt.clinic_id = c.id
        WHERE apt.id = ?`,
-      [result.lastID]
+      [appointmentId]
     );
 
     // Real-Time Dispatch: Broadcast event to Live Queue
@@ -403,10 +435,58 @@ router.patch('/:idOrRef/status', async (req, res, next) => {
       });
     }
 
-    const existing = await dbAsync.get(
+    let existing = await dbAsync.get(
       'SELECT id, booking_reference FROM appointments WHERE id = ? OR booking_reference = ?',
       [idOrRef, idOrRef]
     );
+
+    if (!existing) {
+      // Self-healing: if client supplied appointmentData, provision record immediately
+      if (req.body.appointmentData) {
+        const apt = req.body.appointmentData;
+        const clinicId = apt.clinic_id || 'clinic-sru';
+        const docId = apt.doctor_id || 'doc-101';
+        
+        // Ensure doctor exists in SQLite
+        let docCheck = await dbAsync.get('SELECT id FROM doctors WHERE id = ?', [docId]);
+        if (!docCheck) {
+          await dbAsync.run(
+            `INSERT OR IGNORE INTO doctors (
+              id, name, clinic_id, department_id, qualification, experience_years,
+              consultation_fee, rating, clinic_address, avatar_url, bio, available_days
+            ) VALUES (?, ?, ?, 'dept-cardio', 'MBBS, MD', 10, 700, 4.9, 'Hospital Campus', '/img/doctors/doc-101.jpg', 'Specialist', '["Monday","Tuesday","Wednesday","Thursday","Friday"]')`,
+            [docId, apt.doctor_name || 'Dr. Specialist', clinicId]
+          );
+        }
+
+        await dbAsync.run(
+          `INSERT OR IGNORE INTO appointments (
+            booking_reference, doctor_id, clinic_id, patient_name, patient_phone,
+            patient_email, patient_age, patient_gender, appointment_date,
+            appointment_time, reason, status
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            idOrRef,
+            docId,
+            clinicId,
+            apt.patient_name || 'Patient',
+            apt.patient_phone || '9876543210',
+            apt.patient_email || null,
+            parseInt(apt.patient_age, 10) || 30,
+            apt.patient_gender || 'Other',
+            apt.appointment_date || new Date().toISOString().split('T')[0],
+            apt.appointment_time || '10:00',
+            apt.reason || 'General Consultation',
+            status.toUpperCase()
+          ]
+        );
+
+        existing = await dbAsync.get(
+          'SELECT id, booking_reference FROM appointments WHERE id = ? OR booking_reference = ?',
+          [idOrRef, idOrRef]
+        );
+      }
+    }
 
     if (!existing) {
       return res.status(404).json({

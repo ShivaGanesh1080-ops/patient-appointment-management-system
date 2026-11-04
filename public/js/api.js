@@ -87,11 +87,11 @@ const api = {
     return await handleResponse(res);
   },
 
-  async updateAppointmentStatus(idOrRef, status) {
+  async updateAppointmentStatus(idOrRef, status, appointmentData = null) {
     const res = await fetch(`${API_BASE}/appointments/${encodeURIComponent(idOrRef)}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status })
+      body: JSON.stringify({ status, appointmentData })
     });
     return await handleResponse(res);
   },
@@ -324,6 +324,8 @@ const api = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          booking_reference: apt.booking_reference,
+          status: apt.status || 'CONFIRMED',
           doctor_id: apt.doctor_id,
           doctor_name: apt.doctor_name,
           clinic_id: apt.clinic_id,

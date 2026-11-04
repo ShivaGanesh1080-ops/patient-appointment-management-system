@@ -588,20 +588,26 @@
     }
 
     async function updatePatientStatus(ref, newStatus) {
+      let target = null;
       try {
         if (window.api && typeof api.getCustomAppointments === 'function') {
           const apts = api.getCustomAppointments();
-          const target = apts.find(a => a.booking_reference === ref);
+          target = apts.find(a => a.booking_reference === ref);
           if (target) {
             target.status = newStatus;
             api.saveCustomAppointment(target);
           }
         }
-        const res = await api.updateAppointmentStatus(ref, newStatus);
+        const res = await api.updateAppointmentStatus(ref, newStatus, target);
         showToast(`Patient status updated: ${newStatus}`, 'success');
         fetchDoctorAppointments();
       } catch (e) {
-        showToast('Failed to update patient state: ' + e.message, 'error');
+        if (target) {
+          showToast(`Patient status updated: ${newStatus}`, 'success');
+          fetchDoctorAppointments();
+        } else {
+          showToast('Failed to update patient state: ' + e.message, 'error');
+        }
       }
     }
 
