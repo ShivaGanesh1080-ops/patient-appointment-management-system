@@ -105,12 +105,16 @@ function updateSseStatusIndicator(isConnected) {
 /**
  * Initialize Doctor Portal View
  */
+async function initDoctorPortalView() {
+  if (state.doctorSession) {
+    portalState.activeDoctorId = state.doctorSession.id;
+  }
+  await loadDoctorPortalData();
+}
+
 async function loadDoctorPortalData() {
   const select = document.getElementById('portal-doctor-select');
-  if (!select) return;
-
-  // Populate doctor select if not populated
-  if (select.options.length === 0) {
+  if (select && select.options.length === 0) {
     state.doctors.forEach(doc => {
       const opt = document.createElement('option');
       opt.value = doc.id;
@@ -119,10 +123,15 @@ async function loadDoctorPortalData() {
     });
   }
 
-  if (!portalState.activeDoctorId && select.options.length > 0) {
+  if (state.doctorSession) {
+    portalState.activeDoctorId = state.doctorSession.id;
+    if (select) select.value = state.doctorSession.id;
+  } else if (select && select.value) {
     portalState.activeDoctorId = select.value;
-  } else if (select.value) {
-    portalState.activeDoctorId = select.value;
+  }
+
+  if (!portalState.activeDoctorId && select && select.options.length > 0) {
+    portalState.activeDoctorId = select.options[0].value;
   }
 
   if (!portalState.activeDoctorId) return;
@@ -385,6 +394,7 @@ async function renderExecutiveAnalytics() {
 
 // Global expose
 window.loadDoctorPortalData = loadDoctorPortalData;
+window.initDoctorPortalView = initDoctorPortalView;
 window.updateConsultationStatus = updateConsultationStatus;
 window.markConsultationCompleted = markConsultationCompleted;
 window.initDoctorSseStream = initDoctorSseStream;

@@ -23,8 +23,10 @@ async function handleAddDoctorSubmit(e) {
 
   try {
     const name = document.getElementById('admin-doc-name').value.trim();
-    const clinic_id = document.getElementById('admin-doc-clinic-id')?.value || 'clinic-sru';
+    const clinic_id = state.hospitalAdminSession?.id || document.getElementById('admin-doc-clinic-id')?.value || 'clinic-sru';
     const department_id = document.getElementById('admin-doc-dept').value;
+    const email = document.getElementById('admin-doc-email')?.value.trim();
+    const password = document.getElementById('admin-doc-password')?.value.trim() || 'doctor123';
     const qualification = document.getElementById('admin-doc-qual').value.trim();
     const experience_years = parseInt(document.getElementById('admin-doc-exp').value, 10);
     const consultation_fee = parseFloat(document.getElementById('admin-doc-fee').value);
@@ -47,6 +49,8 @@ async function handleAddDoctorSubmit(e) {
       name,
       clinic_id,
       department_id,
+      email: email || undefined,
+      password,
       qualification,
       experience_years,
       consultation_fee,
@@ -220,6 +224,19 @@ async function handleDeleteDoctor(doctorId, doctorName) {
   }
 }
 
+async function initHospitalAdminView() {
+  if (state.hospitalAdminSession) {
+    const titleEl = document.getElementById('admin-hospital-title');
+    if (titleEl) titleEl.textContent = state.hospitalAdminSession.name;
+    const clinicSelect = document.getElementById('admin-doc-clinic-id');
+    if (clinicSelect) {
+      clinicSelect.value = state.hospitalAdminSession.id;
+    }
+  }
+  await renderAdminRoster();
+}
+
 window.autoFillDemoDoctor = autoFillDemoDoctor;
 window.renderAdminRoster = renderAdminRoster;
 window.handleDeleteDoctor = handleDeleteDoctor;
+window.initHospitalAdminView = initHospitalAdminView;

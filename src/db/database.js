@@ -47,6 +47,8 @@ async function initSchema() {
       city TEXT NOT NULL,
       address TEXT NOT NULL,
       phone TEXT,
+      admin_email TEXT UNIQUE,
+      admin_password TEXT DEFAULT 'admin123',
       operating_hours TEXT NOT NULL DEFAULT '08:00 - 20:00',
       total_beds INTEGER DEFAULT 50,
       rating REAL DEFAULT 4.8,
@@ -65,6 +67,8 @@ async function initSchema() {
       name TEXT NOT NULL,
       clinic_id TEXT DEFAULT 'clinic-sru',
       department_id TEXT NOT NULL,
+      email TEXT UNIQUE,
+      password TEXT DEFAULT 'doctor123',
       qualification TEXT NOT NULL,
       experience_years INTEGER NOT NULL,
       consultation_fee REAL NOT NULL,
@@ -79,6 +83,23 @@ async function initSchema() {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (clinic_id) REFERENCES clinics(id) ON DELETE SET NULL,
       FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS patients (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      phone TEXT UNIQUE NOT NULL,
+      age INTEGER NOT NULL,
+      gender TEXT DEFAULT 'Other',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS platform_admins (
+      id TEXT PRIMARY KEY,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      name TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS appointments (
@@ -110,14 +131,29 @@ async function initSchema() {
 
   await execAsync(schemaSql);
 
-  // Dynamic migration for existing databases: ensure clinic_id column exists
+  // Dynamic migration for existing databases: ensure clinic_id and auth columns exist
   try {
+    const clinicColumns = await new Promise((res, rej) => {
+      db.all("PRAGMA table_info(clinics)", (err, rows) => err ? rej(err) : res(rows));
+    });
+    if (!clinicColumns.some(col => col.name === 'admin_email')) {
+      await execAsync("ALTER TABLE clinics ADD COLUMN admin_email TEXT;");
+    }
+    if (!clinicColumns.some(col => col.name === 'admin_password')) {
+      await execAsync("ALTER TABLE clinics ADD COLUMN admin_password TEXT DEFAULT 'admin123';");
+    }
+
     const doctorColumns = await new Promise((res, rej) => {
       db.all("PRAGMA table_info(doctors)", (err, rows) => err ? rej(err) : res(rows));
     });
-    const hasDoctorClinic = doctorColumns.some(col => col.name === 'clinic_id');
-    if (!hasDoctorClinic) {
+    if (!doctorColumns.some(col => col.name === 'clinic_id')) {
       await execAsync("ALTER TABLE doctors ADD COLUMN clinic_id TEXT DEFAULT 'clinic-sru';");
+    }
+    if (!doctorColumns.some(col => col.name === 'email')) {
+      await execAsync("ALTER TABLE doctors ADD COLUMN email TEXT;");
+    }
+    if (!doctorColumns.some(col => col.name === 'password')) {
+      await execAsync("ALTER TABLE doctors ADD COLUMN password TEXT DEFAULT 'doctor123';");
     }
 
     const aptColumns = await new Promise((res, rej) => {
@@ -128,8 +164,10 @@ async function initSchema() {
       await execAsync("ALTER TABLE appointments ADD COLUMN clinic_id TEXT DEFAULT 'clinic-sru';");
     }
 
-    // Now safe to create index on clinic_id
+    // Now safe to create indexes
     await execAsync("CREATE INDEX IF NOT EXISTS idx_doctors_clinic ON doctors(clinic_id);");
+    await execAsync("CREATE INDEX IF NOT EXISTS idx_doctors_email ON doctors(email);");
+    await execAsync("CREATE INDEX IF NOT EXISTS idx_clinics_admin_email ON clinics(admin_email);");
   } catch (migErr) {
     console.warn('Notice on schema migration:', migErr.message);
   }

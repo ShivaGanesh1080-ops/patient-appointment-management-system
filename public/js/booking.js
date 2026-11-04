@@ -253,6 +253,18 @@ function updateBookingSummary() {
   }
 }
 
+function toggleDependentBooking() {
+  const toggle = document.getElementById('booking-for-other-toggle');
+  const container = document.getElementById('dependent-fields-container');
+  if (toggle && container) {
+    if (toggle.checked) {
+      container.classList.remove('hidden');
+    } else {
+      container.classList.add('hidden');
+    }
+  }
+}
+
 /**
  * Handle Booking Form Submission
  */
@@ -276,16 +288,42 @@ async function handleBookingSubmit(event) {
     return;
   }
 
+  const otherToggle = document.getElementById('booking-for-other-toggle');
+  const isForOther = otherToggle && otherToggle.checked;
+
+  let primaryName = document.getElementById('patient-name').value.trim();
+  let patientName = primaryName;
+  let patientAge = parseInt(document.getElementById('patient-age').value, 10);
+  let patientGender = document.getElementById('patient-gender').value;
+  let reason = document.getElementById('patient-reason').value.trim();
+
+  if (isForOther) {
+    const depName = document.getElementById('dependent-name')?.value.trim();
+    const depAge = parseInt(document.getElementById('dependent-age')?.value, 10);
+    const depRelation = document.getElementById('dependent-relation')?.value || 'Dependent';
+    const depGender = document.getElementById('dependent-gender')?.value || patientGender;
+
+    if (depName) {
+      patientName = `${depName} (${depRelation} of ${primaryName})`;
+    }
+    if (depAge) {
+      patientAge = depAge;
+    }
+    if (depGender) {
+      patientGender = depGender;
+    }
+  }
+
   const payload = {
     doctor_id: bookingState.selectedDoctorId,
-    patient_name: document.getElementById('patient-name').value.trim(),
+    patient_name: patientName,
     patient_phone: document.getElementById('patient-phone').value.trim(),
     patient_email: document.getElementById('patient-email').value.trim() || null,
-    patient_age: parseInt(document.getElementById('patient-age').value, 10),
-    patient_gender: document.getElementById('patient-gender').value,
+    patient_age: patientAge,
+    patient_gender: patientGender,
     appointment_date: bookingState.selectedDate,
     appointment_time: bookingState.selectedSlotTime,
-    reason: document.getElementById('patient-reason').value.trim()
+    reason: reason
   };
 
   btn.disabled = true;
@@ -295,8 +333,13 @@ async function handleBookingSubmit(event) {
     const res = await api.bookAppointment(payload);
     showToast(`Appointment booked successfully! Token: ${res.data.booking_reference}`, 'success');
 
-    // Reset Form
+    // Reset Form & Re-sync Patient Details
     document.getElementById('appointment-booking-form').reset();
+    if (otherToggle) otherToggle.checked = false;
+    toggleDependentBooking();
+    if (typeof syncPatientDetailsToBookingForm === 'function') {
+      syncPatientDetailsToBookingForm();
+    }
     bookingState.selectedSlotTime = '';
     updateBookingSummary();
     await fetchAvailableSlots();
@@ -508,3 +551,4 @@ window.copyBookingRef = copyBookingRef;
 window.addToGoogleCalendar = addToGoogleCalendar;
 window.downloadIcsFile = downloadIcsFile;
 window.handlePhoneInput = handlePhoneInput;
+window.toggleDependentBooking = toggleDependentBooking;

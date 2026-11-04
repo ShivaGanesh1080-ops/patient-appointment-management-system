@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MediPulse | Patient Appointment Management System</title>
+  <title>MediPulse | Multi-Tenant Healthcare Operations & Appointment SaaS</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,53 +13,53 @@
         extend: {
           colors: {
             brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              200: '#c7d2fe',
-              300: '#a5b4fc',
-              400: '#818cf8',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-              800: '#3730a3',
-              900: '#312e81'
+              canvas: '#f9f7f7',
+              ice: '#dbe2ef',
+              steel: '#3f72af',
+              steelHover: '#325d91',
+              navy: '#112d4e',
+              navyDark: '#0b1c31'
             }
+          },
+          fontFamily: {
+            sans: ['Geist', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['Geist Mono', 'JetBrains Mono', 'monospace']
           }
         }
       }
     }
   </script>
 
-  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <!-- Google Fonts: Geist, Geist Mono, Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- FontAwesome Icons CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css?v=4.0">
+  <!-- Production SaaS CSS -->
+  <link rel="stylesheet" href="css/style.css?v=5.0">
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+<body class="bg-[#f9f7f7] text-[#112d4e] min-h-screen flex flex-col font-sans">
 
   <!-- Top Academic & Team Utility Strip -->
-  <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
+  <div class="bg-[#112d4e] text-slate-300 text-xs py-2 px-4 border-b border-[#1b3b64]">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
       <div class="flex items-center space-x-2">
-        <span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 font-bold text-[10px] tracking-wider uppercase">SR UNIVERSITY • CSE CORE</span>
-        <span class="text-slate-400 font-medium text-[11px] hidden md:inline">Patient Appointment Management System</span>
+        <span class="px-2 py-0.5 rounded-full bg-[#3f72af]/25 text-[#dbe2ef] border border-[#3f72af]/40 font-bold text-[10px] tracking-wider uppercase">SR UNIVERSITY • CSE CORE</span>
+        <span class="text-slate-400 font-medium text-[11px] hidden md:inline">Multi-Tenant Outpatient Operations & Appointment SaaS</span>
       </div>
       <div class="flex items-center space-x-3 text-xs">
-        <button onclick="openTeamModal()" class="flex items-center space-x-2 px-3 py-1 rounded-lg bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-700/60 text-indigo-200 transition-all font-semibold">
-          <i class="fa-solid fa-users text-indigo-400"></i>
+        <button onclick="openTeamModal()" class="flex items-center space-x-2 px-3 py-1 rounded-lg bg-[#0b1c31] hover:bg-[#1b3b64] border border-[#3f72af]/40 text-[#dbe2ef] transition-all font-semibold">
+          <i class="fa-solid fa-users text-[#3f72af]"></i>
           <span>Team Roster (5)</span>
           <span class="text-slate-500">•</span>
           <span class="text-white font-bold">Leader: Neerudu Gifty Taniksha</span>
         </button>
         <div class="flex items-center space-x-1.5 text-emerald-400 font-medium text-[11px]">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="hidden sm:inline">REST API Live</span>
+          <span class="hidden sm:inline font-mono">REST API Live</span>
         </div>
       </div>
     </div>
@@ -72,52 +72,77 @@
         
         <!-- Brand Logo -->
         <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('tab-landing')">
-          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
-            <i class="fa-solid fa-heart-pulse text-xl"></i>
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#112d4e] flex items-center justify-center text-white shadow-md shadow-[#112d4e]/20 border border-[#3f72af]/30">
+            <i class="fa-solid fa-heart-pulse text-xl text-[#3f72af]"></i>
           </div>
           <div>
             <div class="flex items-center space-x-1.5">
-              <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">Medi<span class="text-indigo-600">Pulse</span></span>
+              <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-[#112d4e]">Medi<span class="text-[#3f72af]">Pulse</span></span>
             </div>
-            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">Clinical Care & Appointment System</p>
+            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">Healthcare Outpatient & Clinic Network</p>
           </div>
         </div>
 
-        <!-- Navigation Tabs Desktop -->
-        <nav class="hidden lg:flex items-center p-1.5 bg-slate-100/80 rounded-2xl border border-slate-200/80" id="desktop-nav-container">
-          <button class="nav-tab active flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all" onclick="switchTab('tab-doctors')">
-            <i class="fa-solid fa-user-doctor text-indigo-500"></i>
+        <!-- Center Navigation Tabs Desktop -->
+        <nav class="hidden lg:flex items-center p-1.5 bg-[#f9f7f7] rounded-2xl border border-[#dbe2ef]" id="desktop-nav-container">
+          <button class="nav-tab active flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold" onclick="switchTab('tab-landing')">
+            <i class="fa-solid fa-hospital text-[#3f72af]"></i>
+            <span>Hospitals</span>
+          </button>
+          <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold" onclick="switchTab('tab-doctors')">
+            <i class="fa-solid fa-user-doctor text-[#3f72af]"></i>
             <span>Specialists</span>
           </button>
-          <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all" onclick="switchTab('tab-booking')">
-            <i class="fa-regular fa-calendar-check text-indigo-500"></i>
+          <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold" onclick="switchTab('tab-booking')">
+            <i class="fa-regular fa-calendar-check text-[#3f72af]"></i>
             <span>Book Visit</span>
           </button>
-          <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all" onclick="switchTab('tab-history')">
-            <i class="fa-solid fa-clock-rotate-left text-indigo-500"></i>
+          <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold" onclick="switchTab('tab-history')">
+            <i class="fa-solid fa-ticket text-[#3f72af]"></i>
             <span>My Passes</span>
-          </button>
-          <span class="h-4 w-px bg-slate-300 mx-1"></span>
-          <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all" onclick="switchTab('tab-portal')">
-            <i class="fa-solid fa-stethoscope text-indigo-500"></i>
-            <span>Doctor Portal</span>
-          </button>
-          <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all" onclick="switchTab('tab-admin')">
-            <i class="fa-solid fa-hospital-user text-indigo-500"></i>
-            <span>Hospital Admin</span>
-          </button>
-          <span class="h-4 w-px bg-slate-300 mx-1"></span>
-          <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all" onclick="switchTab('tab-landing')">
-            <i class="fa-solid fa-layer-group text-slate-500"></i>
-            <span>Platform</span>
           </button>
         </nav>
 
-        <!-- CTA Quick Book Button -->
-        <div class="flex items-center space-x-2">
-          <button onclick="startBookingQuick()" id="btn-quick-book" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold text-xs sm:text-sm px-4 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-md shadow-indigo-500/20 transition-all flex items-center space-x-1.5">
+        <!-- Right Header Area: Patient Chip & Role Portals -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          
+          <!-- Patient Identity Chip / Sign-In Button -->
+          <div id="nav-patient-badge-container">
+            <button onclick="openPatientAuthModal()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e] bg-[#dbe2ef]/60 hover:bg-[#dbe2ef] border border-[#dbe2ef] transition-all">
+              <i class="fa-solid fa-user-check text-[#3f72af]"></i>
+              <span class="hidden sm:inline">Patient Sign-In</span>
+              <span class="sm:hidden">Sign In</span>
+            </button>
+          </div>
+
+          <!-- Portals Access Dropdown / Buttons -->
+          <div class="relative group hidden sm:block">
+            <button class="px-3 py-1.5 rounded-xl text-xs font-semibold text-[#112d4e] bg-white border border-[#dbe2ef] hover:border-[#3f72af] flex items-center space-x-1.5 shadow-sm transition-all">
+              <i class="fa-solid fa-shield-halved text-[#3f72af]"></i>
+              <span>Staff Portals</span>
+              <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+            </button>
+            <div class="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl shadow-xl border border-[#dbe2ef] p-1.5 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all z-50">
+              <button onclick="switchTab('tab-doctor-login')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-[#112d4e] hover:bg-[#dbe2ef]/50 flex items-center space-x-2 transition">
+                <i class="fa-solid fa-stethoscope text-[#3f72af] w-4"></i>
+                <span>Doctor Portal Login</span>
+              </button>
+              <button onclick="switchTab('tab-admin-login')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-[#112d4e] hover:bg-[#dbe2ef]/50 flex items-center space-x-2 transition">
+                <i class="fa-solid fa-hospital-user text-[#112d4e] w-4"></i>
+                <span>Hospital Admin Login</span>
+              </button>
+              <div class="border-t border-[#dbe2ef] my-1"></div>
+              <button onclick="switchTab('tab-platform-admin')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-[#dbe2ef]/50 flex items-center space-x-2 transition">
+                <i class="fa-solid fa-server text-slate-500 w-4"></i>
+                <span>Platform SuperAdmin</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Book CTA Button -->
+          <button onclick="switchTab('tab-booking')" class="btn-primary font-bold text-xs sm:text-sm px-4 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-md flex items-center space-x-1.5">
             <i class="fa-solid fa-plus text-xs"></i>
-            <span class="hidden sm:inline">Book Appointment</span>
+            <span class="hidden sm:inline">Book Visit</span>
             <span class="sm:hidden">Book</span>
           </button>
         </div>
@@ -126,69 +151,69 @@
     </div>
 
     <!-- Mobile Navigation Subbar -->
-    <div class="lg:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-md overflow-x-auto px-3 py-2 flex items-center space-x-1 scrollbar-none">
-      <button class="nav-tab active flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-doctors')">
+    <div class="lg:hidden border-t border-[#dbe2ef] bg-white/95 backdrop-blur-md overflow-x-auto px-3 py-2 flex items-center space-x-1 scrollbar-none">
+      <button class="nav-tab active flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-landing')">
+        <i class="fa-solid fa-hospital"></i> <span>Hospitals</span>
+      </button>
+      <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-doctors')">
         <i class="fa-solid fa-user-doctor"></i> <span>Specialists</span>
       </button>
       <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-booking')">
         <i class="fa-regular fa-calendar-check"></i> <span>Book</span>
       </button>
       <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-history')">
-        <i class="fa-solid fa-clock-rotate-left"></i> <span>Passes</span>
+        <i class="fa-solid fa-ticket"></i> <span>Passes</span>
       </button>
-      <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-portal')">
+      <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-doctor-login')">
         <i class="fa-solid fa-stethoscope"></i> <span>Doctor</span>
       </button>
-      <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-admin')">
+      <button class="nav-tab flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-admin-login')">
         <i class="fa-solid fa-hospital-user"></i> <span>Admin</span>
-      </button>
-      <button class="nav-tab flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-landing')">
-        <i class="fa-solid fa-layer-group"></i> <span>Platform</span>
       </button>
     </div>
   </header>
 
-  <!-- Live Statistics Summary Ribbon -->
+  <!-- Live Telemetry Ribbon -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 w-full">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
       
       <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-user-doctor"></i>
+        <div class="w-11 h-11 rounded-xl bg-[#dbe2ef] text-[#112d4e] flex items-center justify-center text-lg">
+          <i class="fa-solid fa-user-doctor text-[#3f72af]"></i>
         </div>
         <div>
-          <p class="text-xs text-slate-500 font-medium">Verified Doctors</p>
-          <p class="text-xl font-bold text-slate-900" id="stat-doctors-count">--</p>
+          <p class="text-xs text-slate-500 font-medium">Verified Specialists</p>
+          <p class="text-xl font-bold text-[#112d4e]" id="stat-doctors-count">--</p>
         </div>
       </div>
 
       <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-calendar-check"></i>
+        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-calendar-check text-emerald-600"></i>
         </div>
         <div>
           <p class="text-xs text-slate-500 font-medium">Confirmed Visits</p>
-          <p class="text-xl font-bold text-slate-900" id="stat-confirmed-count">--</p>
+          <p class="text-xl font-bold text-[#112d4e]" id="stat-confirmed-count">--</p>
         </div>
       </div>
 
       <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-hospital-user"></i>
+        <div class="w-11 h-11 rounded-xl bg-[#e4ecf7] text-[#112d4e] flex items-center justify-center text-lg">
+          <i class="fa-solid fa-users text-[#3f72af]"></i>
         </div>
         <div>
           <p class="text-xs text-slate-500 font-medium">Unique Patients</p>
-          <p class="text-xl font-bold text-slate-900" id="stat-patients-count">--</p>
+          <p class="text-xl font-bold text-[#112d4e]" id="stat-patients-count">--</p>
         </div>
       </div>
 
       <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-circle-check"></i>
+        <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-circle-check text-amber-600"></i>
         </div>
         <div>
           <p class="text-xs text-slate-500 font-medium">Completed Visits</p>
-          <p class="text-xl font-bold text-slate-900" id="stat-completed-count">--</p>
+          <p class="text-xl font-bold text-[#112d4e]" id="stat-completed-count">--</p>
         </div>
       </div>
 
@@ -199,38 +224,38 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
 
     <!-- =====================================================================
-         TAB 0: SAAS LANDING PAGE & PLATFORM ARCHITECTURE
+         TAB 0: SAAS OVERVIEW & NEARBY HOSPITALS DISCOVERY
          ===================================================================== -->
-    <section id="tab-landing" class="tab-content space-y-10 hidden">
+    <section id="tab-landing" class="tab-content space-y-10">
       
-      <!-- Hero Section -->
-      <div class="glass-panel p-8 sm:p-12 rounded-3xl relative overflow-hidden bg-gradient-to-br from-indigo-950 via-slate-950 to-slate-900 text-white shadow-xl">
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <!-- Hero Section in Midnight Navy (#112D4E) & Steel Blue (#3F72AF) -->
+      <div class="p-8 sm:p-12 rounded-3xl relative overflow-hidden bg-[#112d4e] text-white shadow-xl border border-[#1b3b64]">
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-[#3f72af]/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-[#dbe2ef]/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 max-w-3xl space-y-5">
-          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-400/30 text-indigo-300 text-xs font-bold tracking-wide uppercase">
-            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
-            <span>Healthcare Operating System • Multi-Clinic Platform</span>
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#3f72af]/20 border border-[#3f72af]/40 text-[#dbe2ef] text-xs font-bold tracking-wide uppercase">
+            <span class="w-2 h-2 rounded-full bg-[#3f72af] animate-ping"></span>
+            <span>Multi-Tenant Clinical Operations & Appointment Engine</span>
           </div>
 
           <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
-            The Modern Operating System for <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-300 to-sky-400">Outpatient Healthcare</span>
+            The Modern Operating System for <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#dbe2ef] to-[#3f72af]">Outpatient Healthcare</span>
           </h1>
 
           <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-            Eliminate outpatient waiting room friction with atomic ACID slot reservation, multi-clinic tenant isolation, and real-time queue dispatch — inspired by modern high-throughput digital commerce architectures.
+            Eliminate waiting room friction with atomic ACID slot reservation, multi-hospital tenant isolation, and live queue dispatch — inspired by modern digital commerce architectures.
           </p>
 
           <!-- Proof Badges Grid -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
             <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
-              <i class="fa-solid fa-shield-halved text-indigo-400 text-base mb-1"></i>
+              <i class="fa-solid fa-shield-halved text-[#3f72af] text-base mb-1"></i>
               <p class="text-xs font-bold text-white">Zero Double-Booking</p>
               <p class="text-[10px] text-slate-400">Atomic Concurrency Guard</p>
             </div>
             <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
-              <i class="fa-solid fa-hospital text-violet-400 text-base mb-1"></i>
+              <i class="fa-solid fa-hospital text-[#dbe2ef] text-base mb-1"></i>
               <p class="text-xs font-bold text-white">Multi-Tenant</p>
               <p class="text-[10px] text-slate-400">Isolated Clinic Branches</p>
             </div>
@@ -248,15 +273,15 @@
 
           <!-- CTAs -->
           <div class="flex flex-wrap items-center gap-3 pt-3">
-            <button onclick="switchTab('tab-doctors')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-indigo-500/30 transition-all flex items-center space-x-2">
+            <button onclick="switchTab('tab-doctors')" class="px-6 py-3 rounded-xl btn-primary font-bold text-xs sm:text-sm flex items-center space-x-2">
               <i class="fa-solid fa-user-doctor"></i>
               <span>Find Specialists</span>
             </button>
-            <button onclick="switchTab('tab-portal')" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs sm:text-sm backdrop-blur-sm transition-all flex items-center space-x-2">
-              <i class="fa-solid fa-stethoscope text-indigo-400"></i>
-              <span>Doctor Queue Display</span>
+            <button onclick="switchTab('tab-doctor-login')" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs sm:text-sm backdrop-blur-sm transition-all flex items-center space-x-2">
+              <i class="fa-solid fa-stethoscope text-[#3f72af]"></i>
+              <span>Doctor Portal</span>
             </button>
-            <button onclick="switchTab('tab-admin')" class="px-4 py-3 rounded-xl bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-700/60 text-indigo-200 font-bold text-xs transition-all flex items-center space-x-1.5">
+            <button onclick="switchTab('tab-admin-login')" class="px-4 py-3 rounded-xl bg-[#0b1c31] hover:bg-[#1b3b64] border border-[#3f72af]/40 text-[#dbe2ef] font-bold text-xs transition-all flex items-center space-x-1.5">
               <i class="fa-solid fa-hospital-user"></i>
               <span>Hospital Admin</span>
             </button>
@@ -264,72 +289,20 @@
         </div>
       </div>
 
-      <!-- Multi-Tenant Clinic Network Showcase -->
+      <!-- Multi-Tenant Hospital Discovery Grid -->
       <div class="space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Multi-Tenant Clinic Network</h2>
-            <p class="text-xs text-slate-500">Each healthcare facility operates with isolated doctor schedules, operating hours, and patient consultation queues.</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#112d4e]">Nearby Healthcare Facilities & Campuses</h2>
+            <p class="text-xs text-slate-500">Select your preferred hospital campus to view its dedicated specialist roster and clinical hours.</p>
           </div>
-          <span class="text-xs font-semibold px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full w-fit">
-            <i class="fa-solid fa-network-wired mr-1"></i> 3 Active Hospital Tenants
+          <span class="text-xs font-bold px-3 py-1 bg-[#dbe2ef] text-[#112d4e] rounded-full w-fit">
+            <i class="fa-solid fa-network-wired mr-1 text-[#3f72af]"></i> Active Hospital Network
           </span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <!-- SRU Health Centre -->
-          <div class="glass-card p-6 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-4 hover:border-indigo-300 transition-all">
-            <div class="space-y-2">
-              <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-graduation-cap"></i>
-              </div>
-              <h3 class="font-extrabold text-base text-slate-900">SRU Health & Wellness Centre</h3>
-              <p class="text-xs text-slate-500">SR University Campus, Ananthasagar, Warangal</p>
-              <div class="pt-2 flex flex-wrap gap-1.5">
-                <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">Campus Outpatient</span>
-                <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">General OPD</span>
-              </div>
-            </div>
-            <button onclick="filterByClinicQuick('clinic-sru'); switchTab('tab-doctors')" class="w-full py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold rounded-xl text-xs transition">
-              View SRU Specialists →
-            </button>
-          </div>
-
-          <!-- Apollo Health City -->
-          <div class="glass-card p-6 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-4 hover:border-indigo-300 transition-all">
-            <div class="space-y-2">
-              <div class="w-10 h-10 rounded-2xl bg-violet-100 text-violet-700 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-hospital"></i>
-              </div>
-              <h3 class="font-extrabold text-base text-slate-900">Apollo Health City</h3>
-              <p class="text-xs text-slate-500">Jubilee Hills, Hyderabad, Telangana</p>
-              <div class="pt-2 flex flex-wrap gap-1.5">
-                <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">Tertiary Care</span>
-                <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">Interventional OPD</span>
-              </div>
-            </div>
-            <button onclick="filterByClinicQuick('clinic-apollo'); switchTab('tab-doctors')" class="w-full py-2 bg-violet-50 hover:bg-violet-100 text-violet-700 font-bold rounded-xl text-xs transition">
-              View Apollo Specialists →
-            </button>
-          </div>
-
-          <!-- Kakatiya Medical Institute -->
-          <div class="glass-card p-6 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-4 hover:border-indigo-300 transition-all">
-            <div class="space-y-2">
-              <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-square-h"></i>
-              </div>
-              <h3 class="font-extrabold text-base text-slate-900">Kakatiya Medical Institute</h3>
-              <p class="text-xs text-slate-500">Subedari, Hanamkonda / Kazipet</p>
-              <div class="pt-2 flex flex-wrap gap-1.5">
-                <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">Multi-Specialty</span>
-                <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">Fast-Track OPD</span>
-              </div>
-            </div>
-            <button onclick="filterByClinicQuick('clinic-kakatiya'); switchTab('tab-doctors')" class="w-full py-2 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold rounded-xl text-xs transition">
-              View Kakatiya Specialists →
-            </button>
-          </div>
+        <div id="hospitals-showcase-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- Dynamically populated by loadClinics() -->
         </div>
       </div>
 
@@ -338,14 +311,14 @@
     <!-- =====================================================================
          TAB 1: DOCTORS DIRECTORY & PROFILES
          ===================================================================== -->
-    <section id="tab-doctors" class="tab-content space-y-6">
+    <section id="tab-doctors" class="tab-content hidden space-y-6">
       
       <!-- Search & Specialty Filter Controls -->
       <div class="glass-panel p-5 sm:p-6 rounded-3xl space-y-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Specialists Directory</h1>
-            <p class="text-sm text-slate-500">Browse credentialed medical specialists across hospital branches, review fees, and schedule an appointment.</p>
+            <h1 class="text-2xl font-bold text-[#112d4e] tracking-tight">Specialists Directory</h1>
+            <p class="text-sm text-slate-500">Browse credentialed medical specialists across hospital campuses, review credentials, and schedule a visit.</p>
           </div>
           
           <!-- Search Bar -->
@@ -356,33 +329,31 @@
             <input 
               type="text" 
               id="doctor-search-input" 
-              placeholder="Search doctor, clinic or specialty..." 
-              class="w-full pl-10 pr-14 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-50/50"
+              placeholder="Search doctor, hospital or specialty..." 
+              class="w-full pl-10 pr-14 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:outline-none focus:ring-2 focus:ring-[#3f72af] bg-white"
               oninput="handleDoctorSearch(event)"
             />
-            <kbd class="hidden sm:inline-block absolute right-3 top-2.5 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-100 border border-slate-200 rounded pointer-events-none">Ctrl+K</kbd>
+            <kbd class="hidden sm:inline-block absolute right-3 top-2.5 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-[#f9f7f7] border border-[#dbe2ef] rounded pointer-events-none">Ctrl+K</kbd>
           </div>
         </div>
 
         <!-- Filter Row: Clinics, Departments & Sorting -->
-        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 pt-2 border-t border-slate-100">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 pt-2 border-t border-[#dbe2ef]">
           
           <div class="flex flex-wrap items-center gap-2">
             <!-- Clinic Branch Selector -->
-            <div class="flex items-center space-x-1.5 bg-slate-100/80 px-2.5 py-1 rounded-xl border border-slate-200/80">
-              <i class="fa-solid fa-hospital text-indigo-600 text-xs"></i>
-              <label for="clinic-filter-select" class="text-xs font-bold text-slate-600">Branch:</label>
-              <select id="clinic-filter-select" class="bg-transparent text-xs font-semibold text-slate-800 focus:outline-none" onchange="handleClinicFilterChange(event)">
-                <option value="all">All Hospitals (3)</option>
-                <option value="clinic-sru">SRU Health & Wellness (Warangal)</option>
-                <option value="clinic-apollo">Apollo Health City (Hyderabad)</option>
-                <option value="clinic-kakatiya">Kakatiya Medical Institute (Warangal)</option>
+            <div class="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-xl border border-[#dbe2ef]">
+              <i class="fa-solid fa-hospital text-[#3f72af] text-xs"></i>
+              <label for="clinic-filter-select" class="text-xs font-bold text-[#112d4e]">Campus:</label>
+              <select id="clinic-filter-select" class="bg-transparent text-xs font-semibold text-[#112d4e] focus:outline-none" onchange="handleClinicFilterChange(event)">
+                <option value="all">All Healthcare Facilities</option>
+                <!-- Filled dynamically -->
               </select>
             </div>
 
             <!-- Department Pills -->
             <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none" id="department-filters-container">
-              <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-sm" data-dept="all" onclick="filterByDepartment('all')">
+              <button class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#112d4e] text-white shadow-sm" data-dept="all" onclick="filterByDepartment('all')">
                 All Specialties
               </button>
               <!-- Injected dynamically -->
@@ -392,7 +363,7 @@
           <!-- Sort Select -->
           <div class="flex items-center space-x-2 self-end lg:self-auto text-xs text-slate-500">
             <label for="doctor-sort-select" class="font-medium whitespace-nowrap">Sort by:</label>
-            <select id="doctor-sort-select" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 font-medium text-slate-700 text-xs focus:ring-1 focus:ring-indigo-500" onchange="handleSortChange()">
+            <select id="doctor-sort-select" class="bg-white border border-[#dbe2ef] rounded-lg px-2.5 py-1.5 font-medium text-[#112d4e] text-xs focus:ring-1 focus:ring-[#3f72af]" onchange="handleSortChange()">
               <option value="rating">Top Rated (Highest First)</option>
               <option value="experience">Years of Experience</option>
               <option value="fee_asc">Fee: Low to High</option>
@@ -411,17 +382,17 @@
     </section>
 
     <!-- =====================================================================
-         TAB 2: APPOINTMENT BOOKING (SLOT SELECTOR + FORM)
+         TAB 2: APPOINTMENT BOOKING (WITH AUTO-FILL & DEPENDENT BOOKING)
          ===================================================================== -->
     <section id="tab-booking" class="tab-content hidden space-y-6">
       
       <div class="glass-panel p-6 sm:p-8 rounded-3xl">
         <div class="max-w-3xl mb-8">
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 mb-2">
-            <i class="fa-solid fa-shield-halved mr-1 text-[10px]"></i> Real-Time Slot Reservation
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#dbe2ef] text-[#112d4e] mb-2 border border-[#3f72af]/20">
+            <i class="fa-solid fa-shield-halved mr-1 text-[10px] text-[#3f72af]"></i> Real-Time Slot Reservation Engine
           </span>
-          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Schedule an Appointment</h2>
-          <p class="text-sm text-slate-500 mt-1">Select your physician, pick a convenient available time slot, and confirm patient records. Double-booking prevention is enforced via atomic concurrency checks.</p>
+          <h2 class="text-2xl sm:text-3xl font-bold text-[#112d4e] tracking-tight">Schedule an Outpatient Visit</h2>
+          <p class="text-sm text-slate-500 mt-1">Select your physician, pick a convenient 30-minute slot, and confirm patient details. If you are signed in, your details auto-fill automatically, with an option to book for family members.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -431,25 +402,25 @@
             
             <!-- Step 1: Doctor Selection -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                1. Select Consulting Doctor <span class="text-red-500">*</span>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#112d4e]">
+                1. Select Consulting Specialist <span class="text-red-500">*</span>
               </label>
-              <select id="booking-doctor-select" class="w-full p-3 rounded-xl border border-slate-200 text-sm font-medium bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" onchange="onBookingDoctorChanged()">
-                <option value="">-- Choose a Specialist --</option>
+              <select id="booking-doctor-select" class="w-full p-3 rounded-xl border border-[#dbe2ef] text-sm font-medium bg-white focus:ring-2 focus:ring-[#3f72af] focus:outline-none" onchange="onBookingDoctorChanged()">
+                <option value="">-- Choose a Consulting Doctor --</option>
                 <!-- Populated via JS -->
               </select>
             </div>
 
             <!-- Step 2: Date Selection -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#112d4e]">
                 2. Select Appointment Date <span class="text-red-500">*</span>
               </label>
               <div class="relative">
                 <input 
                   type="date" 
                   id="booking-date-input" 
-                  class="w-full p-3 rounded-xl border border-slate-200 text-sm font-medium bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  class="w-full p-3 rounded-xl border border-[#dbe2ef] text-sm font-medium bg-white focus:ring-2 focus:ring-[#3f72af] focus:outline-none"
                   onchange="fetchAvailableSlots()"
                 />
               </div>
@@ -459,51 +430,52 @@
             <!-- Step 3: Dynamic Time Slot Grid -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                <label class="block text-xs font-bold uppercase tracking-wider text-[#112d4e]">
                   3. Available Time Slots <span class="text-red-500">*</span>
                 </label>
                 <div class="flex items-center space-x-3 text-[11px] text-slate-500">
-                  <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600 mr-1"></span> Selected</span>
+                  <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-[#3f72af] mr-1"></span> Selected</span>
                   <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1"></span> Available</span>
                   <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 mr-1"></span> Booked / Past</span>
                 </div>
               </div>
 
               <!-- Slots Container -->
-              <div id="slots-container" class="p-4 rounded-2xl bg-slate-100/70 border border-slate-200/80 min-h-[140px] flex items-center justify-center">
+              <div id="slots-container" class="p-4 rounded-2xl bg-[#f9f7f7] border border-[#dbe2ef] min-h-[140px] flex items-center justify-center">
                 <p class="text-xs text-slate-500 italic">Please select a doctor and appointment date to view live slots.</p>
               </div>
             </div>
 
           </div>
 
-          <!-- Step 4: Patient Details Form & Summary (Right 5 Cols) -->
-          <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-5">
+          <!-- Step 4: Patient Details Form (Right 5 Cols) -->
+          <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#dbe2ef] shadow-sm flex flex-col justify-between space-y-5">
             <div>
-              <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+              <div class="border-b border-[#dbe2ef] pb-3 mb-4 flex items-center justify-between">
                 <div>
-                  <h3 class="text-base font-bold text-slate-900 flex items-center">
-                    <i class="fa-solid fa-clipboard-user text-indigo-600 mr-2"></i> Patient Information
+                  <h3 class="text-base font-bold text-[#112d4e] flex items-center">
+                    <i class="fa-solid fa-clipboard-user text-[#3f72af] mr-2"></i> Patient Information
                   </h3>
-                  <p class="text-xs text-slate-500">Enter patient details for prescription and token pass.</p>
+                  <p class="text-xs text-slate-500">Auto-filled from patient profile or custom entered.</p>
                 </div>
                 <!-- 1-Click Demo Pre-fill -->
                 <button 
                   type="button" 
                   onclick="autoFillDemoPatient()" 
-                  class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-indigo-800 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 flex items-center space-x-1.5 transition shadow-sm"
-                  title="Click to automatically pre-fill sample patient details"
+                  class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-[#112d4e] bg-[#dbe2ef]/60 border border-[#dbe2ef] hover:bg-[#dbe2ef] flex items-center space-x-1.5 transition"
+                  title="Quick prefill for testing"
                 >
-                  <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i>
+                  <i class="fa-solid fa-wand-magic-sparkles text-[#3f72af]"></i>
                   <span>⚡ Demo Patient</span>
                 </button>
               </div>
 
               <form id="appointment-booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-3.5">
                 
+                <!-- Primary Patient Info -->
                 <div>
-                  <label class="block text-xs font-medium text-slate-700 mb-1">Full Patient Name <span class="text-red-500">*</span></label>
-                  <input type="text" id="patient-name" required placeholder="e.g. Ramesh Chandra" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                  <label class="block text-xs font-medium text-slate-700 mb-1">Primary Registered Name <span class="text-red-500">*</span></label>
+                  <input type="text" id="patient-name" required placeholder="e.g. Ramesh Chandra" class="w-full px-3 py-2 rounded-lg border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -513,24 +485,24 @@
                       <span id="phone-valid-indicator" class="text-[10px] font-semibold text-slate-400"></span>
                     </div>
                     <div class="relative">
-                      <input type="tel" id="patient-phone" required pattern="[0-9]{10}" placeholder="9876543210" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-colors" oninput="handlePhoneInput(this)">
+                      <input type="tel" id="patient-phone" required pattern="[0-9]{10}" placeholder="9876543210" class="w-full px-3 py-2 rounded-lg border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none transition-colors" oninput="handlePhoneInput(this)">
                       <span id="phone-check-icon" class="absolute right-3 top-2.5 text-emerald-500 hidden"><i class="fa-solid fa-circle-check"></i></span>
                     </div>
                   </div>
                   <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1">Email (Optional)</label>
-                    <input type="email" id="patient-email" placeholder="patient@example.com" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                    <input type="email" id="patient-email" placeholder="patient@example.com" class="w-full px-3 py-2 rounded-lg border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none">
                   </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1">Age (Years) <span class="text-red-500">*</span></label>
-                    <input type="number" id="patient-age" required min="1" max="120" placeholder="32" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                    <input type="number" id="patient-age" required min="1" max="120" placeholder="32" class="w-full px-3 py-2 rounded-lg border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none">
                   </div>
                   <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1">Gender <span class="text-red-500">*</span></label>
-                    <select id="patient-gender" required class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-white">
+                    <select id="patient-gender" required class="w-full px-3 py-2 rounded-lg border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
                       <option value="Other">Other</option>
@@ -538,24 +510,65 @@
                   </div>
                 </div>
 
+                <!-- Dependent / Booking for Someone Else Toggle -->
+                <div class="pt-2 border-t border-[#dbe2ef]">
+                  <label class="flex items-center space-x-2 cursor-pointer text-xs font-bold text-[#112d4e]">
+                    <input type="checkbox" id="booking-for-other-toggle" class="rounded text-[#3f72af] focus:ring-[#3f72af]" onchange="toggleDependentBooking()">
+                    <span>Booking for a family member or dependent?</span>
+                  </label>
+                </div>
+
+                <!-- Dependent Fields Container (Hidden by default) -->
+                <div id="dependent-fields-container" class="space-y-3 p-3 bg-[#f9f7f7] rounded-xl border border-[#dbe2ef] hidden">
+                  <p class="text-[11px] font-bold text-[#3f72af] uppercase tracking-wider">Dependent Patient Details</p>
+                  <div>
+                    <label class="block text-[11px] font-medium text-slate-700 mb-0.5">Dependent Full Name</label>
+                    <input type="text" id="dependent-name" placeholder="e.g. Aarav Chandra (Child / Parent)" class="w-full px-3 py-1.5 rounded-lg border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af]">
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div>
+                      <label class="block text-[11px] font-medium text-slate-700 mb-0.5">Age</label>
+                      <input type="number" id="dependent-age" min="1" max="120" placeholder="8" class="w-full px-2.5 py-1.5 rounded-lg border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af]">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-medium text-slate-700 mb-0.5">Gender</label>
+                      <select id="dependent-gender" class="w-full px-2.5 py-1.5 rounded-lg border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] bg-white">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-medium text-slate-700 mb-0.5">Relationship</label>
+                      <select id="dependent-relation" class="w-full px-2.5 py-1.5 rounded-lg border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] bg-white">
+                        <option value="Child">Child</option>
+                        <option value="Parent">Parent</option>
+                        <option value="Spouse">Spouse</option>
+                        <option value="Sibling">Sibling</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
                 <div>
                   <label class="block text-xs font-medium text-slate-700 mb-1">Reason for Visit / Symptoms <span class="text-red-500">*</span></label>
-                  <textarea id="patient-reason" required rows="2" placeholder="Briefly describe the symptom or consultation purpose..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none resize-none"></textarea>
+                  <textarea id="patient-reason" required rows="2" placeholder="Describe symptoms or purpose of consultation..." class="w-full px-3 py-2 rounded-lg border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none resize-none"></textarea>
                 </div>
 
                 <!-- Booking Summary Review Box -->
-                <div class="bg-indigo-50/70 p-3.5 rounded-xl border border-indigo-200 text-xs space-y-1.5" id="booking-summary-box">
+                <div class="bg-[#dbe2ef]/40 p-3.5 rounded-xl border border-[#dbe2ef] text-xs space-y-1.5" id="booking-summary-box">
                   <div class="flex justify-between text-slate-600">
-                    <span>Doctor:</span>
-                    <span class="font-semibold text-slate-800" id="summary-doctor-name">None Selected</span>
+                    <span>Specialist:</span>
+                    <span class="font-semibold text-[#112d4e]" id="summary-doctor-name">None Selected</span>
                   </div>
                   <div class="flex justify-between text-slate-600">
                     <span>Date & Time:</span>
-                    <span class="font-semibold text-slate-800" id="summary-slot-time">--</span>
+                    <span class="font-semibold text-[#112d4e]" id="summary-slot-time">--</span>
                   </div>
                   <div class="flex justify-between text-slate-600">
                     <span>Consultation Fee:</span>
-                    <span class="font-bold text-slate-900 text-sm" id="summary-fee">₹0</span>
+                    <span class="font-bold text-[#112d4e] text-sm" id="summary-fee">₹0</span>
                   </div>
                 </div>
 
@@ -563,7 +576,7 @@
                 <button 
                   type="submit" 
                   id="btn-submit-booking" 
-                  class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold py-3 px-4 rounded-xl shadow-md shadow-indigo-500/20 hover:shadow-lg transition-all flex items-center justify-center space-x-2 text-sm"
+                  class="w-full btn-primary font-bold py-3 px-4 rounded-xl shadow-md flex items-center justify-center space-x-2 text-sm"
                 >
                   <i class="fa-solid fa-calendar-check"></i>
                   <span>Confirm Appointment Booking</span>
@@ -572,8 +585,8 @@
               </form>
             </div>
 
-            <div class="text-[11px] text-slate-400 text-center border-t border-slate-100 pt-3">
-              <i class="fa-solid fa-lock text-[10px] mr-1"></i> Instant confirmation token will be generated on submission.
+            <div class="text-[11px] text-slate-400 text-center border-t border-[#dbe2ef] pt-3">
+              <i class="fa-solid fa-lock text-[10px] mr-1"></i> Instant digital token pass will be generated upon confirmation.
             </div>
 
           </div>
@@ -584,7 +597,7 @@
     </section>
 
     <!-- =====================================================================
-         TAB 3: APPOINTMENT HISTORY & CANCELLATION
+         TAB 3: APPOINTMENT PASSES & CANCELLATION
          ===================================================================== -->
     <section id="tab-history" class="tab-content hidden space-y-6">
       
@@ -592,21 +605,20 @@
         
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Appointment Passes & Status</h2>
-            <p class="text-sm text-slate-500">Track all appointments, filter by phone number or booking reference, review visit details, print slips or process cancellations.</p>
+            <h2 class="text-2xl font-bold text-[#112d4e] tracking-tight">Appointment Passes & Status Tracking</h2>
+            <p class="text-sm text-slate-500">Look up your consultation passes by phone number or reference code, review status, export to calendar, or cancel.</p>
           </div>
 
           <!-- Quick Actions -->
-          <button onclick="refreshAppointmentsHistory()" class="self-start md:self-auto px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center space-x-2">
-            <i class="fa-solid fa-arrows-rotate text-indigo-600"></i>
+          <button onclick="refreshAppointmentsHistory()" class="self-start md:self-auto px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-[#dbe2ef] text-[#112d4e] hover:bg-[#dbe2ef]/50 flex items-center space-x-2">
+            <i class="fa-solid fa-arrows-rotate text-[#3f72af]"></i>
             <span>Refresh Records</span>
           </button>
         </div>
 
         <!-- Search & Filter Controls -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-white p-4 rounded-2xl border border-[#dbe2ef]">
           
-          <!-- Search by Phone -->
           <div>
             <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Search by Phone</label>
             <div class="relative">
@@ -615,13 +627,12 @@
                 type="text" 
                 id="filter-phone-input" 
                 placeholder="e.g. 9876543210" 
-                class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-[#dbe2ef] bg-[#f9f7f7] focus:outline-none focus:ring-1 focus:ring-[#3f72af]"
                 oninput="debounceAppointmentSearch()"
               />
             </div>
           </div>
 
-          <!-- Search by Booking Reference -->
           <div>
             <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Booking Reference</label>
             <div class="relative">
@@ -630,29 +641,27 @@
                 type="text" 
                 id="filter-ref-input" 
                 placeholder="e.g. APT-2026-1001" 
-                class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-[#dbe2ef] bg-[#f9f7f7] focus:outline-none focus:ring-1 focus:ring-[#3f72af]"
                 oninput="debounceAppointmentSearch()"
               />
             </div>
           </div>
 
-          <!-- Filter by Status -->
           <div>
             <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Status Filter</label>
-            <select id="filter-status-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500" onchange="fetchAppointmentsHistory()">
+            <select id="filter-status-select" class="w-full px-3 py-2 text-xs rounded-lg border border-[#dbe2ef] bg-[#f9f7f7] focus:outline-none focus:ring-1 focus:ring-[#3f72af]" onchange="fetchAppointmentsHistory()">
               <option value="all">All Statuses</option>
               <option value="CONFIRMED">Upcoming (Confirmed)</option>
+              <option value="IN_CONSULTATION">In Cabin</option>
               <option value="COMPLETED">Completed</option>
               <option value="CANCELLED">Cancelled</option>
             </select>
           </div>
 
-          <!-- Filter by Doctor -->
           <div>
-            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Filter Doctor</label>
-            <select id="filter-doctor-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500" onchange="fetchAppointmentsHistory()">
+            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Filter Specialist</label>
+            <select id="filter-doctor-select" class="w-full px-3 py-2 text-xs rounded-lg border border-[#dbe2ef] bg-[#f9f7f7] focus:outline-none focus:ring-1 focus:ring-[#3f72af]" onchange="fetchAppointmentsHistory()">
               <option value="all">All Doctors</option>
-              <!-- Filled via JS -->
             </select>
           </div>
 
@@ -668,7 +677,64 @@
     </section>
 
     <!-- =====================================================================
-         TAB 4: DOCTOR CLINIC QUEUE & WORKSPACE
+         TAB 4A: DOCTOR LOGIN PORTAL
+         ===================================================================== -->
+    <section id="tab-doctor-login" class="tab-content hidden space-y-6">
+      
+      <div class="max-w-md mx-auto glass-panel p-8 rounded-3xl border border-[#dbe2ef] shadow-xl space-y-6">
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 rounded-2xl bg-[#112d4e] text-white flex items-center justify-center text-2xl mx-auto shadow-md">
+            <i class="fa-solid fa-stethoscope text-[#3f72af]"></i>
+          </div>
+          <h2 class="text-2xl font-extrabold text-[#112d4e]">Doctor Workspace Sign-In</h2>
+          <p class="text-xs text-slate-500">Sign in using your hospital-issued email address to manage today's OPD consultation queue.</p>
+        </div>
+
+        <form onsubmit="handleDoctorLoginSubmit(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Hospital Email</label>
+            <input type="email" id="doc-login-email" required placeholder="dr.name@hospital.com" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-2 focus:ring-[#3f72af] focus:outline-none bg-white">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+            <input type="password" id="doc-login-password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-2 focus:ring-[#3f72af] focus:outline-none bg-white">
+          </div>
+
+          <button type="submit" class="w-full py-3 btn-primary font-bold rounded-xl text-xs shadow-md flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span>Sign In to Clinical Workspace</span>
+          </button>
+        </form>
+
+        <!-- 1-Click Fast Credentials for Viva Demo -->
+        <div class="pt-4 border-t border-[#dbe2ef] space-y-2 text-xs">
+          <p class="font-bold text-[#112d4e] text-[11px] uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-bolt text-amber-500 mr-1.5"></i> 1-Click Doctor Demo Accounts
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="fillDemoDoctorCredentials('dr.rajeshwar.rao@apollo.org', 'doctor123')" class="w-full text-left p-2 rounded-lg bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] flex justify-between items-center transition">
+              <div>
+                <p class="font-bold text-[#112d4e]">Dr. Rajeshwar Rao</p>
+                <p class="text-[10px] text-slate-500">dr.rajeshwar.rao@apollo.org (Apollo - Cardiology)</p>
+              </div>
+              <span class="text-[10px] font-mono text-[#3f72af]">Fill</span>
+            </button>
+            <button onclick="fillDemoDoctorCredentials('dr.priya.varma@sruhealth.edu.in', 'doctor123')" class="w-full text-left p-2 rounded-lg bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] flex justify-between items-center transition">
+              <div>
+                <p class="font-bold text-[#112d4e]">Dr. Priya Varma</p>
+                <p class="text-[10px] text-slate-500">dr.priya.varma@sruhealth.edu.in (SRU - Pediatrics)</p>
+              </div>
+              <span class="text-[10px] font-mono text-[#3f72af]">Fill</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =====================================================================
+         TAB 4B: DOCTOR CLINICAL WORKSPACE & LIVE OPD CABIN DESK
          ===================================================================== -->
     <section id="tab-portal" class="tab-content hidden space-y-6">
       
@@ -677,29 +743,28 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div class="flex items-center space-x-2 mb-1 flex-wrap gap-y-1">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
-                <i class="fa-solid fa-stethoscope mr-1 text-[10px]"></i> Doctor Workspace & OPD Queue
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#dbe2ef] text-[#112d4e]">
+                <i class="fa-solid fa-stethoscope mr-1 text-[10px] text-[#3f72af]"></i> Clinical Consultation Cabin
               </span>
               <div id="portal-sse-badge" class="inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Live Stream Active (SSE)</span>
               </div>
             </div>
-            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Clinical Operations & Consultation Desk</h2>
-            <p class="text-sm text-slate-500">Real-time patient queue, live cabin dispatch calls, consultation status transitions, and revenue telemetry.</p>
+            <h2 class="text-2xl font-bold text-[#112d4e] tracking-tight">Today's Patient Consultation Queue</h2>
+            <p class="text-sm text-slate-500">Live outpatient queue dispatch, cabin calling, consultation completion, and operational telemetry.</p>
           </div>
 
-          <!-- Doctor Selector for Portal -->
           <div class="flex items-center space-x-2">
-            <label for="portal-doctor-select" class="text-xs font-bold text-slate-600 whitespace-nowrap">Active Specialist:</label>
-            <select id="portal-doctor-select" class="px-3 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-800 shadow-sm focus:ring-1 focus:ring-indigo-500" onchange="loadDoctorPortalData()">
-              <!-- Populated via JS -->
-            </select>
+            <button onclick="doctorLogout()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#f9f7f7] hover:bg-rose-50 text-rose-600 border border-[#dbe2ef] flex items-center space-x-1.5 transition">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Doctor Sign Out</span>
+            </button>
           </div>
         </div>
 
         <!-- Doctor Header Snapshot -->
-        <div id="portal-doctor-snapshot" class="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 text-white p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
+        <div id="portal-doctor-snapshot" class="bg-[#112d4e] text-white p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md border border-[#1b3b64]">
           <!-- Populated dynamically -->
         </div>
 
@@ -709,7 +774,7 @@
             <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Live Practice Analytics & Operational Flow</h4>
             <span class="text-[10px] text-slate-400 font-mono">Updated in real-time</span>
           </div>
-          <div id="portal-analytics-panel" class="bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-inner">
+          <div id="portal-analytics-panel" class="bg-[#0b1c31] p-4 rounded-2xl border border-[#1b3b64] shadow-inner text-white">
             <!-- Injected by renderExecutiveAnalytics() -->
           </div>
         </div>
@@ -717,10 +782,10 @@
         <!-- Doctor Queue Schedule -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-bold text-slate-900 flex items-center">
-              <i class="fa-solid fa-list-check text-indigo-600 mr-2"></i> Live Patient Queue & Outpatient Dispatch
+            <h3 class="text-lg font-bold text-[#112d4e] flex items-center">
+              <i class="fa-solid fa-list-check text-[#3f72af] mr-2"></i> Live Patient Dispatch Queue
             </h3>
-            <span class="text-xs text-slate-500" id="portal-queue-count">Showing 0 appointments</span>
+            <span class="text-xs text-slate-500 font-mono" id="portal-queue-count">Showing 0 appointments</span>
           </div>
 
           <div id="portal-appointments-container" class="space-y-3">
@@ -733,7 +798,64 @@
     </section>
 
     <!-- =====================================================================
-         TAB 5: HOSPITAL OPERATIONS & ADMIN DESK
+         TAB 5A: HOSPITAL ADMIN LOGIN
+         ===================================================================== -->
+    <section id="tab-admin-login" class="tab-content hidden space-y-6">
+      
+      <div class="max-w-md mx-auto glass-panel p-8 rounded-3xl border border-[#dbe2ef] shadow-xl space-y-6">
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 rounded-2xl bg-[#112d4e] text-white flex items-center justify-center text-2xl mx-auto shadow-md">
+            <i class="fa-solid fa-hospital-user text-[#3f72af]"></i>
+          </div>
+          <h2 class="text-2xl font-extrabold text-[#112d4e]">Hospital Operations Sign-In</h2>
+          <p class="text-xs text-slate-500">Sign in with your hospital administration account to onboard doctors and manage schedules.</p>
+        </div>
+
+        <form onsubmit="handleHospitalAdminLoginSubmit(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Admin Email</label>
+            <input type="email" id="admin-login-email" required placeholder="admin@hospital.com" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-2 focus:ring-[#3f72af] focus:outline-none bg-white">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+            <input type="password" id="admin-login-password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-2 focus:ring-[#3f72af] focus:outline-none bg-white">
+          </div>
+
+          <button type="submit" class="w-full py-3 btn-navy font-bold rounded-xl text-xs shadow-md flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-lock"></i>
+            <span>Access Hospital Operations Desk</span>
+          </button>
+        </form>
+
+        <!-- 1-Click Fast Credentials for Viva Demo -->
+        <div class="pt-4 border-t border-[#dbe2ef] space-y-2 text-xs">
+          <p class="font-bold text-[#112d4e] text-[11px] uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-bolt text-amber-500 mr-1.5"></i> 1-Click Hospital Admin Accounts
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="fillDemoAdminCredentials('admin@sruhealth.edu.in', 'admin123')" class="w-full text-left p-2 rounded-lg bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] flex justify-between items-center transition">
+              <div>
+                <p class="font-bold text-[#112d4e]">SRU Health Centre Admin</p>
+                <p class="text-[10px] text-slate-500">admin@sruhealth.edu.in</p>
+              </div>
+              <span class="text-[10px] font-mono text-[#3f72af]">Fill</span>
+            </button>
+            <button onclick="fillDemoAdminCredentials('admin@apollo.org', 'admin123')" class="w-full text-left p-2 rounded-lg bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] flex justify-between items-center transition">
+              <div>
+                <p class="font-bold text-[#112d4e]">Apollo Health City Admin</p>
+                <p class="text-[10px] text-slate-500">admin@apollo.org</p>
+              </div>
+              <span class="text-[10px] font-mono text-[#3f72af]">Fill</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =====================================================================
+         TAB 5B: HOSPITAL OPERATIONS & SPECIALIST ONBOARDING DESK
          ===================================================================== -->
     <section id="tab-admin" class="tab-content hidden space-y-6">
       
@@ -741,18 +863,21 @@
       <div class="glass-panel p-6 sm:p-8 rounded-3xl">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-violet-100 text-violet-800 mb-2">
-              <i class="fa-solid fa-user-shield mr-1.5"></i> Hospital Operations & Staff Desk
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#dbe2ef] text-[#112d4e] mb-2">
+              <i class="fa-solid fa-hospital mr-1.5 text-[#3f72af]"></i> <span id="admin-hospital-title">Hospital Operations Desk</span>
             </span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Physician Onboarding & Directory Management</h2>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#112d4e] tracking-tight">Physician Onboarding & Department Roster</h2>
             <p class="text-sm text-slate-500 mt-1 max-w-2xl">
-              Register new credentialed specialists into the hospital database, configure consultation fees, clinic locations, and weekly OPD consultation hours.
+              Register new medical specialists for this hospital campus, configure their consultation fees, assign weekly OPD hours, and issue doctor login credentials.
             </p>
           </div>
           <div class="flex items-center space-x-2">
-            <button onclick="autoFillDemoDoctor()" type="button" class="px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 font-bold rounded-xl text-xs transition flex items-center space-x-1.5 shadow-sm">
+            <button onclick="autoFillDemoDoctor()" type="button" class="px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 font-bold rounded-xl text-xs transition flex items-center space-x-1.5 shadow-sm">
               <i class="fa-solid fa-bolt text-amber-500"></i>
-              <span>⚡ Autofill Demo Specialist</span>
+              <span>⚡ Autofill Specialist</span>
+            </button>
+            <button onclick="hospitalAdminLogout()" class="px-3.5 py-2 bg-white hover:bg-rose-50 text-rose-600 border border-[#dbe2ef] font-bold rounded-xl text-xs transition">
+              Sign Out
             </button>
           </div>
         </div>
@@ -760,32 +885,30 @@
 
       <!-- Add Doctor Card Form -->
       <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-6">
-        <div class="border-b border-slate-100 pb-4">
-          <h3 class="text-lg font-bold text-slate-900 flex items-center">
-            <i class="fa-solid fa-user-doctor text-indigo-600 mr-2"></i> Onboard New Medical Specialist
+        <div class="border-b border-[#dbe2ef] pb-4">
+          <h3 class="text-lg font-bold text-[#112d4e] flex items-center">
+            <i class="fa-solid fa-user-plus text-[#3f72af] mr-2"></i> Onboard New Medical Specialist
           </h3>
-          <p class="text-xs text-slate-500 mt-0.5">Submits directly to the backend <code class="text-indigo-700 bg-indigo-50 px-1 rounded font-mono">POST /api/doctors</code> REST endpoint and updates the live SQLite database.</p>
+          <p class="text-xs text-slate-500 mt-0.5">Saves to backend <code class="text-[#3f72af] bg-[#eff6ff] px-1 rounded font-mono">POST /api/doctors</code> with designated doctor login credentials.</p>
         </div>
 
         <form id="form-add-doctor" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Doctor Name <span class="text-red-500">*</span></label>
-              <input type="text" id="admin-doc-name" required placeholder="e.g. Dr. Sneha Roy" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-slate-50/50">
+              <input type="text" id="admin-doc-name" required placeholder="e.g. Dr. Sneha Roy" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Assigned Clinic / Hospital <span class="text-red-500">*</span></label>
-              <select id="admin-doc-clinic-id" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-white">
-                <option value="clinic-sru">SRU Health & Wellness Centre (Warangal)</option>
-                <option value="clinic-apollo">Apollo Health City (Hyderabad)</option>
-                <option value="clinic-kakatiya">Kakatiya Super-Specialty Medical Institute (Warangal)</option>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Assigned Hospital Campus <span class="text-red-500">*</span></label>
+              <select id="admin-doc-clinic-id" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
+                <!-- Dynamically filled -->
               </select>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Specialty Department <span class="text-red-500">*</span></label>
-              <select id="admin-doc-dept" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-white">
+              <select id="admin-doc-dept" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
                 <option value="dept-cardio">Cardiology</option>
                 <option value="dept-derma">Dermatology</option>
                 <option value="dept-genmed">General Medicine</option>
@@ -796,37 +919,49 @@
             </div>
           </div>
 
+          <!-- Doctor Login Credentials -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#f9f7f7] p-3.5 rounded-2xl border border-[#dbe2ef]">
+            <div>
+              <label class="block text-xs font-semibold text-[#112d4e] mb-1">Doctor Hospital Email (Login ID) <span class="text-red-500">*</span></label>
+              <input type="email" id="admin-doc-email" placeholder="dr.name@hospital.com" class="w-full px-3.5 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] bg-white">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-[#112d4e] mb-1">Initial Password <span class="text-red-500">*</span></label>
+              <input type="text" id="admin-doc-password" value="doctor123" class="w-full px-3.5 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] bg-white font-mono">
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Qualifications <span class="text-red-500">*</span></label>
-              <input type="text" id="admin-doc-qual" required placeholder="e.g. MBBS, MD, DM (AIIMS)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-slate-50/50">
+              <input type="text" id="admin-doc-qual" required placeholder="e.g. MBBS, MD, DM" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Experience (Years) <span class="text-red-500">*</span></label>
-              <input type="number" id="admin-doc-exp" required min="1" max="50" placeholder="10" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-slate-50/50">
+              <input type="number" id="admin-doc-exp" required min="1" max="50" placeholder="10" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Consultation Fee (₹) <span class="text-red-500">*</span></label>
-              <input type="number" id="admin-doc-fee" required min="100" max="5000" step="50" placeholder="600" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-slate-50/50">
+              <input type="number" id="admin-doc-fee" required min="100" max="5000" step="50" placeholder="600" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Initial Rating (1.0 to 5.0)</label>
-              <input type="number" id="admin-doc-rating" step="0.1" min="1.0" max="5.0" value="4.9" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-slate-50/50">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Initial Rating</label>
+              <input type="number" id="admin-doc-rating" step="0.1" min="1.0" max="5.0" value="4.9" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Clinic Address / Location <span class="text-red-500">*</span></label>
-              <input type="text" id="admin-doc-clinic" required placeholder="e.g. Subedari, Hanamkonda / Kazipet" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-slate-50/50">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Clinic Cabin / Address <span class="text-red-500">*</span></label>
+              <input type="text" id="admin-doc-clinic" required placeholder="e.g. OPD Block A, Room 204" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Profile Photo URL (Unsplash)</label>
-              <input type="url" id="admin-doc-avatar" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-slate-50/50">
+              <input type="url" id="admin-doc-avatar" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
             </div>
           </div>
 
@@ -834,28 +969,28 @@
           <div>
             <label class="block text-xs font-semibold text-slate-700 mb-2">Clinic Consulting Days <span class="text-red-500">*</span></label>
             <div class="flex flex-wrap gap-2">
-              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
-                <input type="checkbox" class="admin-day-check rounded text-indigo-600 focus:ring-indigo-500" value="Monday" checked>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-[#dbe2ef] text-xs font-semibold text-[#112d4e] bg-white cursor-pointer hover:bg-[#dbe2ef]/30">
+                <input type="checkbox" class="admin-day-check rounded text-[#3f72af] focus:ring-[#3f72af]" value="Monday" checked>
                 <span>Mon</span>
               </label>
-              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
-                <input type="checkbox" class="admin-day-check rounded text-indigo-600 focus:ring-indigo-500" value="Tuesday" checked>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-[#dbe2ef] text-xs font-semibold text-[#112d4e] bg-white cursor-pointer hover:bg-[#dbe2ef]/30">
+                <input type="checkbox" class="admin-day-check rounded text-[#3f72af] focus:ring-[#3f72af]" value="Tuesday" checked>
                 <span>Tue</span>
               </label>
-              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
-                <input type="checkbox" class="admin-day-check rounded text-indigo-600 focus:ring-indigo-500" value="Wednesday" checked>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-[#dbe2ef] text-xs font-semibold text-[#112d4e] bg-white cursor-pointer hover:bg-[#dbe2ef]/30">
+                <input type="checkbox" class="admin-day-check rounded text-[#3f72af] focus:ring-[#3f72af]" value="Wednesday" checked>
                 <span>Wed</span>
               </label>
-              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
-                <input type="checkbox" class="admin-day-check rounded text-indigo-600 focus:ring-indigo-500" value="Thursday" checked>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-[#dbe2ef] text-xs font-semibold text-[#112d4e] bg-white cursor-pointer hover:bg-[#dbe2ef]/30">
+                <input type="checkbox" class="admin-day-check rounded text-[#3f72af] focus:ring-[#3f72af]" value="Thursday" checked>
                 <span>Thu</span>
               </label>
-              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
-                <input type="checkbox" class="admin-day-check rounded text-indigo-600 focus:ring-indigo-500" value="Friday" checked>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-[#dbe2ef] text-xs font-semibold text-[#112d4e] bg-white cursor-pointer hover:bg-[#dbe2ef]/30">
+                <input type="checkbox" class="admin-day-check rounded text-[#3f72af] focus:ring-[#3f72af]" value="Friday" checked>
                 <span>Fri</span>
               </label>
-              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
-                <input type="checkbox" class="admin-day-check rounded text-indigo-600 focus:ring-indigo-500" value="Saturday">
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-[#dbe2ef] text-xs font-semibold text-[#112d4e] bg-white cursor-pointer hover:bg-[#dbe2ef]/30">
+                <input type="checkbox" class="admin-day-check rounded text-[#3f72af] focus:ring-[#3f72af]" value="Saturday">
                 <span>Sat</span>
               </label>
             </div>
@@ -863,13 +998,13 @@
 
           <div>
             <label class="block text-xs font-semibold text-slate-700 mb-1">Clinical Biography & Specialization Focus</label>
-            <textarea id="admin-doc-bio" rows="2" placeholder="Brief overview of clinical practice and focus areas..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none bg-slate-50/50 resize-none"></textarea>
+            <textarea id="admin-doc-bio" rows="2" placeholder="Brief clinical background..." class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white resize-none"></textarea>
           </div>
 
           <div class="pt-2">
-            <button type="submit" id="btn-submit-doctor" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold rounded-xl text-sm shadow-md shadow-indigo-500/20 hover:shadow-lg transition flex items-center space-x-2">
+            <button type="submit" id="btn-submit-doctor" class="px-6 py-3 btn-navy font-bold rounded-xl text-sm shadow-md transition flex items-center space-x-2">
               <i class="fa-solid fa-user-plus mr-1"></i>
-              <span>Register Medical Specialist</span>
+              <span>Register & Provision Doctor Login</span>
             </button>
           </div>
         </form>
@@ -877,14 +1012,14 @@
 
       <!-- Active Doctors Roster Table -->
       <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-4">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center justify-between border-b border-[#dbe2ef] pb-3">
           <div>
-            <h3 class="text-lg font-bold text-slate-900 flex items-center">
-              <i class="fa-solid fa-users text-indigo-600 mr-2"></i> Active Specialists Directory
+            <h3 class="text-lg font-bold text-[#112d4e] flex items-center">
+              <i class="fa-solid fa-users text-[#3f72af] mr-2"></i> Hospital Specialists Roster
             </h3>
             <p class="text-xs text-slate-500">Live roster queried from the SQLite persistence layer.</p>
           </div>
-          <span class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200" id="admin-roster-count">
+          <span class="text-xs font-bold text-[#112d4e] bg-[#dbe2ef] px-3 py-1 rounded-full border border-[#3f72af]/30" id="admin-roster-count">
             Loading roster...
           </span>
         </div>
@@ -892,13 +1027,12 @@
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
-              <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50/70">
-                <th class="py-2.5 px-4">Physician</th>
-                <th class="py-2.5 px-4">Hospital Branch</th>
+              <tr class="border-b border-[#dbe2ef] text-slate-500 font-semibold bg-[#f9f7f7]">
+                <th class="py-2.5 px-4">Specialist</th>
+                <th class="py-2.5 px-4">Hospital Campus</th>
                 <th class="py-2.5 px-4">Department</th>
+                <th class="py-2.5 px-4">Login Email</th>
                 <th class="py-2.5 px-4">Fee</th>
-                <th class="py-2.5 px-4">Address</th>
-                <th class="py-2.5 px-4">Rating</th>
                 <th class="py-2.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
@@ -911,16 +1045,208 @@
 
     </section>
 
+    <!-- =====================================================================
+         TAB 6: PLATFORM SUPERADMIN CONSOLE
+         ===================================================================== -->
+    <section id="tab-platform-admin" class="tab-content hidden space-y-6">
+      
+      <!-- SuperAdmin Login Card -->
+      <div id="superadmin-login-card" class="max-w-md mx-auto glass-panel p-8 rounded-3xl border border-[#dbe2ef] shadow-xl space-y-6">
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 rounded-2xl bg-[#0b1c31] text-white flex items-center justify-center text-2xl mx-auto shadow-md">
+            <i class="fa-solid fa-server text-[#3f72af]"></i>
+          </div>
+          <h2 class="text-2xl font-extrabold text-[#112d4e]">Platform SuperAdmin</h2>
+          <p class="text-xs text-slate-500">Provision new hospital tenants and manage multi-tenant network settings.</p>
+        </div>
+
+        <form onsubmit="handleSuperAdminLoginSubmit(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">SuperAdmin Email</label>
+            <input type="email" id="superadmin-email" required placeholder="superadmin@medipulse.health" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-2 focus:ring-[#3f72af] focus:outline-none bg-white font-mono">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+            <input type="password" id="superadmin-password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-2 focus:ring-[#3f72af] focus:outline-none bg-white font-mono">
+          </div>
+
+          <button type="submit" class="w-full py-3 btn-navy font-bold rounded-xl text-xs shadow-md flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-key"></i>
+            <span>Authenticate SuperAdmin</span>
+          </button>
+        </form>
+
+        <div class="pt-3 border-t border-[#dbe2ef]">
+          <button onclick="fillDemoSuperAdminCredentials('superadmin@medipulse.health', 'superadmin123')" class="w-full py-2 bg-[#f9f7f7] hover:bg-[#dbe2ef] text-[#112d4e] font-bold text-xs rounded-xl transition border border-[#dbe2ef]">
+            ⚡ 1-Click SuperAdmin Credentials
+          </button>
+        </div>
+      </div>
+
+      <!-- SuperAdmin Workspace (Hidden until logged in) -->
+      <div id="superadmin-workspace" class="hidden space-y-6">
+        
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#0b1c31] text-white">Platform SuperAdmin Engine</span>
+              <h2 class="text-2xl font-extrabold text-[#112d4e] mt-1">Hospital Tenant Provisioning</h2>
+              <p class="text-xs text-slate-500">Add new hospital branches into MediPulse. Once created, give the Hospital Admin credentials to hospital management.</p>
+            </div>
+            <button onclick="superAdminLogout()" class="px-4 py-2 bg-rose-50 text-rose-600 rounded-xl text-xs font-bold hover:bg-rose-100 transition border border-rose-200">
+              Sign Out SuperAdmin
+            </button>
+          </div>
+        </div>
+
+        <!-- Add Hospital Form -->
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-4">
+          <h3 class="text-base font-bold text-[#112d4e] flex items-center">
+            <i class="fa-solid fa-plus text-[#3f72af] mr-2"></i> Onboard New Hospital / Clinic Tenant
+          </h3>
+
+          <form id="form-create-hospital" onsubmit="handleCreateHospitalSubmit(event)" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Hospital / Clinic Name <span class="text-red-500">*</span></label>
+                <input type="text" id="create-hospital-name" required placeholder="e.g. KIMS Super Specialty Hospital" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">City <span class="text-red-500">*</span></label>
+                <input type="text" id="create-hospital-city" required placeholder="e.g. Warangal" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
+                <input type="text" id="create-hospital-phone" placeholder="+91 870 0000000" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] bg-white">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Campus Address <span class="text-red-500">*</span></label>
+                <input type="text" id="create-hospital-address" required placeholder="e.g. Kazipet Bypass Road, Warangal" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] bg-white">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Operating Hours</label>
+                  <input type="text" id="create-hospital-hours" placeholder="08:00 - 21:00" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Total Beds</label>
+                  <input type="number" id="create-hospital-beds" value="100" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] bg-white">
+                </div>
+              </div>
+            </div>
+
+            <!-- Hospital Admin Credentials Provisioning -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#f9f7f7] p-3.5 rounded-2xl border border-[#dbe2ef]">
+              <div>
+                <label class="block text-xs font-semibold text-[#112d4e] mb-1">Provision Hospital Admin Email <span class="text-red-500">*</span></label>
+                <input type="email" id="create-hospital-admin-email" required placeholder="admin@kims.org" class="w-full px-3.5 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] bg-white font-mono">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-[#112d4e] mb-1">Provision Hospital Admin Password <span class="text-red-500">*</span></label>
+                <input type="text" id="create-hospital-admin-password" required value="admin123" class="w-full px-3.5 py-2 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-[#3f72af] bg-white font-mono">
+              </div>
+            </div>
+
+            <button type="submit" class="px-6 py-3 btn-primary font-bold rounded-xl text-xs shadow-md">
+              <span>Deploy Hospital Tenant to SaaS</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Active Hospital Tenants Table -->
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-4">
+          <h3 class="text-base font-bold text-[#112d4e]">Registered Healthcare Tenants</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="border-b border-[#dbe2ef] text-slate-500 font-semibold bg-[#f9f7f7]">
+                  <th class="py-2.5 px-3">Hospital Name</th>
+                  <th class="py-2.5 px-3">City</th>
+                  <th class="py-2.5 px-3">Admin Login Email</th>
+                  <th class="py-2.5 px-3">Operating Hours</th>
+                  <th class="py-2.5 px-3">Beds</th>
+                  <th class="py-2.5 px-3 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody id="superadmin-hospitals-list">
+                <!-- Injected via renderSuperAdminDashboard() -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
   </main>
+
+  <!-- =====================================================================
+       MODAL 0: PATIENT QUICK SIGN-IN (NAME, PHONE, AGE, GENDER)
+       ===================================================================== -->
+  <div id="modal-patient-auth" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-[#dbe2ef] space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-[#dbe2ef]">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-xl bg-[#112d4e] text-white flex items-center justify-center font-bold">
+            <i class="fa-solid fa-user-check text-[#3f72af]"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-[#112d4e] text-base">Patient Identification</h3>
+            <p class="text-xs text-slate-500">Sign in to save time during consultation booking.</p>
+          </div>
+        </div>
+        <button onclick="closePatientAuthModal()" class="w-8 h-8 rounded-full bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handlePatientAuthSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Your Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="auth-patient-name" required placeholder="e.g. Ramesh Chandra" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Mobile Phone (10 Digits) <span class="text-red-500">*</span></label>
+          <input type="tel" id="auth-patient-phone" required pattern="[0-9]{10}" placeholder="9876543210" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none font-mono">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Age (Years) <span class="text-red-500">*</span></label>
+            <input type="number" id="auth-patient-age" required min="1" max="120" placeholder="28" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Gender</label>
+            <select id="auth-patient-gender" class="w-full px-3.5 py-2.5 rounded-xl border border-[#dbe2ef] text-sm focus:ring-1 focus:ring-[#3f72af] focus:outline-none bg-white">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 btn-primary font-bold rounded-xl text-xs shadow-md flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-check"></i>
+          <span>Save & Continue as Patient</span>
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- =====================================================================
        MODAL 1: APPOINTMENT TOKEN PASS (PRINT & CALENDAR)
        ===================================================================== -->
   <div id="modal-slip" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border border-[#dbe2ef]">
       
       <!-- Close Button -->
-      <button onclick="closeSlipModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center no-print">
+      <button onclick="closeSlipModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-[#f9f7f7] flex items-center justify-center no-print">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
@@ -928,15 +1254,15 @@
       <div id="printable-slip" class="space-y-4">
         
         <!-- Header -->
-        <div class="text-center border-b border-dashed border-slate-300 pb-4">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center mx-auto mb-2 shadow-md shadow-indigo-500/20">
-            <i class="fa-solid fa-heart-pulse text-2xl"></i>
+        <div class="text-center border-b border-dashed border-[#dbe2ef] pb-4">
+          <div class="w-12 h-12 rounded-xl bg-[#112d4e] text-white flex items-center justify-center mx-auto mb-2 shadow-md">
+            <i class="fa-solid fa-heart-pulse text-2xl text-[#3f72af]"></i>
           </div>
-          <h3 class="text-xl font-extrabold text-slate-900">MediPulse Medical Center</h3>
+          <h3 class="text-xl font-extrabold text-[#112d4e]">MediPulse Healthcare Network</h3>
           <p class="text-xs text-slate-500">Official Patient Appointment Confirmation Slip</p>
-          <div class="mt-2 inline-flex items-center space-x-2 px-3.5 py-1 bg-indigo-50 text-indigo-900 rounded-full font-mono font-bold text-xs border border-indigo-200">
+          <div class="mt-2 inline-flex items-center space-x-2 px-3.5 py-1 bg-[#dbe2ef]/70 text-[#112d4e] rounded-full font-mono font-bold text-xs border border-[#3f72af]/30">
             <span id="slip-token">APT-2026-XXXX</span>
-            <button onclick="copyBookingRef()" type="button" class="ml-1 text-indigo-600 hover:text-indigo-900 transition-colors" title="Copy Token to Clipboard">
+            <button onclick="copyBookingRef()" type="button" class="ml-1 text-[#3f72af] hover:text-[#112d4e] transition-colors" title="Copy Token to Clipboard">
               <i class="fa-regular fa-copy"></i>
             </button>
           </div>
@@ -945,42 +1271,42 @@
         <!-- Appointment Details Table -->
         <div class="space-y-2.5 text-xs">
           
-          <div class="flex justify-between py-1 border-b border-slate-100">
+          <div class="flex justify-between py-1 border-b border-[#dbe2ef]">
             <span class="text-slate-500">Patient Name:</span>
-            <span class="font-bold text-slate-900" id="slip-patient-name">--</span>
+            <span class="font-bold text-[#112d4e]" id="slip-patient-name">--</span>
           </div>
 
-          <div class="flex justify-between py-1 border-b border-slate-100">
+          <div class="flex justify-between py-1 border-b border-[#dbe2ef]">
             <span class="text-slate-500">Contact / Age / Gender:</span>
-            <span class="font-medium text-slate-800" id="slip-patient-meta">--</span>
+            <span class="font-medium text-slate-800 font-mono" id="slip-patient-meta">--</span>
           </div>
 
-          <div class="flex justify-between py-1 border-b border-slate-100">
-            <span class="text-slate-500">Consulting Doctor:</span>
-            <span class="font-bold text-indigo-700" id="slip-doctor-name">--</span>
+          <div class="flex justify-between py-1 border-b border-[#dbe2ef]">
+            <span class="text-slate-500">Consulting Specialist:</span>
+            <span class="font-bold text-[#3f72af]" id="slip-doctor-name">--</span>
           </div>
 
-          <div class="flex justify-between py-1 border-b border-slate-100">
-            <span class="text-slate-500">Specialization:</span>
+          <div class="flex justify-between py-1 border-b border-[#dbe2ef]">
+            <span class="text-slate-500">Specialization Department:</span>
             <span class="font-medium text-slate-800" id="slip-doctor-dept">--</span>
           </div>
 
-          <div class="flex justify-between py-1 border-b border-slate-100">
+          <div class="flex justify-between py-1 border-b border-[#dbe2ef]">
             <span class="text-slate-500">Appointment Date & Time:</span>
-            <span class="font-bold text-slate-900" id="slip-datetime">--</span>
+            <span class="font-bold text-[#112d4e] font-mono" id="slip-datetime">--</span>
           </div>
 
-          <div class="flex justify-between py-1 border-b border-slate-100">
-            <span class="text-slate-500">Clinic Location:</span>
+          <div class="flex justify-between py-1 border-b border-[#dbe2ef]">
+            <span class="text-slate-500">Hospital Campus:</span>
             <span class="font-medium text-slate-800 text-right max-w-[200px]" id="slip-clinic-address">--</span>
           </div>
 
-          <div class="flex justify-between py-1 border-b border-slate-100">
+          <div class="flex justify-between py-1 border-b border-[#dbe2ef]">
             <span class="text-slate-500">Consultation Fee:</span>
-            <span class="font-bold text-slate-900" id="slip-fee">--</span>
+            <span class="font-bold text-[#112d4e] text-sm" id="slip-fee">--</span>
           </div>
 
-          <div class="flex justify-between py-1 border-b border-slate-100">
+          <div class="flex justify-between py-1 border-b border-[#dbe2ef]">
             <span class="text-slate-500">Booking Status:</span>
             <span class="font-bold text-emerald-600" id="slip-status">CONFIRMED</span>
           </div>
@@ -988,12 +1314,12 @@
         </div>
 
         <!-- QR Code Representation -->
-        <div class="p-3 bg-slate-50 rounded-xl flex items-center justify-between border border-slate-200">
+        <div class="p-3 bg-[#f9f7f7] rounded-xl flex items-center justify-between border border-[#dbe2ef]">
           <div class="text-[11px] text-slate-500">
-            <p class="font-semibold text-slate-700">Digital Token Verified</p>
-            <p>Show this pass at clinic reception desk 10 minutes before consultation.</p>
+            <p class="font-semibold text-[#112d4e]">Digital Token Verified</p>
+            <p>Show this pass at hospital reception 10 minutes prior to consultation.</p>
           </div>
-          <div class="w-12 h-12 bg-white p-1 rounded border border-slate-300 flex items-center justify-center text-slate-700">
+          <div class="w-12 h-12 bg-white p-1 rounded border border-[#dbe2ef] flex items-center justify-center text-[#112d4e]">
             <i class="fa-solid fa-qrcode text-3xl"></i>
           </div>
         </div>
@@ -1002,21 +1328,21 @@
 
       <!-- Action Buttons (Hidden on Print) -->
       <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 no-print">
-        <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1.5 shadow-sm shadow-indigo-500/20">
+        <button onclick="window.print()" class="btn-navy font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1.5 shadow-sm">
           <i class="fa-solid fa-print"></i>
           <span>Print / PDF</span>
         </button>
-        <button onclick="addToGoogleCalendar()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-200 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1.5 transition">
-          <i class="fa-solid fa-calendar-plus text-indigo-600"></i>
+        <button onclick="addToGoogleCalendar()" class="bg-[#dbe2ef] hover:bg-[#c7d2e5] text-[#112d4e] border border-[#3f72af]/30 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1.5 transition">
+          <i class="fa-solid fa-calendar-plus text-[#3f72af]"></i>
           <span>Google Cal</span>
         </button>
-        <button onclick="downloadIcsFile()" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1.5 transition">
+        <button onclick="downloadIcsFile()" class="bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-700 border border-[#dbe2ef] font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1.5 transition">
           <i class="fa-regular fa-calendar-check text-slate-600"></i>
           <span>Save .ics</span>
         </button>
       </div>
       <div class="mt-2 text-center no-print">
-        <button onclick="closeSlipModal()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold rounded-xl text-xs">
+        <button onclick="closeSlipModal()" class="w-full py-2 bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-600 font-semibold rounded-xl text-xs">
           Close
         </button>
       </div>
@@ -1028,26 +1354,26 @@
        MODAL 2: CANCELLATION DIALOG
        ===================================================================== -->
   <div id="modal-cancel" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-[#dbe2ef]">
       <div class="text-center mb-4">
         <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-2">
           <i class="fa-solid fa-triangle-exclamation text-xl"></i>
         </div>
-        <h3 class="text-lg font-bold text-slate-900">Cancel Appointment</h3>
-        <p class="text-xs text-slate-500">Appointment <span class="font-bold font-mono text-slate-800" id="cancel-modal-ref">APT-XXXX</span> will be released.</p>
+        <h3 class="text-lg font-bold text-[#112d4e]">Cancel Appointment</h3>
+        <p class="text-xs text-slate-500">Appointment <span class="font-bold font-mono text-[#112d4e]" id="cancel-modal-ref">APT-XXXX</span> will be released back to the schedule.</p>
       </div>
 
       <div class="space-y-3">
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Reason for Cancellation <span class="text-red-500">*</span></label>
-          <textarea id="cancel-reason-input" rows="3" placeholder="Please state reason (e.g., patient recovered, scheduling conflict, emergency)..." class="w-full p-3 rounded-xl border border-slate-200 text-xs focus:ring-1 focus:ring-red-500 focus:outline-none resize-none"></textarea>
+          <textarea id="cancel-reason-input" rows="3" placeholder="State reason (e.g., patient recovered, scheduling conflict, emergency)..." class="w-full p-3 rounded-xl border border-[#dbe2ef] text-xs focus:ring-1 focus:ring-red-500 focus:outline-none resize-none bg-[#f9f7f7]"></textarea>
         </div>
 
         <div class="flex space-x-2 pt-2">
           <button onclick="submitCancellation()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-sm">
             Confirm Cancellation
           </button>
-          <button onclick="closeCancelModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs">
+          <button onclick="closeCancelModal()" class="px-4 py-2.5 bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-700 font-semibold rounded-xl text-xs border border-[#dbe2ef]">
             Keep Appointment
           </button>
         </div>
@@ -1059,8 +1385,8 @@
        MODAL 3: DOCTOR PROFILE FULL BIO MODAL
        ===================================================================== -->
   <div id="modal-doctor-bio" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative">
-      <button onclick="closeDoctorBioModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative border border-[#dbe2ef]">
+      <button onclick="closeDoctorBioModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-[#f9f7f7] flex items-center justify-center">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
@@ -1073,38 +1399,38 @@
   <!-- =====================================================================
        MODAL 4: PROJECT ENGINEERING TEAM ROSTER MODAL
        ===================================================================== -->
-  <div id="modal-team" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md hidden">
-    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative overflow-hidden">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+  <div id="modal-team" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#112d4e]/70 backdrop-blur-md hidden">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-[#dbe2ef] relative overflow-hidden">
+      <div class="flex items-center justify-between pb-4 border-b border-[#dbe2ef]">
         <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
-            <i class="fa-solid fa-users text-lg"></i>
+          <div class="w-10 h-10 rounded-2xl bg-[#112d4e] flex items-center justify-center text-white shadow-md">
+            <i class="fa-solid fa-users text-lg text-[#3f72af]"></i>
           </div>
           <div>
-            <h3 class="text-lg sm:text-xl font-extrabold text-slate-900">Project Engineering Team</h3>
+            <h3 class="text-lg sm:text-xl font-extrabold text-[#112d4e]">Project Engineering Team</h3>
             <p class="text-xs text-slate-500">SR University • Dept of Computer Science & Engineering (CSE Core)</p>
           </div>
         </div>
-        <button onclick="closeTeamModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+        <button onclick="closeTeamModal()" class="w-8 h-8 rounded-full bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-600 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
       <div class="py-5 space-y-3">
         <!-- Team Leader Card -->
-        <div class="p-4 rounded-2xl bg-gradient-to-r from-indigo-50 to-violet-50 border-2 border-indigo-500 flex items-center justify-between gap-3 shadow-sm">
+        <div class="p-4 rounded-2xl bg-[#dbe2ef]/50 border-2 border-[#3f72af] flex items-center justify-between gap-3 shadow-sm">
           <div class="flex items-center space-x-3.5">
-            <div class="w-11 h-11 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-black text-base shadow">
+            <div class="w-11 h-11 rounded-2xl bg-[#112d4e] text-white flex items-center justify-center font-black text-base shadow">
               NG
             </div>
             <div>
               <div class="flex items-center space-x-2">
-                <h4 class="font-black text-slate-900 text-sm sm:text-base">NEERUDU GIFTY TANIKSHA</h4>
+                <h4 class="font-black text-[#112d4e] text-sm sm:text-base">NEERUDU GIFTY TANIKSHA</h4>
                 <span class="bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
                   ★ Team Leader
                 </span>
               </div>
-              <p class="text-xs font-mono font-bold text-indigo-700">2503A51107</p>
+              <p class="text-xs font-mono font-bold text-[#3f72af]">2503A51107</p>
               <p class="text-[11px] text-slate-500 mt-0.5">Project Lead, Team Coordination & Requirements</p>
             </div>
           </div>
@@ -1113,48 +1439,48 @@
         <!-- 4 Members Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <!-- Member 2 -->
-          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm">
+          <div class="p-3.5 rounded-2xl bg-[#f9f7f7] border border-[#dbe2ef] flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-white text-slate-700 flex items-center justify-center font-bold text-sm border border-[#dbe2ef]">
               CN
             </div>
             <div>
-              <h5 class="font-bold text-slate-900 text-xs">CHANDUPATLA NAVEEN REDDY</h5>
+              <h5 class="font-bold text-[#112d4e] text-xs">CHANDUPATLA NAVEEN REDDY</h5>
               <p class="text-[11px] font-mono text-slate-500 font-semibold">2503A51108</p>
               <p class="text-[10px] text-slate-500">Frontend UI/UX & Responsive Views</p>
             </div>
           </div>
 
           <!-- Member 3 -->
-          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm">
+          <div class="p-3.5 rounded-2xl bg-[#f9f7f7] border border-[#dbe2ef] flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-white text-slate-700 flex items-center justify-center font-bold text-sm border border-[#dbe2ef]">
               KS
             </div>
             <div>
-              <h5 class="font-bold text-slate-900 text-xs">KARRE SHIVA SAKETH</h5>
+              <h5 class="font-bold text-[#112d4e] text-xs">KARRE SHIVA SAKETH</h5>
               <p class="text-[11px] font-mono text-slate-500 font-semibold">2503A51109</p>
               <p class="text-[10px] text-slate-500">Quality Assurance, Testing & Validation</p>
             </div>
           </div>
 
           <!-- Member 4: Shiva Ganesh Akku -->
-          <div class="p-3.5 rounded-2xl bg-slate-50 border border-indigo-200 flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
+          <div class="p-3.5 rounded-2xl bg-[#eff6ff] border border-[#bfdbfe] flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-[#3f72af] text-white flex items-center justify-center font-bold text-sm">
               AS
             </div>
             <div>
-              <h5 class="font-bold text-slate-900 text-xs">AKKU SHIVA GANESH</h5>
-              <p class="text-[11px] font-mono text-indigo-600 font-semibold">2503A51110</p>
+              <h5 class="font-bold text-[#112d4e] text-xs">AKKU SHIVA GANESH</h5>
+              <p class="text-[11px] font-mono text-[#3f72af] font-semibold">2503A51110</p>
               <p class="text-[10px] text-slate-500">Systems Architecture & Backend Lead</p>
             </div>
           </div>
 
           <!-- Member 5 -->
-          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm">
+          <div class="p-3.5 rounded-2xl bg-[#f9f7f7] border border-[#dbe2ef] flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-white text-slate-700 flex items-center justify-center font-bold text-sm border border-[#dbe2ef]">
               VS
             </div>
             <div>
-              <h5 class="font-bold text-slate-900 text-xs">VELDANDI SAI CHARAN</h5>
+              <h5 class="font-bold text-[#112d4e] text-xs">VELDANDI SAI CHARAN</h5>
               <p class="text-[11px] font-mono text-slate-500 font-semibold">2503A51111</p>
               <p class="text-[10px] text-slate-500">Data Pipelines & API Integration</p>
             </div>
@@ -1162,9 +1488,9 @@
         </div>
       </div>
 
-      <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+      <div class="pt-3 border-t border-[#dbe2ef] flex items-center justify-between text-xs text-slate-500">
         <span>WTMP Academic Project • 2nd Year B.Tech CSE</span>
-        <button onclick="closeTeamModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition">
+        <button onclick="closeTeamModal()" class="px-4 py-2 btn-navy text-white rounded-xl text-xs font-bold transition">
           Close Roster
         </button>
       </div>
@@ -1175,22 +1501,22 @@
   <div id="toast-container"></div>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 text-white border-t border-slate-800 mt-auto pt-10 pb-8">
+  <footer class="bg-[#112d4e] text-white border-t border-[#1b3b64] mt-auto pt-10 pb-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       
       <!-- Top Row -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#1b3b64] pb-6">
         <div class="flex items-center space-x-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white">
-            <i class="fa-solid fa-heart-pulse"></i>
+          <div class="w-9 h-9 rounded-xl bg-[#0b1c31] text-white flex items-center justify-center border border-[#3f72af]/30">
+            <i class="fa-solid fa-heart-pulse text-[#3f72af]"></i>
           </div>
           <div>
-            <span class="font-extrabold text-xl text-white">Medi<span class="text-indigo-400">Pulse</span></span>
-            <p class="text-xs text-slate-400">Patient Appointment Management System • Multi-Clinic Engine</p>
+            <span class="font-extrabold text-xl text-white">Medi<span class="text-[#3f72af]">Pulse</span></span>
+            <p class="text-xs text-slate-400">Multi-Tenant Healthcare Outpatient Operating System</p>
           </div>
         </div>
         <div class="text-xs text-slate-400 flex items-center space-x-2">
-          <span class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">SR University</span>
+          <span class="px-2.5 py-1 rounded-full bg-[#0b1c31] text-slate-300 border border-[#1b3b64] font-semibold">SR University</span>
           <span>•</span>
           <span>Department of Computer Science & Engineering</span>
         </div>
@@ -1203,45 +1529,45 @@
             <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Project Engineering Team</h3>
             <p class="text-xs text-slate-400">B.Tech Computer Science and Engineering (CSE Core)</p>
           </div>
-          <button onclick="openTeamModal()" class="text-xs font-bold px-3 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-700/60 rounded-full transition">
+          <button onclick="openTeamModal()" class="text-xs font-bold px-3 py-1 bg-[#0b1c31] hover:bg-[#1b3b64] text-[#dbe2ef] border border-[#3f72af]/40 rounded-full transition">
             <i class="fa-solid fa-users mr-1"></i> 5 Core Contributors
           </button>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <!-- Member 1: Team Leader -->
-          <div class="bg-gradient-to-b from-indigo-950/80 to-slate-950 p-4 rounded-2xl border-2 border-indigo-500/80 shadow-lg shadow-indigo-950/40 relative">
+          <div class="bg-[#0b1c31] p-4 rounded-2xl border-2 border-[#3f72af] shadow-lg relative">
             <div class="absolute -top-2.5 right-3 bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
               ★ Team Leader
             </div>
             <p class="text-xs font-black text-white">NEERUDU GIFTY TANIKSHA</p>
-            <p class="text-[11px] font-mono text-indigo-300 mt-0.5">2503A51107</p>
+            <p class="text-[11px] font-mono text-[#3f72af] mt-0.5">2503A51107</p>
             <p class="text-[10px] text-slate-400 mt-2 font-medium">Project Lead & Coordination</p>
           </div>
 
           <!-- Member 2 -->
-          <div class="bg-slate-800/40 p-4 rounded-2xl border border-slate-700/60">
+          <div class="bg-[#0b1c31]/60 p-4 rounded-2xl border border-[#1b3b64]">
             <p class="text-xs font-bold text-white">CHANDUPATLA NAVEEN REDDY</p>
             <p class="text-[11px] font-mono text-slate-400 mt-0.5">2503A51108</p>
             <p class="text-[10px] text-slate-400 mt-2 font-medium">Frontend UI/UX & Interaction</p>
           </div>
 
           <!-- Member 3 -->
-          <div class="bg-slate-800/40 p-4 rounded-2xl border border-slate-700/60">
+          <div class="bg-[#0b1c31]/60 p-4 rounded-2xl border border-[#1b3b64]">
             <p class="text-xs font-bold text-white">KARRE SHIVA SAKETH</p>
             <p class="text-[11px] font-mono text-slate-400 mt-0.5">2503A51109</p>
             <p class="text-[10px] text-slate-400 mt-2 font-medium">Quality Assurance & Testing</p>
           </div>
 
           <!-- Member 4: User -->
-          <div class="bg-slate-800/40 p-4 rounded-2xl border border-indigo-700/40">
+          <div class="bg-[#0b1c31]/80 p-4 rounded-2xl border border-[#3f72af]/50">
             <p class="text-xs font-bold text-white">AKKU SHIVA GANESH</p>
-            <p class="text-[11px] font-mono text-indigo-300 mt-0.5">2503A51110</p>
+            <p class="text-[11px] font-mono text-[#3f72af] mt-0.5">2503A51110</p>
             <p class="text-[10px] text-slate-400 mt-2 font-medium">Systems Architect & Backend Lead</p>
           </div>
 
           <!-- Member 5 -->
-          <div class="bg-slate-800/40 p-4 rounded-2xl border border-slate-700/60">
+          <div class="bg-[#0b1c31]/60 p-4 rounded-2xl border border-[#1b3b64]">
             <p class="text-xs font-bold text-white">VELDANDI SAI CHARAN</p>
             <p class="text-[11px] font-mono text-slate-400 mt-0.5">2503A51111</p>
             <p class="text-[10px] text-slate-400 mt-2 font-medium">Data Pipelines & API Integration</p>
@@ -1250,7 +1576,7 @@
       </div>
 
       <!-- Bottom Row -->
-      <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 pt-4 border-t border-slate-800/80 gap-2">
+      <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 pt-4 border-t border-[#1b3b64] gap-2">
         <span>MediPulse • Academic Web Technology & Mobile Programming (WTMP) Project</span>
         <span>SR University • School of Computer Science & Artificial Intelligence</span>
       </div>
@@ -1258,11 +1584,11 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/api.js?v=4.0"></script>
-  <script src="js/app.js?v=4.0"></script>
-  <script src="js/booking.js?v=4.0"></script>
-  <script src="js/history.js?v=4.0"></script>
-  <script src="js/doctor-portal.js?v=4.0"></script>
-  <script src="js/admin.js?v=4.0"></script>
+  <script src="js/api.js?v=5.0"></script>
+  <script src="js/app.js?v=5.0"></script>
+  <script src="js/booking.js?v=5.0"></script>
+  <script src="js/history.js?v=5.0"></script>
+  <script src="js/doctor-portal.js?v=5.0"></script>
+  <script src="js/admin.js?v=5.0"></script>
 </body>
 </html>

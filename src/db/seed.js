@@ -13,6 +13,8 @@ async function seedData() {
       city: 'Warangal',
       address: 'SR University Campus, Ananthsagar, Hasanparthy, Warangal, Telangana 506371',
       phone: '+91 870 2818300',
+      admin_email: 'admin@sruhealth.edu.in',
+      admin_password: 'admin123',
       operating_hours: '08:00 - 20:00',
       total_beds: 35,
       rating: 4.9
@@ -24,6 +26,8 @@ async function seedData() {
       city: 'Hyderabad',
       address: 'Road No. 36, Jubilee Hills & Film Nagar, Hyderabad, Telangana 500033',
       phone: '+91 40 23607777',
+      admin_email: 'admin@apollo.org',
+      admin_password: 'admin123',
       operating_hours: '24x7 Emergency / OPD 08:30 - 20:30',
       total_beds: 350,
       rating: 4.9
@@ -35,6 +39,8 @@ async function seedData() {
       city: 'Warangal',
       address: 'MGM Hospital Circle & Nakkalagutta, Hanamkonda, Warangal, Telangana 506001',
       phone: '+91 870 2459990',
+      admin_email: 'admin@kakatiya.edu.in',
+      admin_password: 'admin123',
       operating_hours: '08:00 - 21:00',
       total_beds: 120,
       rating: 4.8
@@ -43,11 +49,17 @@ async function seedData() {
 
   for (const clinic of clinics) {
     await dbAsync.run(
-      `INSERT OR REPLACE INTO clinics (id, name, slug, city, address, phone, operating_hours, total_beds, rating)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [clinic.id, clinic.name, clinic.slug, clinic.city, clinic.address, clinic.phone, clinic.operating_hours, clinic.total_beds, clinic.rating]
+      `INSERT OR REPLACE INTO clinics (id, name, slug, city, address, phone, admin_email, admin_password, operating_hours, total_beds, rating)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [clinic.id, clinic.name, clinic.slug, clinic.city, clinic.address, clinic.phone, clinic.admin_email, clinic.admin_password, clinic.operating_hours, clinic.total_beds, clinic.rating]
     );
   }
+
+  // Seed Platform SuperAdmin
+  await dbAsync.run(
+    `INSERT OR REPLACE INTO platform_admins (id, email, password, name) VALUES (?, ?, ?, ?)`,
+    ['admin-super', 'superadmin@medipulse.health', 'superadmin123', 'MediPulse Operations SuperAdmin']
+  );
 
   // 2. Seed Departments
   const departments = [
@@ -316,14 +328,19 @@ async function seedData() {
   ];
 
   for (const doc of doctors) {
+    const slugName = doc.name.toLowerCase().replace('dr. ', '').replace(/\s+/g, '.');
+    const clinicDomain = doc.clinic_id === 'clinic-apollo' ? 'apollo.org' : (doc.clinic_id === 'clinic-kakatiya' ? 'kakatiya.edu.in' : 'sruhealth.edu.in');
+    const doctorEmail = doc.email || `dr.${slugName}@${clinicDomain}`;
+    const doctorPassword = doc.password || 'doctor123';
+
     await dbAsync.run(
       `INSERT OR REPLACE INTO doctors (
-        id, name, clinic_id, department_id, qualification, experience_years,
+        id, name, clinic_id, department_id, email, password, qualification, experience_years,
         consultation_fee, rating, clinic_address, avatar_url, bio,
         available_days, slot_start_time, slot_end_time, slot_duration_minutes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        doc.id, doc.name, doc.clinic_id || 'clinic-sru', doc.department_id, doc.qualification, doc.experience_years,
+        doc.id, doc.name, doc.clinic_id || 'clinic-sru', doc.department_id, doctorEmail, doctorPassword, doc.qualification, doc.experience_years,
         doc.consultation_fee, doc.rating, doc.clinic_address, doc.avatar_url, doc.bio,
         doc.available_days, doc.slot_start_time, doc.slot_end_time, doc.slot_duration_minutes
       ]

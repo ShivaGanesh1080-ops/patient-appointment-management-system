@@ -13,6 +13,7 @@ const doctorRoutes = require('./src/routes/doctorRoutes');
 const slotRoutes = require('./src/routes/slotRoutes');
 const appointmentRoutes = require('./src/routes/appointmentRoutes');
 const statsRoutes = require('./src/routes/statsRoutes');
+const authRoutes = require('./src/routes/authRoutes');
 const { notFoundHandler, globalErrorHandler } = require('./src/middleware/errorHandler');
 
 const app = express();
@@ -76,10 +77,11 @@ function getDbReady() {
       console.log('🔄 Initializing SQLite database schema...');
       await dbAsync.initSchema();
       
-      const clinicCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM clinics');
-      const docCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM doctors');
-      if (!docCheck || docCheck.count < 12 || !clinicCheck || clinicCheck.count < 3) {
-        console.log('🌱 Updating database with clinics and 12 Indian doctor profiles...');
+      const clinicCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM clinics WHERE admin_email IS NOT NULL');
+      const docCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM doctors WHERE email IS NOT NULL');
+      const superCheck = await dbAsync.get('SELECT COUNT(*) AS count FROM platform_admins');
+      if (!docCheck || docCheck.count < 12 || !clinicCheck || clinicCheck.count < 3 || !superCheck || superCheck.count < 1) {
+        console.log('🌱 Updating database with clinics, credentials, and 12 Indian doctor profiles...');
         await seedData();
       } else {
         console.log(`✅ Database schema verified (${docCheck.count} doctors, ${clinicCheck.count} clinics loaded).`);
@@ -157,6 +159,8 @@ app.use('/api/appointments', (req, res, next) => {
 });
 
 // API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api', authRoutes);
 app.use('/api', doctorRoutes); // contains /api/departments and /api/doctors
 app.use('/api/slots', slotRoutes);
 app.use('/api/appointments', appointmentRoutes);

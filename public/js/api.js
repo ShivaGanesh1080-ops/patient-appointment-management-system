@@ -100,6 +100,52 @@ const api = {
   async getStats() {
     const res = await fetch(`${API_BASE}/stats`);
     return await handleResponse(res);
+  },
+
+  // Auth & Multi-Tenant Management
+  async doctorLogin(email, password) {
+    const res = await fetch(`${API_BASE}/auth/doctor-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    return await handleResponse(res);
+  },
+
+  async hospitalAdminLogin(email, password) {
+    const res = await fetch(`${API_BASE}/auth/hospital-admin-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    return await handleResponse(res);
+  },
+
+  async platformAdminLogin(email, password) {
+    const res = await fetch(`${API_BASE}/auth/platform-admin-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    return await handleResponse(res);
+  },
+
+  async registerPatient(name, phone, age, gender) {
+    const res = await fetch(`${API_BASE}/patient-auth`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, age, gender })
+    });
+    return await handleResponse(res);
+  },
+
+  async createHospital(payload) {
+    const res = await fetch(`${API_BASE}/clinics`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return await handleResponse(res);
   }
 };
 

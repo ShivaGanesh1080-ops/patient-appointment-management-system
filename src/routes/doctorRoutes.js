@@ -193,6 +193,8 @@ router.post('/doctors', async (req, res, next) => {
       name,
       clinic_id = 'clinic-sru',
       department_id,
+      email,
+      password = 'doctor123',
       qualification,
       experience_years,
       consultation_fee,
@@ -230,12 +232,16 @@ router.post('/doctors', async (req, res, next) => {
     const defaultBio = bio || `Senior consultant in ${dept.name} with ${experience_years || 5} years of specialized clinical practice.`;
     const daysJson = typeof available_days === 'string' ? available_days : JSON.stringify(available_days);
 
+    // Compute doctor hospital email if not supplied
+    const slugName = name.toLowerCase().replace('dr. ', '').replace(/[^a-z0-9]+/g, '.');
+    const doctorEmail = email || `dr.${slugName}@${clinic_id.replace('clinic-', '')}.health`;
+
     const insertSql = `
       INSERT INTO doctors (
-        id, name, clinic_id, department_id, qualification, experience_years,
+        id, name, clinic_id, department_id, email, password, qualification, experience_years,
         consultation_fee, rating, clinic_address, avatar_url, bio,
         available_days, slot_start_time, slot_end_time, slot_duration_minutes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     await dbAsync.run(insertSql, [
@@ -243,6 +249,8 @@ router.post('/doctors', async (req, res, next) => {
       name.trim(),
       clinic_id,
       department_id,
+      doctorEmail.trim().toLowerCase(),
+      password.trim(),
       qualification.trim(),
       parseInt(experience_years, 10) || 5,
       parseFloat(consultation_fee),
