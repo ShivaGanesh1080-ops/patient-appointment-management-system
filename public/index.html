@@ -58,15 +58,19 @@
           </div>
         </div>
 
-        <!-- Role / Interface Switcher (Patient Portal vs Doctor Workspace) -->
+        <!-- Role / Interface Switcher (Patient vs Doctor vs Admin) -->
         <div class="inline-flex p-1 bg-slate-100/90 rounded-2xl border border-slate-200/80 shadow-sm">
           <button id="portal-btn-patient" onclick="switchPortalMode('patient')" class="portal-mode-pill active flex items-center space-x-1.5 px-3 sm:px-4 py-1.5 rounded-xl text-xs font-bold transition-all">
             <i class="fa-solid fa-user"></i>
-            <span>Patient Portal</span>
+            <span>Patient</span>
           </button>
           <button id="portal-btn-doctor" onclick="switchPortalMode('doctor')" class="portal-mode-pill flex items-center space-x-1.5 px-3 sm:px-4 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
             <i class="fa-solid fa-stethoscope text-emerald-600"></i>
-            <span>Doctor Workspace</span>
+            <span>Doctor</span>
+          </button>
+          <button id="portal-btn-admin" onclick="switchPortalMode('admin')" class="portal-mode-pill flex items-center space-x-1.5 px-3 sm:px-4 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-all" title="Hospital Operations & Doctor Onboarding">
+            <i class="fa-solid fa-user-gear text-teal-600"></i>
+            <span>Admin</span>
           </button>
         </div>
 
@@ -221,9 +225,10 @@
               type="text" 
               id="doctor-search-input" 
               placeholder="Search doctor, clinic or specialty..." 
-              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-slate-50/50"
+              class="w-full pl-10 pr-14 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-slate-50/50"
               oninput="handleDoctorSearch(event)"
             />
+            <kbd class="hidden sm:inline-block absolute right-3 top-2.5 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-100 border border-slate-200 rounded pointer-events-none">Ctrl+K</kbd>
           </div>
         </div>
 
@@ -563,6 +568,175 @@
           </div>
         </div>
 
+      </div>
+
+    </section>
+
+    <!-- =====================================================================
+         TAB 6: HOSPITAL ADMINISTRATION (ONBOARD & MANAGE DOCTORS)
+         ===================================================================== -->
+    <section id="tab-admin" class="tab-content hidden space-y-6">
+      
+      <!-- Admin Header -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800 mb-2">
+              <i class="fa-solid fa-user-shield mr-1.5"></i> Hospital Operations & Staff Desk
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Physician Onboarding & Directory Management</h2>
+            <p class="text-sm text-slate-500 mt-1 max-w-2xl">
+              Register new credentialed specialists into the hospital database, configure consultation fees, clinic locations, and weekly OPD consultation hours.
+            </p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="autoFillDemoDoctor()" type="button" class="px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 font-bold rounded-xl text-xs transition flex items-center space-x-1.5 shadow-sm">
+              <i class="fa-solid fa-bolt text-amber-500"></i>
+              <span>⚡ Autofill Demo Specialist</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Doctor Card Form -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-6">
+        <div class="border-b border-slate-100 pb-4">
+          <h3 class="text-lg font-bold text-slate-900 flex items-center">
+            <i class="fa-solid fa-user-doctor text-emerald-600 mr-2"></i> Onboard New Medical Specialist
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">Submits directly to the backend <code class="text-emerald-700 bg-emerald-50 px-1 rounded font-mono">POST /api/doctors</code> REST endpoint and updates the live SQLite database.</p>
+        </div>
+
+        <form id="form-add-doctor" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Doctor Name <span class="text-red-500">*</span></label>
+              <input type="text" id="admin-doc-name" required placeholder="e.g. Dr. Sneha Roy" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Specialty Department <span class="text-red-500">*</span></label>
+              <select id="admin-doc-dept" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-white">
+                <option value="dept-cardio">Cardiology</option>
+                <option value="dept-derma">Dermatology</option>
+                <option value="dept-genmed">General Medicine</option>
+                <option value="dept-neuro">Neurology</option>
+                <option value="dept-ortho">Orthopedics</option>
+                <option value="dept-pediatrics">Pediatrics</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Qualifications <span class="text-red-500">*</span></label>
+              <input type="text" id="admin-doc-qual" required placeholder="e.g. MBBS, MD, DM (AIIMS)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Experience (Years) <span class="text-red-500">*</span></label>
+              <input type="number" id="admin-doc-exp" required min="1" max="50" placeholder="10" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Consultation Fee (₹) <span class="text-red-500">*</span></label>
+              <input type="number" id="admin-doc-fee" required min="100" max="5000" step="50" placeholder="600" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Initial Rating (1.0 to 5.0)</label>
+              <input type="number" id="admin-doc-rating" step="0.1" min="1.0" max="5.0" value="4.9" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Clinic Address / Location <span class="text-red-500">*</span></label>
+              <input type="text" id="admin-doc-clinic" required placeholder="e.g. Subedari, Hanamkonda / Kazipet" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Profile Photo URL (Unsplash)</label>
+              <input type="url" id="admin-doc-avatar" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50">
+            </div>
+          </div>
+
+          <!-- Working Days Selection -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-2">Clinic Consulting Days <span class="text-red-500">*</span></label>
+            <div class="flex flex-wrap gap-2">
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
+                <input type="checkbox" class="admin-day-check rounded text-emerald-600 focus:ring-emerald-500" value="Monday" checked>
+                <span>Mon</span>
+              </label>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
+                <input type="checkbox" class="admin-day-check rounded text-emerald-600 focus:ring-emerald-500" value="Tuesday" checked>
+                <span>Tue</span>
+              </label>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
+                <input type="checkbox" class="admin-day-check rounded text-emerald-600 focus:ring-emerald-500" value="Wednesday" checked>
+                <span>Wed</span>
+              </label>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
+                <input type="checkbox" class="admin-day-check rounded text-emerald-600 focus:ring-emerald-500" value="Thursday" checked>
+                <span>Thu</span>
+              </label>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
+                <input type="checkbox" class="admin-day-check rounded text-emerald-600 focus:ring-emerald-500" value="Friday" checked>
+                <span>Fri</span>
+              </label>
+              <label class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white cursor-pointer hover:bg-slate-50">
+                <input type="checkbox" class="admin-day-check rounded text-emerald-600 focus:ring-emerald-500" value="Saturday">
+                <span>Sat</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Clinical Biography & Specialization Focus</label>
+            <textarea id="admin-doc-bio" rows="2" placeholder="Brief overview of clinical practice and focus areas..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-slate-50/50 resize-none"></textarea>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" id="btn-submit-doctor" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-500/20 hover:shadow-lg transition flex items-center space-x-2">
+              <i class="fa-solid fa-user-plus mr-1"></i>
+              <span>Register Medical Specialist</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Active Doctors Roster Table -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+              <i class="fa-solid fa-users text-teal-600 mr-2"></i> Active Specialists Directory
+            </h3>
+            <p class="text-xs text-slate-500">Live roster queried from the SQLite persistence layer.</p>
+          </div>
+          <span class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200" id="admin-roster-count">
+            Loading roster...
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50/70">
+                <th class="py-2.5 px-4">Physician</th>
+                <th class="py-2.5 px-4">Department</th>
+                <th class="py-2.5 px-4">Fee</th>
+                <th class="py-2.5 px-4">Clinic Location</th>
+                <th class="py-2.5 px-4">Rating</th>
+                <th class="py-2.5 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-roster-tbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
       </div>
 
     </section>
@@ -914,10 +1088,11 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/api.js?v=3.0"></script>
-  <script src="js/app.js?v=3.0"></script>
-  <script src="js/booking.js?v=3.0"></script>
-  <script src="js/history.js?v=3.0"></script>
-  <script src="js/doctor-portal.js?v=3.0"></script>
+  <script src="js/api.js?v=3.1"></script>
+  <script src="js/app.js?v=3.1"></script>
+  <script src="js/booking.js?v=3.1"></script>
+  <script src="js/history.js?v=3.1"></script>
+  <script src="js/doctor-portal.js?v=3.1"></script>
+  <script src="js/admin.js?v=3.1"></script>
 </body>
 </html>

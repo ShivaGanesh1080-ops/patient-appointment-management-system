@@ -39,29 +39,37 @@ async function initializeApp() {
       loadDoctors(),
       refreshStats()
     ]);
+    // Handle URL hash on initial page load
+    handleHashRouting();
   } catch (err) {
     showToast('Failed to initialize application data: ' + err.message, 'error');
   }
 }
 
 /**
- * Switch Portal Mode: Patient Portal vs Doctor Workspace
+ * Switch Portal Mode: Patient Portal vs Doctor Workspace vs Hospital Admin
  */
 function switchPortalMode(mode) {
   state.portalMode = mode;
 
   const patientBtn = document.getElementById('portal-btn-patient');
   const doctorBtn = document.getElementById('portal-btn-doctor');
+  const adminBtn = document.getElementById('portal-btn-admin');
+
   const patientNavGroup = document.getElementById('nav-patient-group');
   const doctorNavGroup = document.getElementById('nav-doctor-group');
   const mobilePatientNav = document.getElementById('mobile-nav-patient');
   const mobileDoctorNav = document.getElementById('mobile-nav-doctor');
 
-  if (mode === 'doctor') {
-    if (patientBtn) {
-      patientBtn.classList.remove('active');
-      patientBtn.classList.add('text-slate-500');
+  // Reset all buttons
+  [patientBtn, doctorBtn, adminBtn].forEach(b => {
+    if (b) {
+      b.classList.remove('active');
+      b.classList.add('text-slate-500');
     }
+  });
+
+  if (mode === 'doctor') {
     if (doctorBtn) {
       doctorBtn.classList.add('active');
       doctorBtn.classList.remove('text-slate-500');
@@ -73,15 +81,25 @@ function switchPortalMode(mode) {
     if (mobileDoctorNav) mobileDoctorNav.classList.remove('hidden');
 
     switchTab('tab-portal');
-    showToast('👨‍⚕️ Clinical Workspace activated. Loading consultation queue.', 'info');
+    showToast('👨‍⚕️ Clinical Workspace active. Viewing doctor consultation queue.', 'info');
+  } else if (mode === 'admin') {
+    if (adminBtn) {
+      adminBtn.classList.add('active');
+      adminBtn.classList.remove('text-slate-500');
+    }
+
+    if (patientNavGroup) patientNavGroup.classList.add('hidden');
+    if (doctorNavGroup) doctorNavGroup.classList.add('hidden');
+    if (mobilePatientNav) mobilePatientNav.classList.add('hidden');
+    if (mobileDoctorNav) mobileDoctorNav.classList.add('hidden');
+
+    switchTab('tab-admin');
+    if (typeof renderAdminRoster === 'function') renderAdminRoster();
+    showToast('⚙️ Hospital Operations & Staff Desk active. Onboard specialists.', 'info');
   } else {
     if (patientBtn) {
       patientBtn.classList.add('active');
       patientBtn.classList.remove('text-slate-500');
-    }
-    if (doctorBtn) {
-      doctorBtn.classList.remove('active');
-      doctorBtn.classList.add('text-slate-500');
     }
 
     if (patientNavGroup) patientNavGroup.classList.remove('hidden');
@@ -89,7 +107,7 @@ function switchPortalMode(mode) {
     if (mobilePatientNav) mobilePatientNav.classList.remove('hidden');
     if (mobileDoctorNav) mobileDoctorNav.classList.add('hidden');
 
-    if (state.currentTab === 'tab-portal') {
+    if (state.currentTab === 'tab-portal' || state.currentTab === 'tab-admin') {
       switchTab('tab-doctors');
     }
     showToast('🩺 Patient Portal view active. Browse verified specialists.', 'info');
@@ -97,10 +115,56 @@ function switchPortalMode(mode) {
 }
 
 /**
+ * Handle Direct URL Hash Routing
+ */
+function handleHashRouting() {
+  const hash = window.location.hash.replace('#', '') || 'tab-doctors';
+  if (hash === 'tab-portal') {
+    switchPortalMode('doctor');
+  } else if (hash === 'tab-admin') {
+    switchPortalMode('admin');
+  } else if (hash === 'tab-viva') {
+    switchTab('tab-viva');
+  } else if (hash === 'tab-booking') {
+    switchPortalMode('patient');
+    switchTab('tab-booking');
+  } else if (hash === 'tab-history') {
+    switchPortalMode('patient');
+    switchTab('tab-history');
+  } else {
+    switchPortalMode('patient');
+    switchTab('tab-doctors');
+  }
+}
+
+window.addEventListener('hashchange', handleHashRouting);
+
+// Quick Search Keyboard Shortcut (Ctrl+K or /)
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey && e.key.toLowerCase() === 'k') || (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA')) {
+    e.preventDefault();
+    if (state.portalMode !== 'patient' || state.currentTab !== 'tab-doctors') {
+      switchPortalMode('patient');
+      switchTab('tab-doctors');
+    }
+    const searchInput = document.getElementById('doctor-search-input');
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.select();
+    }
+  }
+});
+
+/**
  * Tab Navigation Switcher
  */
 function switchTab(tabId) {
   state.currentTab = tabId;
+
+  // Sync URL hash without jumping
+  if (window.location.hash !== '#' + tabId) {
+    history.replaceState(null, null, '#' + tabId);
+  }
 
   // Toggle tab contents
   document.querySelectorAll('.tab-content').forEach(el => {
@@ -125,6 +189,8 @@ function switchTab(tabId) {
     if (typeof fetchAppointmentsHistory === 'function') fetchAppointmentsHistory();
   } else if (tabId === 'tab-portal') {
     if (typeof loadDoctorPortalData === 'function') loadDoctorPortalData();
+  } else if (tabId === 'tab-admin') {
+    if (typeof renderAdminRoster === 'function') renderAdminRoster();
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });

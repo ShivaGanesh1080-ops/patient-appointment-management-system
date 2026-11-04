@@ -1,0 +1,41 @@
+name: MediPulse Automated CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify-and-test:
+    name: Full-Stack Verification & Concurrency Guard Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Start Server in Background
+      run: |
+        node server.js &
+        sleep 3
+
+    - name: Execute 10-Phase Automated Test Suite
+      run: node test_system.js
+
+    - name: Run Production Health Check Probe
+      run: |
+        curl -f http://localhost:5000/api/health || exit 1

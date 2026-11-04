@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  medipulse-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medipulse-clinical-engine
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+    volumes:
+      - medipulse-sqlite-data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  medipulse-sqlite-data:
+    driver: local

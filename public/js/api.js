@@ -25,6 +25,22 @@ const api = {
     return await handleResponse(res);
   },
 
+  async createDoctor(payload) {
+    const res = await fetch(`${API_BASE}/doctors`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return await handleResponse(res);
+  },
+
+  async deleteDoctor(id) {
+    const res = await fetch(`${API_BASE}/doctors/${encodeURIComponent(id)}`, {
+      method: 'DELETE'
+    });
+    return await handleResponse(res);
+  },
+
   // Slot endpoints
   async getSlots(doctorId, date) {
     const res = await fetch(`${API_BASE}/slots?doctorId=${encodeURIComponent(doctorId)}&date=${encodeURIComponent(date)}`);
