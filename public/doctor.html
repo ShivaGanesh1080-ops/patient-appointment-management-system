@@ -225,18 +225,38 @@
       <!-- Live OPD Consultation Queue Table -->
       <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-[#dbe2ef] bg-white shadow-sm space-y-4">
         
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#dbe2ef]">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-[#dbe2ef]">
           <div>
-            <h2 class="text-lg font-extrabold text-[#112d4e]">Today's OPD Consultation Queue</h2>
-            <p class="text-xs text-slate-500">Live patient stream with real-time Kitchen Display System (KDS) state transitions.</p>
+            <h2 class="text-lg font-extrabold text-[#112d4e]" id="queue-heading-title">OPD Patient Queue & Schedule</h2>
+            <p class="text-xs text-slate-500">Live patient stream with real-time Kitchen Display System (KDS) consultation state transitions.</p>
           </div>
-          <div class="flex items-center space-x-2">
-            <input type="date" id="queue-date-picker" onchange="fetchDoctorAppointments()" class="px-3 py-1.5 rounded-xl border border-[#dbe2ef] text-xs font-mono bg-white focus:outline-none focus:ring-1 focus:ring-[#3f72af]">
-            <button onclick="fetchDoctorAppointments()" class="p-2 rounded-xl bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-700 text-xs border border-[#dbe2ef] transition" title="Refresh Queue">
-              <i class="fa-solid fa-rotate text-xs"></i>
-            </button>
+          
+          <div class="flex items-center flex-wrap gap-2">
+            <!-- Filter Pills: All Dates, Today, Tomorrow -->
+            <div class="inline-flex p-1 bg-[#f9f7f7] rounded-xl border border-[#dbe2ef] text-xs font-bold" id="queue-filter-pills">
+              <button type="button" onclick="setQueueFilterMode('all')" id="pill-filter-all" class="px-3 py-1.5 rounded-lg transition bg-[#112d4e] text-white shadow-sm">
+                All Dates (<span id="count-all-pills">0</span>)
+              </button>
+              <button type="button" onclick="setQueueFilterMode('today')" id="pill-filter-today" class="px-3 py-1.5 rounded-lg transition text-slate-600 hover:text-[#112d4e]">
+                Today
+              </button>
+              <button type="button" onclick="setQueueFilterMode('tomorrow')" id="pill-filter-tomorrow" class="px-3 py-1.5 rounded-lg transition text-slate-600 hover:text-[#112d4e]">
+                Tomorrow
+              </button>
+            </div>
+
+            <!-- Specific Date Picker -->
+            <div class="flex items-center space-x-1.5">
+              <input type="date" id="queue-date-picker" onchange="onCustomDatePicked()" class="px-2.5 py-1.5 rounded-xl border border-[#dbe2ef] text-xs font-mono bg-white focus:outline-none focus:ring-1 focus:ring-[#3f72af]" title="Filter by custom date">
+              <button onclick="fetchDoctorAppointments()" class="p-2 rounded-xl bg-[#f9f7f7] hover:bg-[#dbe2ef] text-slate-700 text-xs border border-[#dbe2ef] transition" title="Refresh Live Queue">
+                <i class="fa-solid fa-rotate text-xs"></i>
+              </button>
+            </div>
           </div>
         </div>
+
+        <!-- Upcoming Appointment Notice Banner -->
+        <div id="doctor-upcoming-notice" class="hidden"></div>
 
         <!-- Patients List Container -->
         <div id="doctor-queue-container" class="space-y-3">
@@ -336,65 +356,166 @@
       document.getElementById('doctor-workspace-view').classList.add('hidden');
     }
 
+    let currentFilterMode = 'all';
+
+    function setQueueFilterMode(mode) {
+      currentFilterMode = mode;
+      
+      const pillAll = document.getElementById('pill-filter-all');
+      const pillToday = document.getElementById('pill-filter-today');
+      const pillTomorrow = document.getElementById('pill-filter-tomorrow');
+      const datePicker = document.getElementById('queue-date-picker');
+
+      const activeClass = 'px-3 py-1.5 rounded-lg transition bg-[#112d4e] text-white shadow-sm';
+      const inactiveClass = 'px-3 py-1.5 rounded-lg transition text-slate-600 hover:text-[#112d4e]';
+
+      if (pillAll) pillAll.className = (mode === 'all') ? activeClass : inactiveClass;
+      if (pillToday) pillToday.className = (mode === 'today') ? activeClass : inactiveClass;
+      if (pillTomorrow) pillTomorrow.className = (mode === 'tomorrow') ? activeClass : inactiveClass;
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      const tomorrowDate = new Date();
+      tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+      const tomorrowStr = tomorrowDate.toISOString().split('T')[0];
+
+      if (mode === 'today' && datePicker) datePicker.value = todayStr;
+      if (mode === 'tomorrow' && datePicker) datePicker.value = tomorrowStr;
+
+      fetchDoctorAppointments();
+    }
+
+    function onCustomDatePicked() {
+      currentFilterMode = 'custom';
+      const pillAll = document.getElementById('pill-filter-all');
+      const pillToday = document.getElementById('pill-filter-today');
+      const pillTomorrow = document.getElementById('pill-filter-tomorrow');
+      const inactiveClass = 'px-3 py-1.5 rounded-lg transition text-slate-600 hover:text-[#112d4e]';
+      if (pillAll) pillAll.className = inactiveClass;
+      if (pillToday) pillToday.className = inactiveClass;
+      if (pillTomorrow) pillTomorrow.className = inactiveClass;
+      fetchDoctorAppointments();
+    }
+
     function renderDoctorWorkspace() {
       document.getElementById('doctor-login-view').classList.add('hidden');
       document.getElementById('doctor-workspace-view').classList.remove('hidden');
 
       // Populate doctor banner
-      document.getElementById('doc-avatar').src = currentDoctor.avatar_url;
+      document.getElementById('doc-avatar').src = currentDoctor.avatar_url || '/img/doctors/doc-101.jpg';
       document.getElementById('doc-name').textContent = currentDoctor.name;
-      document.getElementById('doc-clinic-name').textContent = `${currentDoctor.clinic_name} (${currentDoctor.clinic_city})`;
-      document.getElementById('doc-dept-quals').textContent = `${currentDoctor.department_name} • ${currentDoctor.qualification} • ${currentDoctor.experience_years} Yrs Exp`;
-      document.getElementById('doc-fee').textContent = `₹${currentDoctor.consultation_fee}`;
+      document.getElementById('doc-clinic-name').textContent = `${currentDoctor.clinic_name || 'Hospital Campus'} (${currentDoctor.clinic_city || 'Warangal'})`;
+      document.getElementById('doc-dept-quals').textContent = `${currentDoctor.department_name || 'Specialist'} • ${currentDoctor.qualification || 'MBBS, MD'} • ${currentDoctor.experience_years || 5} Yrs Exp`;
+      document.getElementById('doc-fee').textContent = `₹${currentDoctor.consultation_fee || 700}`;
 
-      // Set today's date on picker
-      const today = new Date().toISOString().split('T')[0];
-      const picker = document.getElementById('queue-date-picker');
-      if (!picker.value) picker.value = today;
+      // Default to All Visits so any booking for today or tomorrow is immediately visible
+      setQueueFilterMode('all');
 
-      fetchDoctorAppointments();
-
-      // Setup 5-second live polling
+      // Setup 4-second live polling
       if (pollInterval) clearInterval(pollInterval);
-      pollInterval = setInterval(fetchDoctorAppointments, 5000);
+      pollInterval = setInterval(fetchDoctorAppointments, 4000);
     }
 
     async function fetchDoctorAppointments() {
       if (!currentDoctor) return;
-      const date = document.getElementById('queue-date-picker').value;
 
       try {
-        // Query appointments for this doctor
-        const res = await fetch(`/api/appointments?doctorId=${currentDoctor.id}&date=${date}`);
+        // Query ALL appointments for this doctor from backend (flexible query by doctor id or name)
+        const docQuery = currentDoctor.id || currentDoctor.name;
+        const res = await fetch(`/api/appointments?doctorId=${encodeURIComponent(docQuery)}`);
         const json = await res.json();
-        const appointments = json.data || [];
+        let allAppointments = json.data || [];
+
+        // Synchronize and merge with local passes/appointments from booking
+        if (window.api && typeof api.syncDoctorAppointments === 'function') {
+          allAppointments = api.syncDoctorAppointments(allAppointments, currentDoctor);
+        }
 
         // Calculate doctor-specific live KPIs
-        const total = appointments.length;
-        const confirmed = appointments.filter(a => a.status === 'CONFIRMED').length;
-        const consulting = appointments.filter(a => a.status === 'IN_CONSULTATION').length;
-        const completed = appointments.filter(a => a.status === 'COMPLETED').length;
+        const total = allAppointments.length;
+        const confirmed = allAppointments.filter(a => a.status === 'CONFIRMED').length;
+        const consulting = allAppointments.filter(a => a.status === 'IN_CONSULTATION').length;
+        const completed = allAppointments.filter(a => a.status === 'COMPLETED').length;
 
         document.getElementById('stat-doc-total').textContent = total;
         document.getElementById('stat-doc-confirmed').textContent = confirmed;
         document.getElementById('stat-doc-consulting').textContent = consulting;
         document.getElementById('stat-doc-completed').textContent = completed;
 
-        renderQueueList(appointments);
+        const countPills = document.getElementById('count-all-pills');
+        if (countPills) countPills.textContent = total;
+
+        // Apply selected date filter
+        const todayStr = new Date().toISOString().split('T')[0];
+        const tomorrowDate = new Date();
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+        const tomorrowStr = tomorrowDate.toISOString().split('T')[0];
+        const pickerVal = document.getElementById('queue-date-picker')?.value;
+
+        let filtered = allAppointments;
+        if (currentFilterMode === 'today') {
+          filtered = allAppointments.filter(a => a.appointment_date === todayStr);
+        } else if (currentFilterMode === 'tomorrow') {
+          filtered = allAppointments.filter(a => a.appointment_date === tomorrowStr);
+        } else if (currentFilterMode === 'custom' && pickerVal) {
+          filtered = allAppointments.filter(a => a.appointment_date === pickerVal);
+        } else {
+          // 'all' shows all visits
+          filtered = allAppointments;
+        }
+
+        // Render upcoming notice banner if current filter has 0 visits but appointments exist on other dates
+        renderUpcomingNotice(allAppointments, currentFilterMode, pickerVal || todayStr);
+
+        renderQueueList(filtered);
       } catch (e) {
         console.error('Queue poll error', e);
+      }
+    }
+
+    function renderUpcomingNotice(allAppointments, filterMode, currentDate) {
+      const noticeBox = document.getElementById('doctor-upcoming-notice');
+      if (!noticeBox) return;
+
+      if (filterMode === 'all') {
+        noticeBox.className = 'hidden';
+        noticeBox.innerHTML = '';
+        return;
+      }
+
+      // Check if other dates have visits
+      const otherVisits = allAppointments.filter(a => a.appointment_date !== currentDate && a.status !== 'CANCELLED');
+      if (otherVisits.length > 0) {
+        const nextVisit = otherVisits[0];
+        noticeBox.className = 'p-3.5 rounded-2xl bg-sky-50 border border-sky-200 text-sky-900 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 animate-in fade-in duration-200';
+        noticeBox.innerHTML = `
+          <div class="flex items-center space-x-2.5">
+            <span class="w-8 h-8 rounded-xl bg-sky-100 text-[#3f72af] flex items-center justify-center font-bold text-sm shrink-0">
+              <i class="fa-solid fa-bell"></i>
+            </span>
+            <div>
+              <p class="font-extrabold text-[#112d4e]">Upcoming OPD Visits Scheduled</p>
+              <p class="text-[11px] text-slate-600">You have <strong>${otherVisits.length} appointment(s)</strong> scheduled on <strong>${nextVisit.appointment_date}</strong> for ${nextVisit.patient_name} (${nextVisit.appointment_time}).</p>
+            </div>
+          </div>
+          <button onclick="setQueueFilterMode('all')" class="px-3.5 py-1.5 rounded-xl bg-[#3f72af] text-white font-bold text-xs hover:bg-[#345f94] transition self-start sm:self-center shrink-0 shadow-sm">
+            View All Visits (${allAppointments.length}) →
+          </button>
+        `;
+      } else {
+        noticeBox.className = 'hidden';
+        noticeBox.innerHTML = '';
       }
     }
 
     function renderQueueList(appointments) {
       const container = document.getElementById('doctor-queue-container');
 
-      if (appointments.length === 0) {
+      if (!appointments || appointments.length === 0) {
         container.innerHTML = `
           <div class="py-12 text-center text-slate-400 bg-[#f9f7f7] rounded-2xl border border-dashed border-[#dbe2ef] space-y-2">
             <i class="fa-solid fa-calendar-check text-3xl text-slate-300"></i>
             <p class="font-bold text-sm text-[#112d4e]">No Patient Appointments Scheduled</p>
-            <p class="text-xs text-slate-500">There are no visits booked for this date yet.</p>
+            <p class="text-xs text-slate-500">There are no visits booked for this date filter. Click "All Dates" above to inspect all scheduled visits.</p>
           </div>
         `;
         return;
@@ -424,9 +545,10 @@
               </div>
               
               <div class="space-y-1">
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2 flex-wrap gap-1">
                   <span class="font-extrabold text-[#112d4e] text-base">${apt.patient_name}</span>
                   <span class="text-xs text-slate-500 font-medium">(${apt.patient_age} Yrs • ${apt.patient_gender})</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#dbe2ef] text-[#112d4e]"><i class="fa-regular fa-calendar text-[#3f72af] mr-1"></i>${apt.appointment_date}</span>
                   ${statusBadge}
                 </div>
                 <p class="text-xs text-slate-600"><span class="text-slate-400">Symptoms / Reason:</span> ${apt.reason || 'General Health Consultation'}</p>
@@ -467,7 +589,21 @@
 
     async function updatePatientStatus(ref, newStatus) {
       try {
+        if (window.api && typeof api.getCustomAppointments === 'function') {
+          const apts = api.getCustomAppointments();
+          const target = apts.find(a => a.booking_reference === ref);
+          if (target) {
+            target.status = newStatus;
+            api.saveCustomAppointment(target);
+          }
+        }
         const res = await api.updateAppointmentStatus(ref, newStatus);
+        showToast(`Patient status updated: ${newStatus}`, 'success');
+        fetchDoctorAppointments();
+      } catch (e) {
+        showToast('Failed to update patient state: ' + e.message, 'error');
+      }
+    }
         showToast(`Patient status updated: ${newStatus}`, 'success');
         fetchDoctorAppointments();
       } catch (e) {

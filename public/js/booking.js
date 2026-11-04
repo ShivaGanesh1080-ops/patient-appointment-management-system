@@ -316,6 +316,8 @@ async function handleBookingSubmit(event) {
 
   const payload = {
     doctor_id: bookingState.selectedDoctorId,
+    doctor_name: bookingState.selectedDoctor ? bookingState.selectedDoctor.name : undefined,
+    clinic_id: bookingState.selectedDoctor ? bookingState.selectedDoctor.clinic_id : undefined,
     patient_name: patientName,
     patient_phone: document.getElementById('patient-phone').value.trim(),
     patient_email: document.getElementById('patient-email').value.trim() || null,
@@ -337,6 +339,10 @@ async function handleBookingSubmit(event) {
     localStorage.setItem('medipulse_patient_phone', payload.patient_phone);
     localStorage.setItem('medipulse_last_booked_token', res.data.booking_reference);
     localStorage.setItem('medipulse_last_booked_pass', JSON.stringify(res.data));
+
+    if (window.api && typeof api.saveCustomAppointment === 'function') {
+      api.saveCustomAppointment(res.data);
+    }
 
     let myPasses = [];
     try {

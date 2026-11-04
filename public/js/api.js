@@ -252,6 +252,94 @@ const api = {
     } catch (e) {
       // Non-blocking self-healing
     }
+  },
+
+  // ---------------------------------------------------------
+  // Appointment Persistence & Cross-Portal Synchronization
+  // ---------------------------------------------------------
+  saveCustomAppointment(apt) {
+    if (!apt || !apt.booking_reference) return;
+    try {
+      let list = this.getCustomAppointments();
+      const idx = list.findIndex(a => a.booking_reference === apt.booking_reference);
+      if (idx >= 0) {
+        list[idx] = { ...list[idx], ...apt };
+      } else {
+        list.unshift(apt);
+      }
+      localStorage.setItem('medipulse_all_appointments', JSON.stringify(list));
+    } catch (e) {
+      console.warn('Failed to save custom appointment locally:', e);
+    }
+  },
+
+  getCustomAppointments() {
+    let combined = [];
+    try {
+      const allApts = JSON.parse(localStorage.getItem('medipulse_all_appointments') || '[]');
+      const passes = JSON.parse(localStorage.getItem('medipulse_my_passes') || '[]');
+      const seen = new Set();
+      [...allApts, ...passes].forEach(item => {
+        if (item && item.booking_reference && !seen.has(item.booking_reference)) {
+          seen.add(item.booking_reference);
+          combined.push(item);
+        }
+      });
+    } catch (e) {
+      combined = [];
+    }
+    return combined;
+  },
+
+  syncDoctorAppointments(serverApts = [], doctor = null) {
+    let result = Array.isArray(serverApts) ? [...serverApts] : [];
+    if (!doctor) return result;
+
+    const localApts = this.getCustomAppointments();
+    const docId = (doctor.id || '').toLowerCase();
+    const docName = (doctor.name || '').toLowerCase().replace('dr.', '').trim();
+
+    // Match appointments for this doctor by ID or doctor_name
+    const matchingLocal = localApts.filter(apt => {
+      const aptDocId = (apt.doctor_id || '').toLowerCase();
+      const aptDocName = (apt.doctor_name || '').toLowerCase().replace('dr.', '').trim();
+      return (aptDocId && aptDocId === docId) ||
+             (aptDocName && docName && (aptDocName.includes(docName) || docName.includes(aptDocName)));
+    });
+
+    for (const lApt of matchingLocal) {
+      const exists = result.some(a => a.booking_reference === lApt.booking_reference);
+      if (!exists) {
+        result.unshift(lApt);
+        this.healAppointmentOnServer(lApt);
+      }
+    }
+
+    return result;
+  },
+
+  async healAppointmentOnServer(apt) {
+    try {
+      await fetch(`${API_BASE}/appointments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          doctor_id: apt.doctor_id,
+          doctor_name: apt.doctor_name,
+          clinic_id: apt.clinic_id,
+          patient_name: apt.patient_name,
+          patient_phone: apt.patient_phone,
+          patient_email: apt.patient_email,
+          patient_age: apt.patient_age,
+          patient_gender: apt.patient_gender,
+          appointment_date: apt.appointment_date,
+          appointment_time: apt.appointment_time,
+          reason: apt.reason || 'General Medical Consultation'
+        })
+      });
+    } catch (e) {
+      // Non-blocking self-healing
+    }
   }
 };
 

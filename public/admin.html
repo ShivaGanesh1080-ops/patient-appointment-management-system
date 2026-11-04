@@ -617,13 +617,29 @@
 
     async function renderAppointmentsLedger(doctors) {
       const container = document.getElementById('facility-appointments-table');
-      const docIds = doctors.map(d => d.id);
+      const docIds = doctors.map(d => (d.id || '').toLowerCase());
+      const docNames = doctors.map(d => (d.name || '').toLowerCase().replace('dr.', '').trim());
 
-      // Query appointments
+      // Query appointments from server
       const res = await fetch('/api/appointments');
       const json = await res.json();
-      const allApts = json.data || [];
-      const facilityApts = allApts.filter(a => docIds.includes(a.doctor_id));
+      let allApts = json.data || [];
+
+      // Merge custom appointments from local storage
+      if (window.api && typeof api.getCustomAppointments === 'function') {
+        const localApts = api.getCustomAppointments();
+        for (const lApt of localApts) {
+          if (!allApts.some(a => a.booking_reference === lApt.booking_reference)) {
+            allApts.unshift(lApt);
+          }
+        }
+      }
+
+      const facilityApts = allApts.filter(a => {
+        const aDocId = (a.doctor_id || '').toLowerCase();
+        const aDocName = (a.doctor_name || '').toLowerCase().replace('dr.', '').trim();
+        return docIds.includes(aDocId) || docNames.some(dn => dn && (aDocName.includes(dn) || dn.includes(aDocName)));
+      });
 
       if (facilityApts.length === 0) {
         container.innerHTML = `
