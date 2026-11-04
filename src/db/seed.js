@@ -121,7 +121,7 @@ async function seedData() {
       consultation_fee: 800,
       rating: 4.9,
       clinic_address: 'Apollo Health City, Road No. 36, Jubilee Hills, Hyderabad',
-      avatar_url: 'https://images.pexels.com/photos/5888168/pexels-photo-5888168.jpeg?auto=compress&cs=tinysrgb&w=500', // Male Indian Doctor
+      avatar_url: '/img/doctors/doc-101.jpg', // Male Indian Doctor (Dr. Rajeshwar Rao)
       bio: 'Senior Consultant Interventional Cardiologist specializing in preventive cardiology, coronary angioplasty, and cardiac rhythm management.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
       slot_start_time: '09:00',
@@ -138,7 +138,7 @@ async function seedData() {
       consultation_fee: 750,
       rating: 4.8,
       clinic_address: 'Kakatiya Super-Specialty Medical Institute, Nakkalagutta, Hanamkonda, Warangal',
-      avatar_url: 'https://images.pexels.com/photos/5888160/pexels-photo-5888160.jpeg?auto=compress&cs=tinysrgb&w=500', // Female Indian Doctor
+      avatar_url: '/img/doctors/doc-107.jpg', // Female Indian Doctor (Dr. Meenakshi Sundaram)
       bio: 'Consultant Clinical Cardiologist focused on echocardiography, hypertension management, and congenital heart condition screenings.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Friday', 'Saturday']),
       slot_start_time: '10:00',
@@ -157,7 +157,7 @@ async function seedData() {
       consultation_fee: 650,
       rating: 4.8,
       clinic_address: 'Apollo Health City Aesthetics Wing, Madhapur, Hyderabad',
-      avatar_url: 'https://images.pexels.com/photos/31499386/pexels-photo-31499386.jpeg?auto=compress&cs=tinysrgb&w=500', // Female Indian Doctor
+      avatar_url: '/img/doctors/doc-102.jpg', // Female Indian Doctor
       bio: 'Renowned clinical dermatologist and aesthetic specialist with expertise in acne scar reduction, pigmentation disorders, and laser therapies.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Friday', 'Saturday']),
       slot_start_time: '10:00',
@@ -174,7 +174,7 @@ async function seedData() {
       consultation_fee: 500,
       rating: 4.7,
       clinic_address: 'SRU Health & Wellness Centre, Hasanparthy, Warangal',
-      avatar_url: 'https://images.pexels.com/photos/19438563/pexels-photo-19438563.jpeg?auto=compress&cs=tinysrgb&w=500', // Male Indian Doctor
+      avatar_url: '/img/doctors/doc-108.jpg', // Male Indian Doctor
       bio: 'Specialist in clinical dermatology, pediatric skin allergies, chronic eczema, psoriasis management, and hair loss therapies.',
       available_days: JSON.stringify(['Tuesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '09:30',
@@ -193,7 +193,7 @@ async function seedData() {
       consultation_fee: 750,
       rating: 4.9,
       clinic_address: 'Apollo Health City Ortho Institute, Jubilee Hills, Hyderabad',
-      avatar_url: 'https://images.pexels.com/photos/15277947/pexels-photo-15277947.jpeg?auto=compress&cs=tinysrgb&w=500', // Male Indian Doctor
+      avatar_url: '/img/doctors/doc-103.jpg', // Male Indian Doctor
       bio: 'Pioneering orthopedic surgeon specializing in robotic knee & hip replacements, arthroscopy, and complex sports injury rehabilitation.',
       available_days: JSON.stringify(['Tuesday', 'Thursday', 'Saturday']),
       slot_start_time: '09:30',
@@ -210,7 +210,7 @@ async function seedData() {
       consultation_fee: 600,
       rating: 4.8,
       clinic_address: 'Kakatiya Super-Specialty Medical Institute, Kazipet Road, Warangal',
-      avatar_url: 'https://images.pexels.com/photos/7904406/pexels-photo-7904406.jpeg?auto=compress&cs=tinysrgb&w=500', // Female Indian Doctor
+      avatar_url: '/img/doctors/doc-109.jpg', // Female Indian Doctor
       bio: 'Consultant Orthopedic Surgeon specializing in spinal disc disorders, arthritis pain management, trauma surgery, and fracture rehabilitation.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Thursday', 'Saturday']),
       slot_start_time: '10:00',
@@ -229,7 +229,7 @@ async function seedData() {
       consultation_fee: 500,
       rating: 4.9,
       clinic_address: 'SRU Health & Wellness Centre, Hasanparthy, Warangal',
-      avatar_url: 'https://images.pexels.com/photos/8460157/pexels-photo-8460157.jpeg?auto=compress&cs=tinysrgb&w=500', // Female Indian Doctor
+      avatar_url: '/img/doctors/doc-104.jpg', // Female Indian Doctor
       bio: 'Caring pediatrician focused on newborn care, immunization scheduling, adolescent health guidance, and developmental milestones.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '09:00',
@@ -246,7 +246,7 @@ async function seedData() {
       consultation_fee: 450,
       rating: 4.8,
       clinic_address: 'Kakatiya Super-Specialty Medical Institute, MGM Circle, Warangal',
-      avatar_url: 'https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=500', // Male Indian Doctor
+      avatar_url: '/img/doctors/doc-110.jpg', // Male Indian Doctor
       bio: 'Senior Child Specialist with focus on seasonal respiratory viral infections, pediatric asthma, childhood nutrition, and neonatal intensive care.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']),
       slot_start_time: '09:30',
@@ -265,7 +265,7 @@ async function seedData() {
       consultation_fee: 1000,
       rating: 4.7,
       clinic_address: 'Apollo Health City Neuro Sciences Wing, Jubilee Hills, Hyderabad',
-      avatar_url: 'https://images.pexels.com/photos/6749773/pexels-photo-6749773.jpeg?auto=compress&cs=tinysrgb&w=500', // Male Indian Doctor
+      avatar_url: '/img/doctors/doc-105.jpg', // Male Indian Doctor
       bio: 'Leading neurologist handling epilepsy, stroke prevention, migraine therapy, neurodegenerative disorders, and neuromuscular diagnostics.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Thursday', 'Friday']),
       slot_start_time: '11:00',
@@ -282,7 +282,7 @@ async function seedData() {
       consultation_fee: 850,
       rating: 4.9,
       clinic_address: 'SRU Health & Wellness Centre, Ananthsagar, Warangal',
-      avatar_url: 'https://images.pexels.com/photos/8460159/pexels-photo-8460159.jpeg?auto=compress&cs=tinysrgb&w=500', // Female Indian Doctor
+      avatar_url: '/img/doctors/doc-111.jpg', // Female Indian Doctor
       bio: 'Expert neuro-physician handling chronic headache management, Parkinson disease care, peripheral neuropathy, and sleep disorders.',
       available_days: JSON.stringify(['Monday', 'Wednesday', 'Thursday', 'Saturday']),
       slot_start_time: '10:00',
@@ -301,7 +301,7 @@ async function seedData() {
       consultation_fee: 450,
       rating: 4.8,
       clinic_address: 'SRU Health & Wellness Centre, Ananthsagar, Warangal',
-      avatar_url: 'https://images.pexels.com/photos/7904408/pexels-photo-7904408.jpeg?auto=compress&cs=tinysrgb&w=500', // Female Indian Doctor
+      avatar_url: '/img/doctors/doc-106.jpg', // Female Indian Doctor
       bio: 'Dedicated primary care physician treating hypertension, diabetes type 2, respiratory infections, seasonal illnesses, and lifestyle wellness.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '08:30',
@@ -318,7 +318,7 @@ async function seedData() {
       consultation_fee: 400,
       rating: 4.9,
       clinic_address: 'Kakatiya Super-Specialty Medical Institute, Hanamkonda, Warangal',
-      avatar_url: 'https://images.pexels.com/photos/7904407/pexels-photo-7904407.jpeg?auto=compress&cs=tinysrgb&w=500', // Male Indian Doctor
+      avatar_url: '/img/doctors/doc-112.jpg', // Male Indian Doctor
       bio: 'Veteran senior physician specializing in comprehensive geriatric wellness, diabetic neuropathy, hypertension control, and preventive fever clinics.',
       available_days: JSON.stringify(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']),
       slot_start_time: '09:00',

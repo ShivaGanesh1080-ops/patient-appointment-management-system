@@ -333,6 +333,18 @@ async function handleBookingSubmit(event) {
     const res = await api.bookAppointment(payload);
     showToast(`Appointment booked successfully! Token: ${res.data.booking_reference}`, 'success');
 
+    // Persist patient phone and booked appointment in localStorage for 100% reliable pass retrieval
+    localStorage.setItem('medipulse_patient_phone', payload.patient_phone);
+    localStorage.setItem('medipulse_last_booked_token', res.data.booking_reference);
+    localStorage.setItem('medipulse_last_booked_pass', JSON.stringify(res.data));
+
+    let myPasses = [];
+    try {
+      myPasses = JSON.parse(localStorage.getItem('medipulse_my_passes') || '[]');
+    } catch(e) {}
+    myPasses = [res.data, ...myPasses.filter(p => p.booking_reference !== res.data.booking_reference)];
+    localStorage.setItem('medipulse_my_passes', JSON.stringify(myPasses));
+
     // Reset Form & Re-sync Patient Details
     document.getElementById('appointment-booking-form').reset();
     if (otherToggle) otherToggle.checked = false;
@@ -370,21 +382,28 @@ let currentSlipData = null;
  * Open Printable Slip Modal
  */
 function openSlipModal(appointment) {
+  if (!appointment) return;
   currentSlipData = appointment;
   window.currentAppointmentSlip = appointment;
 
-  document.getElementById('slip-token').textContent = appointment.booking_reference;
-  document.getElementById('slip-patient-name').textContent = appointment.patient_name;
-  document.getElementById('slip-patient-meta').textContent = `${appointment.patient_phone} • ${appointment.patient_age} Yrs • ${appointment.patient_gender}`;
-  document.getElementById('slip-doctor-name').textContent = appointment.doctor_name;
-  document.getElementById('slip-doctor-dept').textContent = appointment.department_name;
-  document.getElementById('slip-datetime').textContent = `${appointment.appointment_date} at ${appointment.appointment_time}`;
-  document.getElementById('slip-clinic-address').textContent = appointment.clinic_address;
-  document.getElementById('slip-fee').textContent = `₹${appointment.consultation_fee}`;
+  document.getElementById('slip-token').textContent = appointment.booking_reference || 'APT-2026-XXXX';
+  document.getElementById('slip-patient-name').textContent = appointment.patient_name || 'Patient';
+  document.getElementById('slip-patient-meta').textContent = `${appointment.patient_phone || ''} • ${appointment.patient_age || '--'} Yrs • ${appointment.patient_gender || 'Not Specified'}`;
+  document.getElementById('slip-doctor-name').textContent = appointment.doctor_name || 'Consulting Specialist';
+  document.getElementById('slip-doctor-dept').textContent = appointment.department_name || 'Clinical OPD';
+  document.getElementById('slip-datetime').textContent = `${appointment.appointment_date || ''} at ${appointment.appointment_time || ''}`;
+  document.getElementById('slip-clinic-address').textContent = appointment.clinic_address || appointment.clinic_name || 'Hospital Campus Reception Desk';
+  document.getElementById('slip-fee').textContent = `₹${appointment.consultation_fee || 500}`;
 
   const statusEl = document.getElementById('slip-status');
-  statusEl.textContent = appointment.status;
-  statusEl.className = appointment.status === 'CONFIRMED' ? 'text-emerald-600 font-bold' : (appointment.status === 'COMPLETED' ? 'text-teal-600 font-bold' : 'text-red-600 font-bold');
+  if (statusEl) {
+    statusEl.textContent = appointment.status || 'CONFIRMED';
+    statusEl.className = appointment.status === 'CONFIRMED' 
+      ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200' 
+      : (appointment.status === 'COMPLETED' 
+        ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-50 text-teal-700 border border-teal-200' 
+        : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-red-600 border border-red-200');
+  }
 
   document.getElementById('modal-slip').classList.remove('hidden');
 }

@@ -208,11 +208,18 @@ router.post('/doctors', async (req, res, next) => {
       slot_duration_minutes = 30
     } = req.body;
 
-    if (!name || !department_id || !qualification || !consultation_fee || !clinic_address) {
+    if (!name || !department_id || !qualification || !consultation_fee) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required doctor fields: name, department_id, qualification, consultation_fee, and clinic_address are required.'
+        message: 'Missing required doctor fields: name, department_id, qualification, and consultation_fee are required.'
       });
+    }
+
+    // Auto-resolve clinic_address if not supplied
+    let resolvedClinicAddress = clinic_address;
+    if (!resolvedClinicAddress) {
+      const clinicRow = await dbAsync.get('SELECT address FROM clinics WHERE id = ?', [clinic_id]);
+      resolvedClinicAddress = clinicRow ? clinicRow.address : 'Hospital Medical Campus';
     }
 
     // Verify department exists
@@ -255,7 +262,7 @@ router.post('/doctors', async (req, res, next) => {
       parseInt(experience_years, 10) || 5,
       parseFloat(consultation_fee),
       parseFloat(rating) || 4.9,
-      clinic_address.trim(),
+      resolvedClinicAddress.trim(),
       defaultAvatar,
       defaultBio,
       daysJson,

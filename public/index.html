@@ -99,10 +99,6 @@
             <i class="fa-solid fa-hospital text-[#3f72af]"></i>
             <span>Hospitals</span>
           </button>
-          <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold" onclick="switchTab('tab-doctors')">
-            <i class="fa-solid fa-user-doctor text-[#3f72af]"></i>
-            <span>Specialists</span>
-          </button>
           <button class="nav-tab flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold" onclick="switchTab('tab-booking')">
             <i class="fa-regular fa-calendar-check text-[#3f72af]"></i>
             <span>Book Visit</span>
@@ -156,10 +152,9 @@
       <button class="nav-tab active flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-landing')">
         <i class="fa-solid fa-hospital"></i> <span>Hospitals</span>
       </button>
-      <button class="nav-tab flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-doctors')">
-        <i class="fa-solid fa-user-doctor"></i> <span>Specialists</span>
-      </button>
       <button class="nav-tab flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-booking')">
+        <i class="fa-regular fa-calendar-check"></i> <span>Book</span>
+      </button>
         <i class="fa-regular fa-calendar-check"></i> <span>Book</span>
       </button>
       <button class="nav-tab flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" onclick="switchTab('tab-history')">
@@ -182,62 +177,37 @@
          ===================================================================== -->
     <section id="tab-landing" class="tab-content space-y-10">
       
-      <!-- Hero Section in Midnight Navy (#112D4E) & Steel Blue (#3F72AF) -->
-      <div class="p-8 sm:p-12 rounded-3xl relative overflow-hidden bg-[#112d4e] text-white shadow-xl border border-[#1b3b64]">
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-[#3f72af]/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-[#dbe2ef]/10 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="relative z-10 max-w-3xl space-y-5">
-          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#3f72af]/20 border border-[#3f72af]/40 text-[#dbe2ef] text-xs font-bold tracking-wide uppercase">
-            <span class="w-2 h-2 rounded-full bg-[#3f72af] animate-ping"></span>
-            <span>Multi-Tenant Clinical Operations & Appointment Engine</span>
+      <!-- Direct Patient-Centric Welcome & Fast Search -->
+      <div class="p-6 sm:p-10 rounded-3xl relative overflow-hidden bg-gradient-to-r from-[#112d4e] to-[#1e3e68] text-white shadow-xl border border-[#1b3b64]">
+        <div class="relative z-10 max-w-3xl space-y-3">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#3f72af]/30 border border-[#3f72af]/40 text-[#dbe2ef] text-xs font-bold tracking-wide">
+            <i class="fa-solid fa-hospital text-[#3f72af]"></i>
+            <span>Verified Telangana Hospital Network</span>
           </div>
 
-          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
-            The Modern Operating System for <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#dbe2ef] to-[#3f72af]">Outpatient Healthcare</span>
+          <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+            Select a Hospital to Consult Specialists
           </h1>
 
-          <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-            Eliminate waiting room friction with atomic ACID slot reservation, multi-hospital tenant isolation, and live queue dispatch — inspired by modern digital commerce architectures.
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Choose your preferred hospital campus below to browse on-duty physicians, check consultation fees, and schedule a guaranteed outpatient visit.
           </p>
 
-          <!-- Proof Badges Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
-              <i class="fa-solid fa-shield-halved text-[#3f72af] text-base mb-1"></i>
-              <p class="text-xs font-bold text-white">Zero Double-Booking</p>
-              <p class="text-[10px] text-slate-400">Atomic Concurrency Guard</p>
+          <!-- Quick Hospital Search Bar -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center gap-2 max-w-xl">
+            <div class="relative flex-1 w-full">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+              <input 
+                type="text" 
+                id="landing-quick-search"
+                placeholder="Search hospital or city (Warangal, Hyderabad)..." 
+                class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white text-[#112d4e] placeholder-slate-400 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#3f72af] shadow-sm"
+                oninput="filterHospitalsQuick(this.value)"
+              >
             </div>
-            <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
-              <i class="fa-solid fa-hospital text-[#dbe2ef] text-base mb-1"></i>
-              <p class="text-xs font-bold text-white">Multi-Tenant</p>
-              <p class="text-[10px] text-slate-400">Isolated Clinic Branches</p>
-            </div>
-            <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
-              <i class="fa-solid fa-bolt text-amber-400 text-base mb-1"></i>
-              <p class="text-xs font-bold text-white">Real-Time Dispatch</p>
-              <p class="text-[10px] text-slate-400">Server-Sent Events (SSE)</p>
-            </div>
-            <div class="bg-white/5 border border-white/10 p-3 rounded-2xl backdrop-blur-sm">
-              <i class="fa-solid fa-chart-line text-emerald-400 text-base mb-1"></i>
-              <p class="text-xs font-bold text-white">Revenue Telemetry</p>
-              <p class="text-[10px] text-slate-400">Live OPD & Fee Metrics</p>
-            </div>
-          </div>
-
-          <!-- CTAs -->
-          <div class="flex flex-wrap items-center gap-3 pt-3">
-            <button onclick="switchTab('tab-doctors')" class="px-6 py-3 rounded-xl btn-primary font-bold text-xs sm:text-sm flex items-center space-x-2">
-              <i class="fa-solid fa-user-doctor"></i>
-              <span>Find Specialists</span>
-            </button>
-            <button onclick="switchTab('tab-doctor-login')" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs sm:text-sm backdrop-blur-sm transition-all flex items-center space-x-2">
-              <i class="fa-solid fa-stethoscope text-[#3f72af]"></i>
-              <span>Doctor Portal</span>
-            </button>
-            <button onclick="switchTab('tab-admin-login')" class="px-4 py-3 rounded-xl bg-[#0b1c31] hover:bg-[#1b3b64] border border-[#3f72af]/40 text-[#dbe2ef] font-bold text-xs transition-all flex items-center space-x-1.5">
-              <i class="fa-solid fa-hospital-user"></i>
-              <span>Hospital Admin</span>
+            <button onclick="switchTab('tab-booking')" class="w-full sm:w-auto px-5 py-2.5 rounded-xl btn-primary text-xs font-bold whitespace-nowrap shadow-sm flex items-center justify-center space-x-1.5">
+              <i class="fa-solid fa-calendar-plus text-xs"></i>
+              <span>Direct Booking</span>
             </button>
           </div>
         </div>
@@ -269,6 +239,19 @@
       
       <!-- Search & Specialty Filter Controls -->
       <div class="glass-panel p-5 sm:p-6 rounded-3xl space-y-4">
+        
+        <!-- Back Navigation to Hospital Directory -->
+        <div class="flex items-center justify-between pb-3 border-b border-[#dbe2ef]">
+          <button onclick="switchTab('tab-landing')" class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-[#dbe2ef] border border-[#dbe2ef] text-xs font-bold text-[#112d4e] transition flex items-center space-x-2 shadow-sm">
+            <i class="fa-solid fa-arrow-left text-[#3f72af]"></i>
+            <span>Back to Hospital Selection</span>
+          </button>
+          <div class="flex items-center space-x-1.5 text-xs">
+            <span class="text-slate-500 font-medium hidden sm:inline">Active Facility:</span>
+            <span class="px-2.5 py-0.5 rounded-full font-bold bg-[#dbe2ef] text-[#112d4e]" id="active-hospital-badge">All Hospitals</span>
+          </div>
+        </div>
+
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 class="text-2xl font-bold text-[#112d4e] tracking-tight">Specialists Directory</h1>

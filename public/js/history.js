@@ -24,14 +24,22 @@ async function fetchAppointmentsHistory() {
   const container = document.getElementById('appointments-list-container');
   if (!container) return;
 
-  const phone = document.getElementById('filter-phone-input').value.trim();
-  const ref = document.getElementById('filter-ref-input').value.trim();
-  const status = document.getElementById('filter-status-select').value;
-  const doctorId = document.getElementById('filter-doctor-select').value;
+  const phoneInput = document.getElementById('filter-phone-input');
+  if (phoneInput && !phoneInput.value.trim()) {
+    const savedPhone = localStorage.getItem('medipulse_patient_phone');
+    if (savedPhone) {
+      phoneInput.value = savedPhone;
+    }
+  }
+
+  const phone = phoneInput ? phoneInput.value.trim() : '';
+  const ref = document.getElementById('filter-ref-input')?.value.trim() || '';
+  const status = document.getElementById('filter-status-select')?.value || 'all';
+  const doctorId = document.getElementById('filter-doctor-select')?.value || 'all';
 
   container.innerHTML = `
     <div class="py-12 text-center text-slate-400">
-      <i class="fa-solid fa-spinner fa-spin text-2xl text-indigo-600 mb-2"></i>
+      <i class="fa-solid fa-spinner fa-spin text-2xl text-[#3f72af] mb-2"></i>
       <p class="text-xs">Loading appointment records...</p>
     </div>
   `;
@@ -41,7 +49,33 @@ async function fetchAppointmentsHistory() {
 
   try {
     const res = await api.getAppointments({ phone, ref, status, doctorId });
-    historyState.appointments = res.data;
+    const apiList = res.data || [];
+
+    // Retrieve locally booked passes to guarantee immediate visibility
+    let localPasses = [];
+    try {
+      localPasses = JSON.parse(localStorage.getItem('medipulse_my_passes') || '[]');
+    } catch(e) {}
+
+    // Combine local passes with API results, strictly avoiding duplicates
+    const combined = [...localPasses, ...apiList];
+    const seenRefs = new Set();
+    const uniqueAppointments = [];
+
+    for (const apt of combined) {
+      if (apt && apt.booking_reference && !seenRefs.has(apt.booking_reference)) {
+        // Apply active filters
+        if (phone && apt.patient_phone && !apt.patient_phone.includes(phone)) continue;
+        if (ref && !apt.booking_reference.toLowerCase().includes(ref.toLowerCase())) continue;
+        if (status !== 'all' && apt.status !== status) continue;
+        if (doctorId !== 'all' && apt.doctor_id !== doctorId) continue;
+
+        seenRefs.add(apt.booking_reference);
+        uniqueAppointments.push(apt);
+      }
+    }
+
+    historyState.appointments = uniqueAppointments;
     renderAppointmentsHistory(historyState.appointments);
   } catch (err) {
     container.innerHTML = `
@@ -103,9 +137,10 @@ function renderAppointmentsHistory(appointments) {
         <!-- Left Column: Details -->
         <div class="flex items-start space-x-3.5">
           <img 
-            src="${apt.doctor_avatar || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100'}" 
+            src="${apt.doctor_avatar || ('/img/doctors/' + apt.doctor_id + '.jpg')}" 
             alt="${apt.doctor_name}" 
-            class="w-14 h-14 rounded-2xl object-cover border border-slate-200 bg-slate-100 flex-shrink-0"
+            class="w-14 h-14 rounded-2xl object-cover border border-[#dbe2ef] bg-slate-100 flex-shrink-0"
+            onerror="this.onerror=null; this.src='/img/doctors/doc-101.jpg';"
           />
 
           <div class="space-y-1">
@@ -212,12 +247,33 @@ async function submitCancellation() {
 }
 
 /**
- * View Slip for an appointment from History
+ * View Slip for an appointment from History (with multi-source fallback)
  */
-function viewSlipFromHistory(bookingRef) {
-  const apt = historyState.appointments.find(a => a.booking_reference === bookingRef);
+async function viewSlipFromHistory(bookingRef) {
+  let apt = (historyState.appointments || []).find(a => a.booking_reference === bookingRef);
+
+  if (!apt) {
+    try {
+      const localPasses = JSON.parse(localStorage.getItem('medipulse_my_passes') || '[]');
+      apt = localPasses.find(a => a.booking_reference === bookingRef);
+    } catch(e) {}
+  }
+
+  if (!apt) {
+    try {
+      const res = await api.getAppointmentById(bookingRef);
+      apt = res.data;
+    } catch(e) {
+      console.warn('Could not fetch appointment by ref', e);
+    }
+  }
+
   if (apt && typeof openSlipModal === 'function') {
     openSlipModal(apt);
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('Could not load pass details. Please check the booking token.', 'error');
+    }
   }
 }
 

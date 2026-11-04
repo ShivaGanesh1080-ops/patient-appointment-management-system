@@ -496,9 +496,82 @@ function selectHospitalAndBrowseDoctors(clinicId) {
   state.activeClinic = clinicId;
   const select = document.getElementById('clinic-filter-select');
   if (select) select.value = clinicId;
+
+  // Update active facility badge on doctor page
+  const hospitalObj = state.clinics.find(c => c.id === clinicId);
+  const badge = document.getElementById('active-hospital-badge');
+  if (badge) {
+    badge.textContent = hospitalObj ? `${hospitalObj.name} (${hospitalObj.city})` : 'Selected Hospital';
+  }
+
   switchTab('tab-doctors');
   loadDoctors();
-  showToast(`Viewing specialists at selected hospital.`, 'info');
+  showToast(`Viewing specialists at ${hospitalObj ? hospitalObj.name : 'selected hospital'}.`, 'info');
+}
+
+function filterHospitalsQuick(query) {
+  const q = (query || '').toLowerCase().trim();
+  const container = document.getElementById('hospitals-showcase-grid');
+  if (!container) return;
+
+  const filtered = state.clinics.filter(c => 
+    c.name.toLowerCase().includes(q) || 
+    c.city.toLowerCase().includes(q) || 
+    c.address.toLowerCase().includes(q)
+  );
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<p class="col-span-full text-center text-xs text-slate-400 py-6">No matching hospital campus found.</p>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(clinic => `
+    <article class="hospital-card p-6 rounded-3xl flex flex-col justify-between space-y-4 shadow-sm hover:border-[#3f72af] transition-all bg-white relative overflow-hidden group">
+      <div class="space-y-3">
+        <div class="flex items-start justify-between">
+          <div class="w-12 h-12 rounded-2xl bg-[#dbe2ef]/70 text-[#112d4e] flex items-center justify-center text-xl shadow-sm border border-[#dbe2ef]">
+            <i class="fa-solid fa-hospital text-[#3f72af]"></i>
+          </div>
+          <span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-xs font-bold bg-[#eff6ff] text-[#112d4e] border border-[#dbe2ef]">
+            <i class="fa-solid fa-star text-amber-500 text-[10px]"></i>
+            <span>${clinic.rating ? clinic.rating.toFixed(1) : '4.9'}</span>
+          </span>
+        </div>
+
+        <div>
+          <h3 class="font-extrabold text-base sm:text-lg text-[#112d4e] group-hover:text-[#3f72af] transition-colors">${clinic.name}</h3>
+          <p class="text-xs text-slate-500 font-medium flex items-center mt-1">
+            <i class="fa-solid fa-location-dot text-[#3f72af] mr-1.5 text-xs"></i>
+            ${clinic.city} — ${clinic.address}
+          </p>
+        </div>
+
+        <div class="pt-2 flex flex-wrap gap-1.5 text-[11px]">
+          <span class="px-2 py-0.5 rounded-lg bg-[#f9f7f7] text-[#112d4e] border border-[#dbe2ef] font-medium">
+            <i class="fa-regular fa-clock mr-1 text-[#3f72af]"></i>${clinic.operating_hours || '08:00 - 20:00'}
+          </span>
+          <span class="px-2 py-0.5 rounded-lg bg-[#f9f7f7] text-[#112d4e] border border-[#dbe2ef] font-medium">
+            <i class="fa-solid fa-bed-pulse mr-1 text-[#3f72af]"></i>${clinic.total_beds || 50} Beds
+          </span>
+          ${clinic.phone ? `
+            <span class="px-2 py-0.5 rounded-lg bg-[#f9f7f7] text-slate-600 border border-[#dbe2ef]">
+              <i class="fa-solid fa-phone mr-1 text-slate-400"></i>${clinic.phone}
+            </span>
+          ` : ''}
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-[#dbe2ef]/80">
+        <button 
+          onclick="selectHospitalAndBrowseDoctors('${clinic.id}')" 
+          class="w-full py-2.5 px-4 rounded-xl text-xs font-bold btn-primary flex items-center justify-center space-x-2 shadow-sm"
+        >
+          <span>View Specialists at this Hospital</span>
+          <i class="fa-solid fa-arrow-right text-[11px]"></i>
+        </button>
+      </div>
+    </article>
+  `).join('');
 }
 
 /* ==========================================================================
@@ -641,10 +714,10 @@ function renderDoctors(doctors) {
           <div class="flex items-start justify-between gap-3 mb-4">
             <div class="flex items-center space-x-3.5">
               <img 
-                src="${doc.avatar_url}" 
+                src="${doc.avatar_url || ('/img/doctors/' + doc.id + '.jpg')}" 
                 alt="${doc.name}" 
                 class="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md bg-slate-100"
-                onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80'"
+                onerror="this.onerror=null; this.src='/img/doctors/doc-101.jpg';"
               />
               <div>
                 <div class="flex items-center space-x-1.5 flex-wrap gap-y-1 mb-1">
@@ -727,7 +800,7 @@ async function viewDoctorBio(doctorId) {
     const modalContent = document.getElementById('doctor-bio-modal-content');
     modalContent.innerHTML = `
       <div class="flex items-center space-x-4 pb-4 border-b border-[#dbe2ef]">
-        <img src="${doc.avatar_url}" alt="${doc.name}" class="w-20 h-20 rounded-2xl object-cover border-2 border-white shadow-md bg-slate-100" />
+        <img src="${doc.avatar_url || ('/img/doctors/' + doc.id + '.jpg')}" alt="${doc.name}" class="w-20 h-20 rounded-2xl object-cover border-2 border-white shadow-md bg-slate-100" onerror="this.onerror=null; this.src='/img/doctors/doc-101.jpg';" />
         <div>
           <span class="text-xs font-bold text-[#3f72af] uppercase tracking-wider">${doc.department_name}</span>
           <h3 class="text-xl font-bold text-[#112d4e]">${doc.name}</h3>

@@ -336,6 +336,108 @@
           </div>
         </div>
 
+        <!-- OPD Shift Timings & Duration -->
+        <div class="p-3 bg-[#f9f7f7] rounded-xl border border-[#dbe2ef] space-y-2">
+          <p class="font-bold text-[#112d4e] flex items-center">
+            <i class="fa-regular fa-clock text-[#3f72af] mr-1.5"></i> OPD Clinic Timings & Slot Duration
+          </p>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Start Time</label>
+              <input type="time" id="onboard-start-time" value="09:00" class="w-full px-2 py-1.5 rounded-lg border border-[#dbe2ef] text-xs bg-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">End Time</label>
+              <input type="time" id="onboard-end-time" value="16:00" class="w-full px-2 py-1.5 rounded-lg border border-[#dbe2ef] text-xs bg-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Slot (Mins)</label>
+              <select id="onboard-slot-duration" class="w-full px-2 py-1.5 rounded-lg border border-[#dbe2ef] text-xs bg-white">
+                <option value="30" selected>30 mins</option>
+                <option value="20">20 mins</option>
+                <option value="45">45 mins</option>
+                <option value="60">60 mins</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Working Days Selection -->
+        <div class="p-3 bg-[#f9f7f7] rounded-xl border border-[#dbe2ef] space-y-2">
+          <p class="font-bold text-[#112d4e] flex items-center">
+            <i class="fa-solid fa-calendar-days text-[#3f72af] mr-1.5"></i> Available Shift Days
+          </p>
+          <div class="grid grid-cols-3 gap-1.5 text-[11px]">
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" name="onboard-day" value="Monday" checked class="rounded text-[#3f72af]">
+              <span>Monday</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" name="onboard-day" value="Tuesday" checked class="rounded text-[#3f72af]">
+              <span>Tuesday</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" name="onboard-day" value="Wednesday" checked class="rounded text-[#3f72af]">
+              <span>Wednesday</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" name="onboard-day" value="Thursday" checked class="rounded text-[#3f72af]">
+              <span>Thursday</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" name="onboard-day" value="Friday" checked class="rounded text-[#3f72af]">
+              <span>Friday</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" name="onboard-day" value="Saturday" checked class="rounded text-[#3f72af]">
+              <span>Saturday</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Doctor Profile Picture Selector -->
+        <div class="p-3 bg-[#f9f7f7] rounded-xl border border-[#dbe2ef] space-y-2">
+          <p class="font-bold text-[#112d4e] flex items-center justify-between">
+            <span><i class="fa-solid fa-image text-[#3f72af] mr-1.5"></i> Doctor Headshot Portrait</span>
+            <span class="text-[10px] text-slate-500 font-normal">Select verified preset or URL</span>
+          </p>
+          <div class="grid grid-cols-6 gap-2 pt-1" id="avatar-presets-grid">
+            <label class="cursor-pointer text-center space-y-1 block">
+              <input type="radio" name="onboard-avatar" value="/img/doctors/doc-101.jpg" checked class="peer sr-only">
+              <img src="/img/doctors/doc-101.jpg" class="w-10 h-10 rounded-xl object-cover border-2 border-transparent peer-checked:border-[#3f72af] peer-checked:ring-2 peer-checked:ring-[#3f72af]/30 mx-auto" alt="Male 1">
+              <span class="text-[9px] text-slate-600 block">Male 1</span>
+            </label>
+            <label class="cursor-pointer text-center space-y-1 block">
+              <input type="radio" name="onboard-avatar" value="/img/doctors/doc-104.jpg" class="peer sr-only">
+              <img src="/img/doctors/doc-104.jpg" class="w-10 h-10 rounded-xl object-cover border-2 border-transparent peer-checked:border-[#3f72af] peer-checked:ring-2 peer-checked:ring-[#3f72af]/30 mx-auto" alt="Female 1">
+              <span class="text-[9px] text-slate-600 block">Female 1</span>
+            </label>
+            <label class="cursor-pointer text-center space-y-1 block">
+              <input type="radio" name="onboard-avatar" value="/img/doctors/doc-103.jpg" class="peer sr-only">
+              <img src="/img/doctors/doc-103.jpg" class="w-10 h-10 rounded-xl object-cover border-2 border-transparent peer-checked:border-[#3f72af] peer-checked:ring-2 peer-checked:ring-[#3f72af]/30 mx-auto" alt="Male 2">
+              <span class="text-[9px] text-slate-600 block">Male 2</span>
+            </label>
+            <label class="cursor-pointer text-center space-y-1 block">
+              <input type="radio" name="onboard-avatar" value="/img/doctors/doc-102.jpg" class="peer sr-only">
+              <img src="/img/doctors/doc-102.jpg" class="w-10 h-10 rounded-xl object-cover border-2 border-transparent peer-checked:border-[#3f72af] peer-checked:ring-2 peer-checked:ring-[#3f72af]/30 mx-auto" alt="Female 2">
+              <span class="text-[9px] text-slate-600 block">Female 2</span>
+            </label>
+            <label class="cursor-pointer text-center space-y-1 block">
+              <input type="radio" name="onboard-avatar" value="/img/doctors/doc-108.jpg" class="peer sr-only">
+              <img src="/img/doctors/doc-108.jpg" class="w-10 h-10 rounded-xl object-cover border-2 border-transparent peer-checked:border-[#3f72af] peer-checked:ring-2 peer-checked:ring-[#3f72af]/30 mx-auto" alt="Male 3">
+              <span class="text-[9px] text-slate-600 block">Male 3</span>
+            </label>
+            <label class="cursor-pointer text-center space-y-1 block">
+              <input type="radio" name="onboard-avatar" value="/img/doctors/doc-106.jpg" class="peer sr-only">
+              <img src="/img/doctors/doc-106.jpg" class="w-10 h-10 rounded-xl object-cover border-2 border-transparent peer-checked:border-[#3f72af] peer-checked:ring-2 peer-checked:ring-[#3f72af]/30 mx-auto" alt="Female 3">
+              <span class="text-[9px] text-slate-600 block">Female 3</span>
+            </label>
+          </div>
+          <div class="pt-1.5">
+            <input type="text" id="onboard-custom-avatar" placeholder="Or enter custom image URL (optional)" class="w-full px-2.5 py-1.5 rounded-lg border border-[#dbe2ef] text-[11px] bg-white">
+          </div>
+        </div>
+
         <button type="submit" id="onboard-submit-btn" class="w-full py-2.5 btn-primary font-bold rounded-xl text-xs shadow-md flex items-center justify-center space-x-1.5 mt-2">
           <i class="fa-solid fa-user-check"></i>
           <span>Save & Provision Specialist</span>
@@ -534,6 +636,16 @@
       e.preventDefault();
       if (!currentAdminClinic) return;
 
+      // Resolve avatar
+      const customAvatar = document.getElementById('onboard-custom-avatar').value.trim();
+      const selectedAvatarRadio = document.querySelector('input[name="onboard-avatar"]:checked');
+      const resolvedAvatar = customAvatar || (selectedAvatarRadio ? selectedAvatarRadio.value : '/img/doctors/doc-101.jpg');
+
+      // Resolve selected working days
+      const dayCheckboxes = document.querySelectorAll('input[name="onboard-day"]:checked');
+      const selectedDays = Array.from(dayCheckboxes).map(cb => cb.value);
+      const days = selectedDays.length > 0 ? selectedDays : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
       const payload = {
         name: document.getElementById('onboard-name').value.trim(),
         email: document.getElementById('onboard-email').value.trim(),
@@ -543,11 +655,11 @@
         consultation_fee: parseInt(document.getElementById('onboard-fee').value, 10),
         qualification: document.getElementById('onboard-quals').value.trim(),
         experience_years: parseInt(document.getElementById('onboard-exp').value, 10),
-        avatar_url: 'https://images.pexels.com/photos/5888168/pexels-photo-5888168.jpeg?auto=compress&cs=tinysrgb&w=500',
-        available_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        slot_start_time: '09:00',
-        slot_end_time: '15:00',
-        slot_duration_minutes: 30
+        avatar_url: resolvedAvatar,
+        available_days: days,
+        slot_start_time: document.getElementById('onboard-start-time').value || '09:00',
+        slot_end_time: document.getElementById('onboard-end-time').value || '16:00',
+        slot_duration_minutes: parseInt(document.getElementById('onboard-slot-duration').value, 10) || 30
       };
 
       const btn = document.getElementById('onboard-submit-btn');
