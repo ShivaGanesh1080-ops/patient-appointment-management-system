@@ -243,6 +243,38 @@ function updateStaffNavBadge() {
 }
 
 /**
+ * Staff Portals Dropdown Toggle & Click Outside Handler
+ */
+function toggleStaffDropdown(e) {
+  if (e) {
+    e.stopPropagation();
+  }
+  const menu = document.getElementById('staff-dropdown-menu');
+  const chevron = document.getElementById('staff-dropdown-chevron');
+  if (!menu) return;
+  const isHidden = menu.classList.contains('hidden');
+  if (isHidden) {
+    menu.classList.remove('hidden');
+    if (chevron) chevron.classList.add('rotate-180');
+  } else {
+    menu.classList.add('hidden');
+    if (chevron) chevron.classList.remove('rotate-180');
+  }
+}
+
+// Global click outside listener to auto-close staff dropdown
+document.addEventListener('click', (e) => {
+  const wrapper = document.getElementById('staff-dropdown-wrapper');
+  const menu = document.getElementById('staff-dropdown-menu');
+  const chevron = document.getElementById('staff-dropdown-chevron');
+  if (wrapper && menu && !wrapper.contains(e.target)) {
+    menu.classList.add('hidden');
+    if (chevron) chevron.classList.remove('rotate-180');
+  }
+});
+window.toggleStaffDropdown = toggleStaffDropdown;
+
+/**
  * Master Tab Navigation Switcher
  */
 function switchTab(tabId) {
@@ -272,11 +304,11 @@ function switchTab(tabId) {
     targetTab.classList.remove('hidden');
   }
 
-  // Update navigation button active styles
+  // Update navigation button active styles (strictly on nav-tab pills)
   document.querySelectorAll('.nav-tab').forEach(btn => {
     btn.classList.remove('active');
   });
-  document.querySelectorAll(`[onclick*="switchTab('${tabId}')"]`).forEach(btn => {
+  document.querySelectorAll(`.nav-tab[onclick*="switchTab('${tabId}')"]`).forEach(btn => {
     btn.classList.add('active');
   });
 
