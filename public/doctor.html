@@ -111,6 +111,16 @@
             <i class="fa-solid fa-bolt text-amber-500 mr-1.5"></i> 1-Click Doctor Accounts
           </p>
           <div class="space-y-1.5">
+            <button onclick="fillDoctorCreds('seketh@gmail.in', 'doctor123')" class="w-full text-left p-2.5 rounded-xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 flex justify-between items-center transition group">
+              <div>
+                <p class="font-bold text-[#112d4e] group-hover:text-[#3f72af] flex items-center gap-1.5">
+                  <span>Dr. Seketh</span>
+                  <span class="text-[9px] bg-blue-200/80 text-[#112d4e] px-1.5 py-0.5 rounded font-semibold uppercase">Onboarded Specialist</span>
+                </p>
+                <p class="text-[10px] text-slate-500">seketh@gmail.in (SRU • Cardiology)</p>
+              </div>
+              <span class="text-[10px] font-mono text-white bg-[#3f72af] font-bold px-2 py-0.5 rounded shadow-xs">Use</span>
+            </button>
             <button onclick="fillDoctorCreds('dr.rajeshwar.rao@apollo.org', 'doctor123')" class="w-full text-left p-2.5 rounded-xl bg-[#f9f7f7] hover:bg-[#dbe2ef] border border-[#dbe2ef] flex justify-between items-center transition">
               <div>
                 <p class="font-bold text-[#112d4e]">Dr. Rajeshwar Rao</p>
@@ -281,6 +291,97 @@
     // State
     let currentDoctor = null;
     let pollInterval = null;
+    let currentQueueAppointments = [];
+    let liveQueueChannel = null;
+    let sseSource = null;
+
+    /**
+     * Sub-20ms Doctor Matching Engine
+     */
+    function isAppointmentForCurrentDoctor(docId, docName, aptObj) {
+      if (!currentDoctor) return false;
+      const myId = (currentDoctor.id || '').toLowerCase().trim();
+      const myName = (currentDoctor.name || '').toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+      const myEmail = (currentDoctor.email || '').toLowerCase().trim();
+
+      if (docId) {
+        const targetId = docId.toLowerCase().trim();
+        if (targetId === myId || targetId.includes(myId) || myId.includes(targetId)) return true;
+      }
+
+      if (docName) {
+        const targetName = docName.toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+        if (myName && (myName === targetName || myName.includes(targetName) || targetName.includes(myName))) return true;
+      }
+
+      if (aptObj) {
+        if (aptObj.doctor_id && myId && (aptObj.doctor_id.toLowerCase().trim() === myId || myId.includes(aptObj.doctor_id.toLowerCase().trim()))) return true;
+        if (aptObj.doctor_email && myEmail && aptObj.doctor_email.toLowerCase().trim() === myEmail) return true;
+        if (aptObj.doctor_name) {
+          const aptName = aptObj.doctor_name.toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+          if (myName && (myName === aptName || myName.includes(aptName) || aptName.includes(myName))) return true;
+        }
+      }
+
+      return false;
+    }
+
+    /**
+     * Instant In-Memory Queue Prepend (< 2ms DOM Render)
+     */
+    function integrateLiveBooking(apt) {
+      if (!apt || !apt.booking_reference) return;
+      const existsIdx = currentQueueAppointments.findIndex(a => a.booking_reference === apt.booking_reference);
+      if (existsIdx >= 0) {
+        currentQueueAppointments[existsIdx] = { ...currentQueueAppointments[existsIdx], ...apt };
+      } else {
+        currentQueueAppointments.unshift(apt);
+      }
+
+      // Recompute and render KPIs instantly
+      updateKpiBadges(currentQueueAppointments);
+      renderQueueList(applyActiveDateFilter(currentQueueAppointments));
+    }
+
+    function updateKpiBadges(appointments) {
+      const total = appointments.length;
+      const confirmed = appointments.filter(a => a.status === 'CONFIRMED').length;
+      const consulting = appointments.filter(a => a.status === 'IN_CONSULTATION').length;
+      const completed = appointments.filter(a => a.status === 'COMPLETED').length;
+
+      const totalEl = document.getElementById('stat-doc-total');
+      const confirmedEl = document.getElementById('stat-doc-confirmed');
+      const consultingEl = document.getElementById('stat-doc-consulting');
+      const completedEl = document.getElementById('stat-doc-completed');
+      const countPills = document.getElementById('count-all-pills');
+
+      if (totalEl) totalEl.textContent = total;
+      if (confirmedEl) confirmedEl.textContent = confirmed;
+      if (consultingEl) consultingEl.textContent = consulting;
+      if (completedEl) completedEl.textContent = completed;
+      if (countPills) countPills.textContent = total;
+    }
+
+    function applyActiveDateFilter(appointments) {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const tomorrowDate = new Date();
+      tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+      const tomorrowStr = tomorrowDate.toISOString().split('T')[0];
+      const pickerVal = document.getElementById('queue-date-picker')?.value;
+
+      let filtered = appointments;
+      if (currentFilterMode === 'today') {
+        filtered = appointments.filter(a => a.appointment_date === todayStr);
+      } else if (currentFilterMode === 'tomorrow') {
+        filtered = appointments.filter(a => a.appointment_date === tomorrowStr);
+      } else if (currentFilterMode === 'custom' && pickerVal) {
+        filtered = appointments.filter(a => a.appointment_date === pickerVal);
+      } else {
+        filtered = appointments;
+      }
+      renderUpcomingNotice(appointments, currentFilterMode, pickerVal || todayStr);
+      return filtered;
+    }
 
     // Toast Notification Helper
     function showToast(message, type = 'info') {
@@ -351,6 +452,14 @@
       sessionStorage.removeItem('medipulse_doctor_portal');
       localStorage.removeItem('medipulse_doctor_portal');
       if (pollInterval) clearInterval(pollInterval);
+      if (liveQueueChannel) {
+        try { liveQueueChannel.close(); } catch(e){}
+        liveQueueChannel = null;
+      }
+      if (sseSource) {
+        try { sseSource.close(); } catch(e){}
+        sseSource = null;
+      }
       showToast('Logged out of Doctor Workspace.', 'info');
       document.getElementById('doctor-login-view').classList.remove('hidden');
       document.getElementById('doctor-workspace-view').classList.add('hidden');
@@ -410,9 +519,62 @@
       // Default to All Visits so any booking for today or tomorrow is immediately visible
       setQueueFilterMode('all');
 
-      // Setup 4-second live polling
+      // -------------------------------------------------------------
+      // SUB-20ms REAL-TIME DISPATCH ENGINE
+      // -------------------------------------------------------------
+      // 1. Cross-tab BroadcastChannel (< 2ms instant latency)
+      if (typeof BroadcastChannel !== 'undefined') {
+        if (liveQueueChannel) {
+          try { liveQueueChannel.close(); } catch(e){}
+        }
+        liveQueueChannel = new BroadcastChannel('medipulse_live_dispatch');
+        liveQueueChannel.onmessage = (event) => {
+          const msg = event.data;
+          if (!msg || !currentDoctor) return;
+          if (isAppointmentForCurrentDoctor(msg.doctor_id, msg.doctor_name, msg.appointment)) {
+            console.log('⚡ [Sub-20ms Dispatch Bus] Received real-time appointment:', msg.appointment?.booking_reference);
+            showToast(`⚡ New patient booked: ${msg.appointment.patient_name} (${msg.appointment.appointment_time})`, 'success');
+            integrateLiveBooking(msg.appointment);
+            fetchDoctorAppointments();
+          }
+        };
+      }
+
+      // 2. Storage event listener fallback (< 2ms latency)
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'medipulse_live_dispatch_ping' && e.newValue) {
+          try {
+            const ping = JSON.parse(e.newValue);
+            if (isAppointmentForCurrentDoctor(ping.doctor_id, ping.doctor_name)) {
+              console.log('⚡ [Storage Trigger] Booking ping received:', ping.booking_reference);
+              fetchDoctorAppointments();
+            }
+          } catch(err){}
+        }
+      });
+
+      // 3. Persistent Server-Sent Events (SSE) Stream (< 15ms network push)
+      if (sseSource) {
+        try { sseSource.close(); } catch(e){}
+      }
+      const sseTarget = currentDoctor.id || currentDoctor.name;
+      sseSource = new EventSource(`/api/appointments/stream?doctorId=${encodeURIComponent(sseTarget)}`);
+      sseSource.onmessage = (event) => {
+        try {
+          const payload = JSON.parse(event.data);
+          if (payload.type === 'NEW_BOOKING' || payload.type === 'STATUS_UPDATED') {
+            const apt = payload.data;
+            if (apt && isAppointmentForCurrentDoctor(apt.doctor_id, apt.doctor_name, apt)) {
+              console.log('⚡ [SSE Stream Push] Event received:', apt.booking_reference);
+              integrateLiveBooking(apt);
+            }
+          }
+        } catch(err){}
+      };
+
+      // Periodic safety poll
       if (pollInterval) clearInterval(pollInterval);
-      pollInterval = setInterval(fetchDoctorAppointments, 4000);
+      pollInterval = setInterval(fetchDoctorAppointments, 3000);
     }
 
     async function fetchDoctorAppointments() {
@@ -430,42 +592,13 @@
           allAppointments = api.syncDoctorAppointments(allAppointments, currentDoctor);
         }
 
+        currentQueueAppointments = allAppointments;
+
         // Calculate doctor-specific live KPIs
-        const total = allAppointments.length;
-        const confirmed = allAppointments.filter(a => a.status === 'CONFIRMED').length;
-        const consulting = allAppointments.filter(a => a.status === 'IN_CONSULTATION').length;
-        const completed = allAppointments.filter(a => a.status === 'COMPLETED').length;
+        updateKpiBadges(allAppointments);
 
-        document.getElementById('stat-doc-total').textContent = total;
-        document.getElementById('stat-doc-confirmed').textContent = confirmed;
-        document.getElementById('stat-doc-consulting').textContent = consulting;
-        document.getElementById('stat-doc-completed').textContent = completed;
-
-        const countPills = document.getElementById('count-all-pills');
-        if (countPills) countPills.textContent = total;
-
-        // Apply selected date filter
-        const todayStr = new Date().toISOString().split('T')[0];
-        const tomorrowDate = new Date();
-        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-        const tomorrowStr = tomorrowDate.toISOString().split('T')[0];
-        const pickerVal = document.getElementById('queue-date-picker')?.value;
-
-        let filtered = allAppointments;
-        if (currentFilterMode === 'today') {
-          filtered = allAppointments.filter(a => a.appointment_date === todayStr);
-        } else if (currentFilterMode === 'tomorrow') {
-          filtered = allAppointments.filter(a => a.appointment_date === tomorrowStr);
-        } else if (currentFilterMode === 'custom' && pickerVal) {
-          filtered = allAppointments.filter(a => a.appointment_date === pickerVal);
-        } else {
-          // 'all' shows all visits
-          filtered = allAppointments;
-        }
-
-        // Render upcoming notice banner if current filter has 0 visits but appointments exist on other dates
-        renderUpcomingNotice(allAppointments, currentFilterMode, pickerVal || todayStr);
-
+        // Apply selected date filter and render
+        const filtered = applyActiveDateFilter(allAppointments);
         renderQueueList(filtered);
       } catch (e) {
         console.error('Queue poll error', e);

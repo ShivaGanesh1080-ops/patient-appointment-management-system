@@ -238,13 +238,17 @@ router.post('/doctors', async (req, res, next) => {
     const daysJson = typeof available_days === 'string' ? available_days : JSON.stringify(available_days);
 
     // Compute doctor hospital email if not supplied
-    const slugName = name.toLowerCase().replace('dr. ', '').replace(/[^a-z0-9]+/g, '.');
-    const doctorEmail = email || `dr.${slugName}@${clinic_id.replace('clinic-', '')}.health`;
+    const normalizedName = name.trim().toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+    const slugName = normalizedName || 'specialist';
+    const doctorEmail = (email && email.trim()) ? email.trim() : `dr.${slugName}@${clinic_id.replace('clinic-', '')}.health`;
 
-    // Idempotency: check if doctor with this ID or email already exists
+    // Idempotency: check if doctor with this ID, email, or normalized name in this clinic already exists
     const existing = await dbAsync.get(
-      'SELECT id FROM doctors WHERE (id = ? AND ? IS NOT NULL) OR LOWER(email) = LOWER(?)',
-      [req.body.id || null, req.body.id || null, doctorEmail.trim()]
+      `SELECT id FROM doctors 
+       WHERE (id = ? AND ? IS NOT NULL) 
+          OR LOWER(email) = LOWER(?)
+          OR (clinic_id = ? AND LOWER(REPLACE(REPLACE(REPLACE(name, 'Dr.', ''), 'Dr', ''), ' ', '')) = ?)`,
+      [req.body.id || null, req.body.id || null, doctorEmail, clinic_id, normalizedName]
     );
 
     let activeDoctorId = req.body.id || doctorId;

@@ -13,7 +13,15 @@ function broadcastAppointmentEvent(eventType, payload) {
   const dataStr = JSON.stringify({ type: eventType, data: payload, timestamp: new Date().toISOString() });
   for (const client of sseClients) {
     try {
-      if (!client.doctorId || client.doctorId === payload.doctor_id) {
+      let isRecipient = true;
+      if (client.doctorId && payload) {
+        const cDoc = client.doctorId.toLowerCase().trim();
+        const pDocId = (payload.doctor_id || '').toLowerCase().trim();
+        const pDocName = (payload.doctor_name || '').toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+        const cNorm = cDoc.replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+        isRecipient = (cDoc === pDocId || (cNorm && cNorm === pDocName) || (cNorm && pDocId.includes(cNorm)) || (cNorm && pDocName.includes(cNorm)));
+      }
+      if (isRecipient) {
         client.res.write(`data: ${dataStr}\n\n`);
       }
     } catch (e) {
@@ -267,8 +275,15 @@ router.get('/', async (req, res, next) => {
     }
 
     if (doctorId && doctorId !== 'all') {
-      sql += ` AND (apt.doctor_id = ? OR LOWER(doc.name) = LOWER(?))`;
-      params.push(doctorId, doctorId);
+      const trimmedDoc = doctorId.trim();
+      const normDoc = trimmedDoc.toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+      sql += ` AND (
+        apt.doctor_id = ? OR 
+        LOWER(doc.name) = LOWER(?) OR 
+        LOWER(REPLACE(REPLACE(REPLACE(doc.name, 'Dr.', ''), 'Dr', ''), ' ', '')) = ? OR
+        doc.email = ?
+      )`;
+      params.push(trimmedDoc, trimmedDoc, normDoc, trimmedDoc);
     }
 
     if (clinicId && clinicId !== 'all') {

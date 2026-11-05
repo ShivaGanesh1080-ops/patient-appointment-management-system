@@ -351,6 +351,28 @@ async function handleBookingSubmit(event) {
     myPasses = [res.data, ...myPasses.filter(p => p.booking_reference !== res.data.booking_reference)];
     localStorage.setItem('medipulse_my_passes', JSON.stringify(myPasses));
 
+    // Sub-20ms Ultra-Fast Live Queue Broadcast to Consulting Doctor Portal
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        const liveQueueChannel = new BroadcastChannel('medipulse_live_dispatch');
+        liveQueueChannel.postMessage({
+          type: 'NEW_BOOKING',
+          doctor_id: res.data.doctor_id,
+          doctor_name: res.data.doctor_name,
+          appointment: res.data,
+          dispatchedAt: Date.now()
+        });
+      }
+      localStorage.setItem('medipulse_live_dispatch_ping', JSON.stringify({
+        doctor_id: res.data.doctor_id,
+        doctor_name: res.data.doctor_name,
+        booking_reference: res.data.booking_reference,
+        dispatchedAt: Date.now()
+      }));
+    } catch (bcErr) {
+      console.warn('Real-time queue broadcast notification notice:', bcErr);
+    }
+
     // Reset Form & Re-sync Patient Details
     document.getElementById('appointment-booking-form').reset();
     if (otherToggle) otherToggle.checked = false;

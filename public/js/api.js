@@ -151,9 +151,45 @@ const api = {
   // ---------------------------------------------------------
   // Custom Doctor Persistence & Self-Healing Synchronization
   // ---------------------------------------------------------
+  deduplicateDoctors(list = []) {
+    if (!Array.isArray(list)) return [];
+    const seenIds = new Set();
+    const seenEmails = new Set();
+    const seenNames = new Set();
+    const unique = [];
+
+    for (const doc of list) {
+      if (!doc || !doc.name) continue;
+      // Filter out orphaned test duplicates
+      if (['doc-114-71', 'doc-115-79', 'doc-117-99'].includes(doc.id)) continue;
+      if (doc.name.includes('Test 2') || doc.name.includes('Test Specialist')) continue;
+
+      const normName = doc.name.toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+      const nameKey = `${doc.clinic_id || ''}_${normName}`;
+      const idKey = doc.id;
+      const emailKey = doc.email ? doc.email.toLowerCase().trim() : null;
+
+      if (idKey && seenIds.has(idKey)) continue;
+      if (emailKey && seenEmails.has(emailKey)) continue;
+      if (normName && seenNames.has(nameKey)) continue;
+
+      if (idKey) seenIds.add(idKey);
+      if (emailKey) seenEmails.add(emailKey);
+      if (normName) seenNames.add(nameKey);
+
+      unique.push(doc);
+    }
+    return unique;
+  },
+
   getCustomDoctors() {
     try {
-      return JSON.parse(localStorage.getItem('medipulse_custom_doctors') || '[]');
+      const raw = JSON.parse(localStorage.getItem('medipulse_custom_doctors') || '[]');
+      const cleaned = this.deduplicateDoctors(raw);
+      if (cleaned.length !== raw.length) {
+        localStorage.setItem('medipulse_custom_doctors', JSON.stringify(cleaned));
+      }
+      return cleaned;
     } catch (e) {
       return [];
     }
@@ -174,16 +210,22 @@ const api = {
         };
         doctor.department_name = deptNames[doctor.department_id] || 'Specialist';
       }
-      const existingIdx = list.findIndex(d => 
-        (d.id && doctor.id && d.id === doctor.id) || 
-        (d.email && doctor.email && d.email.toLowerCase() === doctor.email.toLowerCase())
-      );
+
+      const targetNorm = doctor.name.toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+      const existingIdx = list.findIndex(d => {
+        const dNorm = (d.name || '').toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+        return (d.id && doctor.id && d.id === doctor.id) ||
+               (d.email && doctor.email && d.email.toLowerCase() === doctor.email.toLowerCase()) ||
+               (targetNorm && dNorm && targetNorm === dNorm && d.clinic_id === doctor.clinic_id);
+      });
+
       if (existingIdx >= 0) {
         list[existingIdx] = { ...list[existingIdx], ...doctor };
       } else {
         list.unshift(doctor);
       }
-      localStorage.setItem('medipulse_custom_doctors', JSON.stringify(list));
+      const deduped = this.deduplicateDoctors(list);
+      localStorage.setItem('medipulse_custom_doctors', JSON.stringify(deduped));
     } catch (e) {
       console.warn('Failed to persist custom doctor locally:', e);
     }
@@ -209,10 +251,13 @@ const api = {
     });
 
     for (const customDoc of matchingCustom) {
-      const existsOnServer = result.some(d => 
-        d.id === customDoc.id || 
-        (d.email && customDoc.email && d.email.toLowerCase() === customDoc.email.toLowerCase())
-      );
+      const cNorm = (customDoc.name || '').toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+      const existsOnServer = result.some(d => {
+        const dNorm = (d.name || '').toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
+        return d.id === customDoc.id || 
+               (d.email && customDoc.email && d.email.toLowerCase() === customDoc.email.toLowerCase()) ||
+               (cNorm && dNorm && cNorm === dNorm && d.clinic_id === customDoc.clinic_id);
+      });
 
       if (!existsOnServer) {
         result.unshift(customDoc);
@@ -221,7 +266,7 @@ const api = {
       }
     }
 
-    return result;
+    return this.deduplicateDoctors(result);
   },
 
   async healDoctorOnServer(doc) {
@@ -297,14 +342,14 @@ const api = {
 
     const localApts = this.getCustomAppointments();
     const docId = (doctor.id || '').toLowerCase();
-    const docName = (doctor.name || '').toLowerCase().replace('dr.', '').trim();
+    const docName = (doctor.name || '').toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
 
-    // Match appointments for this doctor by ID or doctor_name
+    // Match appointments for this doctor by ID, email, or normalized name
     const matchingLocal = localApts.filter(apt => {
       const aptDocId = (apt.doctor_id || '').toLowerCase();
-      const aptDocName = (apt.doctor_name || '').toLowerCase().replace('dr.', '').trim();
+      const aptDocName = (apt.doctor_name || '').toLowerCase().replace(/^(dr\.|dr)\s*/i, '').replace(/[^a-z0-9]/g, '');
       return (aptDocId && aptDocId === docId) ||
-             (aptDocName && docName && (aptDocName.includes(docName) || docName.includes(aptDocName)));
+             (aptDocName && docName && (aptDocName === docName || aptDocName.includes(docName) || docName.includes(aptDocName)));
     });
 
     for (const lApt of matchingLocal) {
