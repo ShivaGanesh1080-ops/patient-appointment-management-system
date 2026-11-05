@@ -723,14 +723,26 @@
     async function updatePatientStatus(ref, newStatus) {
       let target = null;
       try {
-        if (window.api && typeof api.getCustomAppointments === 'function') {
+        if (currentQueueAppointments && currentQueueAppointments.length > 0) {
+          target = currentQueueAppointments.find(a => a.booking_reference === ref || a.id == ref);
+        }
+        if (!target && window.api && typeof api.getCustomAppointments === 'function') {
           const apts = api.getCustomAppointments();
-          target = apts.find(a => a.booking_reference === ref);
-          if (target) {
-            target.status = newStatus;
+          target = apts.find(a => a.booking_reference === ref || a.id == ref);
+        }
+
+        // Optimistic UI state transition (< 2ms instantaneous feedback)
+        if (target) {
+          target.status = newStatus;
+          if (window.api && typeof api.saveCustomAppointment === 'function') {
             api.saveCustomAppointment(target);
           }
+          if (typeof renderQueueList === 'function' && currentQueueAppointments) {
+            renderQueueList(currentQueueAppointments);
+            updateKpiBadges(currentQueueAppointments);
+          }
         }
+
         const res = await api.updateAppointmentStatus(ref, newStatus, target);
         showToast(`Patient status updated: ${newStatus}`, 'success');
         fetchDoctorAppointments();

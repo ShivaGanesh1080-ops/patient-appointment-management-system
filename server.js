@@ -51,7 +51,7 @@ const generalApiLimiter = rateLimit({
 
 const bookingActionLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 200, // High-throughput booking threshold
+  max: 3000, // Generous threshold to prevent false positive anti-bot triggers during active clinic testing
   standardHeaders: true,
   legacyHeaders: false,
   message: {

@@ -11,20 +11,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --color-canvas: #f9f7f7;
-  --color-ice: #dbe2ef;
-  --color-steel: #3f72af;
-  --color-steel-hover: #325d91;
-  --color-navy: #112d4e;
-  --color-navy-dark: #0b1c31;
+  --color-canvas: #f8fafc;
+  --color-ice: #e2e8f0;
+  --color-steel: #2563eb;
+  --color-steel-hover: #1d4ed8;
+  --color-navy: #0f172a;
+  --color-navy-dark: #020617;
 
-  --primary-50: #f4f7fb;
-  --primary-100: #e4ecf7;
-  --primary-200: #dbe2ef;
-  --primary-500: #3f72af;
-  --primary-600: #325d91;
-  --primary-700: #264770;
-  --primary-900: #112d4e;
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-500: #2563eb;
+  --primary-600: #1d4ed8;
+  --primary-700: #1e40af;
+  --primary-900: #0f172a;
 
   --success-500: #10b981;
   --warning-500: #f59e0b;
@@ -33,14 +33,10 @@
 
 body {
   font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.012em;
   -webkit-font-smoothing: antialiased;
-  background-color: #f9f7f7;
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(63, 114, 175, 0.08) 0px, transparent 45%),
-    radial-gradient(at 100% 0%, rgba(17, 45, 78, 0.07) 0px, transparent 45%),
-    radial-gradient(at 50% 100%, rgba(219, 226, 239, 0.6) 0px, transparent 50%);
-  color: #112d4e;
+  background-color: #f8fafc;
+  color: #0f172a;
   min-height: 100vh;
 }
 
@@ -51,18 +47,16 @@ body {
 
 /* Glassmorphism & SaaS Panels */
 .glass-panel, .glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(219, 226, 239, 0.95);
-  box-shadow: 0 10px 30px -5px rgba(17, 45, 78, 0.05), 0 0 1px 1px rgba(255, 255, 255, 0.9) inset;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
 }
 
 .glass-nav {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(219, 226, 239, 0.9);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid #e2e8f0;
 }
 
 /* Shimmer Loading Animation */
@@ -72,89 +66,93 @@ body {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #f4f7fb 25%, #dbe2ef 50%, #f4f7fb 75%);
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
   background-size: 200% 100%;
   animation: shimmerPulse 1.6s infinite;
 }
 
 /* Navigation Tabs */
 .nav-tab {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #4a5d78;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #64748b;
 }
 
 .nav-tab:hover {
-  color: #112d4e;
-  background-color: rgba(219, 226, 239, 0.5);
+  color: #0f172a;
+  background-color: #f1f5f9;
 }
 
 .nav-tab.active {
-  background: #112d4e;
+  background: #0f172a;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(17, 45, 78, 0.25);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
 }
 
 .nav-tab.active i {
-  color: #3f72af !important;
+  color: #60a5fa !important;
 }
 
 /* Primary SaaS Buttons */
 .btn-primary {
-  background: #3f72af;
+  background: #2563eb;
   color: #ffffff;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(63, 114, 175, 0.25);
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .btn-primary:hover {
-  background: #325d91;
-  box-shadow: 0 6px 18px rgba(63, 114, 175, 0.35);
+  background: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
   transform: translateY(-1px);
 }
 
 .btn-navy {
-  background: #112d4e;
+  background: #0f172a;
   color: #ffffff;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(17, 45, 78, 0.25);
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
 }
 
 .btn-navy:hover {
-  background: #0b1c31;
-  box-shadow: 0 6px 18px rgba(17, 45, 78, 0.35);
+  background: #1e293b;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
   transform: translateY(-1px);
 }
 
 /* Slot Selection Pills */
 .slot-btn {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #334155;
 }
 
 .slot-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  border-color: #3f72af;
-  color: #3f72af;
-  box-shadow: 0 4px 10px rgba(63, 114, 175, 0.15);
+  border-color: #2563eb;
+  color: #2563eb;
+  background-color: #eff6ff;
+  transform: translateY(-1px);
 }
 
 .slot-btn.selected {
-  background: #3f72af !important;
+  background: #2563eb !important;
   color: #ffffff !important;
-  border-color: #325d91 !important;
-  box-shadow: 0 4px 14px rgba(63, 114, 175, 0.35);
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
-/* Doctor & Hospital Card Hover Effects */
+/* Doctor & Hospital Card Modern Styling */
 .doctor-card, .hospital-card {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   background: #ffffff;
-  border: 1px solid #dbe2ef;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
 }
 
 .doctor-card:hover, .hospital-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 30px -10px rgba(17, 45, 78, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-  border-color: #3f72af;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+  border-color: #93c5fd;
 }
 
 /* Status Badges */

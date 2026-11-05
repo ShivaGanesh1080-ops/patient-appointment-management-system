@@ -458,45 +458,45 @@ function renderHospitalShowcase() {
 
   container.innerHTML = state.clinics.map(clinic => {
     return `
-      <article class="hospital-card p-6 rounded-3xl flex flex-col justify-between space-y-4 shadow-sm hover:border-[#3f72af] transition-all bg-white relative overflow-hidden group">
+      <article class="hospital-card p-6 rounded-2xl flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md hover:border-blue-400 border border-slate-200/90 transition-all bg-white relative overflow-hidden group">
         <div class="space-y-3">
           <div class="flex items-start justify-between">
-            <div class="w-12 h-12 rounded-2xl bg-[#dbe2ef]/70 text-[#112d4e] flex items-center justify-center text-xl shadow-sm border border-[#dbe2ef]">
-              <i class="fa-solid fa-hospital text-[#3f72af]"></i>
+            <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg shadow-xs border border-blue-100">
+              <i class="fa-solid fa-hospital"></i>
             </div>
-            <span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-xs font-bold bg-[#eff6ff] text-[#112d4e] border border-[#dbe2ef]">
+            <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200">
               <i class="fa-solid fa-star text-amber-500 text-[10px]"></i>
               <span>${clinic.rating ? clinic.rating.toFixed(1) : '4.9'}</span>
             </span>
           </div>
 
           <div>
-            <h3 class="font-extrabold text-base sm:text-lg text-[#112d4e] group-hover:text-[#3f72af] transition-colors">${clinic.name}</h3>
-            <p class="text-xs text-slate-500 font-medium flex items-center mt-1">
-              <i class="fa-solid fa-location-dot text-[#3f72af] mr-1.5 text-xs"></i>
+            <h3 class="font-bold text-base sm:text-lg text-slate-900 group-hover:text-blue-600 transition-colors">${clinic.name}</h3>
+            <p class="text-xs text-slate-500 font-normal flex items-center mt-1">
+              <i class="fa-solid fa-location-dot text-blue-600 mr-1.5 text-xs"></i>
               ${clinic.city} — ${clinic.address}
             </p>
           </div>
 
-          <div class="pt-2 flex flex-wrap gap-1.5 text-[11px]">
-            <span class="px-2 py-0.5 rounded-lg bg-[#f9f7f7] text-[#112d4e] border border-[#dbe2ef] font-medium">
-              <i class="fa-regular fa-clock mr-1 text-[#3f72af]"></i>${clinic.operating_hours || '08:00 - 20:00'}
+          <div class="pt-1 flex flex-wrap gap-1.5 text-[11px]">
+            <span class="px-2 py-0.5 rounded-md bg-slate-50 text-slate-700 border border-slate-200 font-medium">
+              <i class="fa-regular fa-clock mr-1 text-blue-600"></i>${clinic.operating_hours || '08:00 - 20:00'}
             </span>
-            <span class="px-2 py-0.5 rounded-lg bg-[#f9f7f7] text-[#112d4e] border border-[#dbe2ef] font-medium">
-              <i class="fa-solid fa-bed-pulse mr-1 text-[#3f72af]"></i>${clinic.total_beds || 50} Beds
+            <span class="px-2 py-0.5 rounded-md bg-slate-50 text-slate-700 border border-slate-200 font-medium">
+              <i class="fa-solid fa-bed-pulse mr-1 text-blue-600"></i>${clinic.total_beds || 50} Beds
             </span>
             ${clinic.phone ? `
-              <span class="px-2 py-0.5 rounded-lg bg-[#f9f7f7] text-slate-600 border border-[#dbe2ef]">
+              <span class="px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200">
                 <i class="fa-solid fa-phone mr-1 text-slate-400"></i>${clinic.phone}
               </span>
             ` : ''}
           </div>
         </div>
 
-        <div class="pt-4 border-t border-[#dbe2ef]/80">
+        <div class="pt-3 border-t border-slate-100">
           <button 
             onclick="selectHospitalAndBrowseDoctors('${clinic.id}')" 
-            class="w-full py-2.5 px-4 rounded-xl text-xs font-bold btn-primary flex items-center justify-center space-x-2 shadow-sm"
+            class="w-full py-2.5 px-4 rounded-xl text-xs font-semibold btn-primary flex items-center justify-center space-x-2 shadow-xs transition hover:shadow"
           >
             <span>Consult Specialists Here</span>
             <i class="fa-solid fa-arrow-right text-[11px]"></i>
@@ -724,11 +724,11 @@ function renderDoctors(doctors) {
 
   if (doctors.length === 0) {
     grid.innerHTML = `
-      <div class="col-span-full py-16 text-center text-slate-500 glass-panel rounded-3xl border border-[#dbe2ef]">
+      <div class="col-span-full py-16 text-center text-slate-500 bg-white rounded-2xl border border-slate-200">
         <i class="fa-solid fa-user-doctor text-3xl mb-3 text-slate-300"></i>
-        <h3 class="font-bold text-base text-[#112d4e]">No specialists match your criteria</h3>
-        <p class="text-xs text-slate-400 mt-1">Try selecting another department or clearing the hospital filter.</p>
-        <button onclick="state.activeDepartment='all'; state.activeClinic='all'; document.getElementById('clinic-filter-select').value='all'; loadDoctors();" class="mt-4 px-4 py-2 bg-[#3f72af] text-white rounded-xl text-xs font-semibold">
+        <h3 class="font-bold text-base text-slate-900">No specialists match your criteria</h3>
+        <p class="text-xs text-slate-400 mt-1">Try selecting another department or clearing the campus filter.</p>
+        <button onclick="state.activeDepartment='all'; state.activeClinic='all'; document.getElementById('clinic-filter-select').value='all'; loadDoctors();" class="mt-4 px-4 py-2 btn-primary text-xs font-semibold rounded-xl">
           Reset All Filters
         </button>
       </div>
@@ -737,96 +737,128 @@ function renderDoctors(doctors) {
   }
 
   grid.innerHTML = doctors.map(doc => {
-    const deptIconClass = DEPT_ICONS[doc.department_name] || 'fa-solid fa-user-doctor text-[#3f72af]';
-    const daysBadges = doc.available_days.map(d => 
-      `<span class="px-1.5 py-0.5 rounded text-[10px] bg-[#f9f7f7] text-[#112d4e] border border-[#dbe2ef] font-medium">${d.slice(0, 3)}</span>`
-    ).join(' ');
+    const deptIconClass = DEPT_ICONS[doc.department_name] || 'fa-solid fa-user-doctor text-blue-600';
 
     return `
-      <article class="doctor-card rounded-3xl border border-[#dbe2ef] p-5 flex flex-col justify-between shadow-sm relative overflow-hidden group hover:border-[#3f72af] transition-all bg-white">
+      <article class="doctor-card rounded-2xl border border-slate-200/90 p-5 flex flex-col justify-between shadow-xs relative overflow-hidden group hover:border-blue-400 hover:shadow-md transition-all bg-white">
         
-        <div>
-          <!-- Top Row: Avatar & Rating -->
-          <div class="flex items-start justify-between gap-3 mb-4">
+        <div class="space-y-3">
+          <!-- Top Row: Avatar & Specialist Identity -->
+          <div class="flex items-start justify-between gap-3">
             <div class="flex items-center space-x-3.5">
-              <img 
-                src="${doc.avatar_url || ('/img/doctors/' + doc.id + '.jpg')}" 
-                alt="${doc.name}" 
-                class="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md bg-slate-100"
-                onerror="this.onerror=null; this.src='/img/doctors/doc-101.jpg';"
-              />
+              <div class="relative">
+                <img 
+                  src="${doc.avatar_url || ('/img/doctors/' + doc.id + '.jpg')}" 
+                  alt="${doc.name}" 
+                  class="w-14 h-14 rounded-2xl object-cover border border-slate-200 shadow-xs bg-slate-100"
+                  onerror="this.onerror=null; this.src='/img/doctors/doc-101.jpg';"
+                />
+                <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] ring-2 ring-white" title="Verified Specialist">
+                  <i class="fa-solid fa-check"></i>
+                </span>
+              </div>
               <div>
-                <div class="flex items-center space-x-1.5 flex-wrap gap-y-1 mb-1">
-                  <span class="inline-flex items-center text-[10px] font-semibold text-[#112d4e] bg-[#dbe2ef]/60 px-2 py-0.5 rounded-full border border-[#dbe2ef]">
-                    <i class="${deptIconClass} mr-1 text-[10px]"></i> ${doc.department_name}
-                  </span>
-                  ${doc.clinic_name ? `
-                    <span class="inline-flex items-center text-[10px] font-bold text-[#3f72af] bg-[#eff6ff] px-2 py-0.5 rounded border border-[#bfdbfe]">
-                      <i class="fa-solid fa-hospital text-[9px] mr-1"></i> ${doc.clinic_name}
-                    </span>
-                  ` : ''}
+                <div class="flex items-center space-x-1.5 mb-0.5">
+                  <h3 class="font-bold text-base text-slate-900 group-hover:text-blue-600 transition-colors">${doc.name}</h3>
                 </div>
-                <h3 class="font-extrabold text-base text-[#112d4e] group-hover:text-[#3f72af] transition-colors">${doc.name}</h3>
-                <p class="text-xs text-slate-500 font-medium line-clamp-1">${doc.qualification}</p>
+                <p class="text-xs text-slate-500 font-medium">${doc.department_name} • ${doc.qualification}</p>
+                <p class="text-[11px] text-slate-500 flex items-center mt-1">
+                  <i class="fa-solid fa-hospital text-blue-600 text-[10px] mr-1.5"></i>
+                  ${doc.clinic_name || 'Hospital Campus'}
+                </p>
               </div>
             </div>
 
             <!-- Star Rating Badge -->
-            <div class="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-amber-50 text-amber-800 font-bold text-xs border border-amber-200">
-              <i class="fa-solid fa-star text-amber-500 text-[11px]"></i>
+            <div class="flex items-center space-x-1 px-2 py-0.5 rounded-lg bg-amber-50 text-amber-800 font-semibold text-xs border border-amber-200">
+              <i class="fa-solid fa-star text-amber-500 text-[10px]"></i>
               <span>${doc.rating ? doc.rating.toFixed(1) : '4.9'}</span>
             </div>
           </div>
 
-          <!-- Doctor Bio Snippet -->
-          <p class="text-xs text-slate-600 mb-4 line-clamp-2 leading-relaxed">${doc.bio}</p>
-
-          <!-- Clinic & Meta Stats -->
-          <div class="space-y-1.5 text-xs text-slate-600 border-t border-[#dbe2ef]/70 pt-3 mb-4">
-            <div class="flex items-center justify-between">
-              <span class="text-slate-400"><i class="fa-solid fa-hospital mr-1 text-[#3f72af]"></i> Hospital Campus:</span>
-              <span class="font-semibold text-[#112d4e]">${doc.clinic_name || 'SRU Campus'} (${doc.clinic_city || 'Warangal'})</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-slate-400"><i class="fa-solid fa-briefcase mr-1 text-slate-400"></i> Experience:</span>
-              <span class="font-semibold text-[#112d4e]">${doc.experience_years}+ Years</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-slate-400"><i class="fa-solid fa-indian-rupee-sign mr-1 text-slate-400"></i> Consultation Fee:</span>
-              <span class="font-bold text-[#112d4e] text-sm">₹${doc.consultation_fee}</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-slate-400"><i class="fa-regular fa-clock mr-1 text-slate-400"></i> Clinic Hours:</span>
-              <span class="font-medium text-slate-700">${doc.slot_start_time} - ${doc.slot_end_time}</span>
-            </div>
-            <div class="pt-1 flex items-center justify-between">
-              <span class="text-slate-400 text-[11px]">Days:</span>
-              <div class="flex flex-wrap gap-1 justify-end">${daysBadges}</div>
-            </div>
+          <!-- Doctor Meta Pills -->
+          <div class="flex flex-wrap items-center gap-1.5 pt-1 text-[11px]">
+            <span class="px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200 font-medium">
+              <i class="fa-solid fa-briefcase text-slate-400 mr-1 text-[10px]"></i>${doc.experience_years}+ Yrs Exp
+            </span>
+            <span class="px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200 font-medium">
+              <i class="fa-regular fa-clock text-slate-400 mr-1 text-[10px]"></i>${doc.slot_start_time || '09:00'} - ${doc.slot_end_time || '17:00'}
+            </span>
           </div>
+
+          <!-- Doctor Bio Snippet -->
+          <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed pt-1">${doc.bio}</p>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#dbe2ef]/70">
-          <button 
-            onclick="viewDoctorBio('${doc.id}')" 
-            class="px-3 py-2 rounded-xl text-xs font-semibold text-[#112d4e] bg-[#f9f7f7] hover:bg-[#dbe2ef]/70 border border-[#dbe2ef] transition-colors"
-          >
-            Profile Bio
-          </button>
-          <button 
-            onclick="bookWithDoctor('${doc.id}')" 
-            class="px-3 py-2 rounded-xl text-xs font-bold btn-primary flex items-center justify-center space-x-1.5 shadow-sm"
-          >
-            <i class="fa-regular fa-calendar-check text-[11px]"></i>
-            <span>Book Slot</span>
-          </button>
+        <!-- Bottom Row: Fee & Action CTA -->
+        <div class="flex items-center justify-between pt-4 mt-3 border-t border-slate-100">
+          <div>
+            <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Consultation Fee</div>
+            <div class="text-base font-extrabold text-slate-900">₹${doc.consultation_fee} <span class="text-[11px] font-normal text-slate-400">/ visit</span></div>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <button 
+              onclick="viewDoctorBio('${doc.id}')" 
+              class="px-2.5 py-1.5 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
+              title="View Doctor Bio"
+            >
+              Bio
+            </button>
+            <button 
+              onclick="bookWithDoctor('${doc.id}')" 
+              class="px-3.5 py-2 rounded-xl text-xs font-semibold btn-primary flex items-center space-x-1.5 shadow-xs transition hover:shadow"
+            >
+              <i class="fa-regular fa-calendar-check text-[11px]"></i>
+              <span>Book Visit</span>
+            </button>
+          </div>
         </div>
 
       </article>
     `;
   }).join('');
 }
+
+/**
+ * Quick Filter by Specialty Pill (from Hero)
+ */
+function filterBySpecialtyPill(deptId) {
+  state.activeDepartment = deptId;
+  switchTab('tab-doctors');
+  
+  // Update active pill button in doctors tab
+  document.querySelectorAll('.dept-filter-btn').forEach(btn => {
+    if (btn.getAttribute('data-dept') === deptId) {
+      btn.className = 'dept-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow-sm';
+    } else {
+      btn.className = 'dept-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+    }
+  });
+
+  loadDoctors();
+}
+window.filterBySpecialtyPill = filterBySpecialtyPill;
+
+/**
+ * Unified Quick Search (from Hero)
+ */
+function handleUnifiedQuickSearch(query) {
+  if (!query || !query.trim()) {
+    switchTab('tab-doctors');
+    loadDoctors();
+    return;
+  }
+  const q = query.trim();
+  switchTab('tab-doctors');
+  const searchInput = document.getElementById('doctor-search-input');
+  if (searchInput) {
+    searchInput.value = q;
+  }
+  state.searchQuery = q;
+  loadDoctors();
+}
+window.handleUnifiedQuickSearch = handleUnifiedQuickSearch;
 
 async function viewDoctorBio(doctorId) {
   try {
